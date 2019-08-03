@@ -1,0 +1,88 @@
+@tailwind base
+
+@tailwind components
+
+@tailwind utilities
+
+@tailwind screens
+
+
+.transition
+  transition: all .15s ease-in-out
+
+.aspect-16x9
+  padding-bottom:56.25%
+
+.circ
+  width: 32px
+  vertical-align: middle
+  border-radius: 50%
+  box-shadow: 0 0 0 2px #fff
+  margin-top: 0px
+
+
+.circ:hover
+  box-shadow: 0 0 0 3px #fff
+
+.btn
+  @apply font-bold py-3 px-4 rounded-full
+
+.btn-blue
+  @apply bg-blue text-white
+
+.btn-blue:hover
+  @apply bg-blue-dark
+
+.btn-mstore
+  @apply bg-grey-light text-black
+
+.btn-mstore:hover
+  @apply bg-mstore text-white
+
+.input-class
+  @apply w-full px-4 h-10 border-2  rounded-lg bg-white text-grey-darker outline-none mb-3 border-grey-light
+.input-class:focus
+  @apply border-mstore
+
+//card
+
+.card
+@apply bg-white shadow rounded-lg
+
+.card-panel
+  height: 150px
+
+.card-refresh
+  @apply p-1 ml-auto text-grey-light inline-flex items-center
+
+
+.card-refresh:hover
+  @apply text-blue
+
+//Tables
+
+.table-fixed
+  table-layout: fixed
+
+.table
+  border-collapse: collapse
+  border-spacing: 0
+
+.table tr:hover td
+  @apply .bg-blue-dark
+
+.table th
+  @apply bg-grey-darker font-bold text-xs text-mstore uppercase border-b-2 border-blue-light py-3 px-3 tracking-wide align-middle
+
+.table td
+  @apply font-light text-grey-dark border-t border-b border-blue-light px-3 align-middle
+  height: 3.8125rem
+
+
+.th-fit,
+.td-fit
+  width: 1%
+  white-space: nowrap
+
+.notifications.has-notifications
+  color: #bf5329

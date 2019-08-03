@@ -1,0 +1,42 @@
+{
+    "private": true,
+    "scripts": {
+        "dev": "npm run development",
+        "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch": "npm run development -- --watch",
+        "watch-poll": "npm run watch -- --watch-poll",
+        "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "prod": "npm run production",
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js && workbox generateSW workbox-config.js",
+        "build-input-thai-address": "cd nova-components/InputThaiAddress && npm run dev",
+        "build-input-thai-address-prod": "cd nova-components/InputThaiAddress && npm run prod",
+        "build-tmsdashboard": "cd nova-components/Tmsdashboard && npm run dev",
+        "build-tmsdashboard-prod": "cd nova-components/Tmsdashboard && npm run prod",
+        "build-gotas-menugroup": "cd nova-components/GotasMenugroup && npm run dev",
+        "build-gotas-menugroup-prod": "cd nova-components/GotasMenugroup && npm run prod"
+    },
+    "devDependencies": {
+        "axios": "^0.19.0",
+        "bootstrap": "^4.0.0",
+        "cross-env": "^5.1",
+        "jquery": "^3.4.0",
+        "laravel-mix": "^4.0.7",
+        "lodash": "^4.17.5",
+        "popper.js": "^1.12",
+        "resolve-url-loader": "^2.3.1",
+        "sass": "^1.15.2",
+        "sass-loader": "^7.1.0",
+        "tailwindcss": "^1.0.4",
+        "vue": "^2.5.17",
+        "vue-template-compiler": "^2.6.2"
+    },
+    "dependencies": {
+        "babel-loader": "^8.0.5",
+        "css-loader": "^2.1.0",
+        "laravel-echo": "^1.5.3",
+        "postcss-import": "^12.0.1",
+        "pusher-js": "^4.4.0",
+        "vue-loader": "^15.6.2",
+        "vue-thai-address-input": "^0.2.1"
+    }
+}
