@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5155b21fe8624f6590136320896ea9ef",
+    "content-hash": "101935bec9fee2b973fc9f2c3e9c7e67",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -4080,47 +4080,6 @@
                 "uri"
             ],
             "time": "2018-01-15T21:00:49+00:00"
-        },
-        {
-            "name": "shivanshrajpoot/nova-create-or-add",
-            "version": "0.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/shivanshrajpoot/nova-create-or-add.git",
-                "reference": "bd8e942318c7d56c56542fa8c08545ab83a71492"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/shivanshrajpoot/nova-create-or-add/zipball/bd8e942318c7d56c56542fa8c08545ab83a71492",
-                "reference": "bd8e942318c7d56c56542fa8c08545ab83a71492",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Shivanshrajpoot\\NovaCreateOrAdd\\FieldServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Shivanshrajpoot\\NovaCreateOrAdd\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "A Laravel Nova field.",
-            "keywords": [
-                "laravel",
-                "nova"
-            ],
-            "time": "2018-11-28T09:19:33+00:00"
         },
         {
             "name": "spatie/once",
