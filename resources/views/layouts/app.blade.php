@@ -34,26 +34,26 @@
         @endif
 
 
-        {{--
-        @if (App::environment('production', 'staging'))
-            <script>
-                if ('serviceWorker' in navigator) {
-                    window.addEventListener('load', function() {
-                        navigator.serviceWorker.register('/sw.js').then(function(registration) {
-                        // Registration was successful
-                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                        }, function(err) {
-                        // registration failed :(
-                        console.log('ServiceWorker registration failed: ', err);
-                        });
-                    });
-                    }
-            </script>
-        @endif
+
+        // @if (App::environment('production', 'staging'))
+        //     <script>
+        //         if ('serviceWorker' in navigator) {
+        //             window.addEventListener('load', function() {
+        //                 navigator.serviceWorker.register('/sw.js').then(function(registration) {
+        //                 // Registration was successful
+        //                 console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        //                 }, function(err) {
+        //                 // registration failed :(
+        //                 console.log('ServiceWorker registration failed: ', err);
+        //                 });
+        //             });
+        //             }
+        //     </script>
+        // @endif
 
 
-        <link rel ="manifest" href ="/manifest.json">
-    --}}
+        // <link rel ="manifest" href ="/manifest.json">
+
 
         <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
         @stack('scripts')
