@@ -56,7 +56,7 @@ export default {
         },
 
         resourceId: {
-            type: String,
+            type: [Number, String],
         },
 
         viaResource: {
@@ -64,7 +64,7 @@ export default {
         },
 
         viaResourceId: {
-            type: String,
+            type: [Number, String],
         },
 
         viaRelationship: {

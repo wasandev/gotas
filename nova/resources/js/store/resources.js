@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { escapeUnicode } from '@/util/escapeUnicode'
 
 export default {
     namespaced: true,
@@ -39,7 +40,8 @@ export default {
         /**
          * Return the current filters encoded to a string.
          */
-        currentEncodedFilters: (state, getters) => btoa(JSON.stringify(getters.currentFilters)),
+        currentEncodedFilters: (state, getters) =>
+            btoa(escapeUnicode(JSON.stringify(getters.currentFilters))),
 
         /**
          * Determine whether any filters are applied

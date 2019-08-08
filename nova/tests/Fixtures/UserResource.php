@@ -204,6 +204,9 @@ class UserResource extends Resource
             })->canRun(function ($request, $model) {
                 return false;
             }),
+            (new UnrunnableDestructiveAction)->canRun(function ($request, $model) {
+                return false;
+            }),
             new UpdateStatusAction,
             new NoopActionWithoutActionable,
             new HandleResultAction,

@@ -74,6 +74,7 @@ export default {
                     )
 
                     Nova.$emit(this.field.postalCode + '-value', e.suggestion.postcode)
+                    Nova.$emit(this.field.suburb + '-value', e.suggestion.suburb)
 
                     Nova.$emit(
                         this.field.country + '-value',
@@ -93,6 +94,7 @@ export default {
                     Nova.$emit(this.field.city + '-value', '')
                     Nova.$emit(this.field.state + '-value', '')
                     Nova.$emit(this.field.postalCode + '-value', '')
+                    Nova.$emit(this.field.suburb + '-value', '')
                     Nova.$emit(this.field.country + '-value', '')
                     Nova.$emit(this.field.latitude + '-value', '')
                     Nova.$emit(this.field.longitude + '-value', '')

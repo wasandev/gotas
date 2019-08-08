@@ -22,7 +22,7 @@ class FirstDayOfPreviousQuarter
         } elseif (in_array($month, [7, 8, 9])) {
             return Carbon::create($year, 4, 1)->setTime(0, 0);
         } elseif (in_array($month, [10, 11, 12])) {
-            return Carbon::create($year, 4, 1)->setTime(0, 0);
+            return Carbon::create($year, 7, 1)->setTime(0, 0);
         }
     }
 }

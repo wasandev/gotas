@@ -74,7 +74,12 @@ class ResourceToolCommand extends Command
         // Register the tool...
         $this->addToolRepositoryToRootComposer();
         $this->addToolPackageToRootComposer();
-        $this->addScriptsToNpmPackage();
+
+        if ($this->hasPackageFile()) {
+            $this->addScriptsToNpmPackage();
+        } else {
+            $this->warn('Please create a package.json to the root of your project.');
+        }
 
         if ($this->confirm("Would you like to install the tool's NPM dependencies?", true)) {
             $this->installNpmDependencies();
@@ -302,5 +307,15 @@ class ResourceToolCommand extends Command
     protected function toolName()
     {
         return explode('/', $this->argument('name'))[1];
+    }
+
+    /**
+     * Determine whether we have a package file.
+     *
+     * @return bool
+     */
+    protected function hasPackageFile()
+    {
+        return file_exists(base_path('package.json'));
     }
 }

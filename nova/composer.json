@@ -16,7 +16,7 @@
         "php": ">=7.1.0",
         "cakephp/chronos": "^1.0",
         "doctrine/dbal": "^2.9",
-        "illuminate/support": "^5.7.15 | 5.8.*",
+        "illuminate/support": "^5.7.15 | 5.8.* | ^6.0",
         "moontoast/math": "^1.1",
         "spatie/once": "^1.1",
         "symfony/finder": "^4.0"

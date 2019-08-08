@@ -318,7 +318,12 @@ export default {
          * Send an attach request for this resource
          */
         attachRequest() {
-            return Nova.request().post(this.attachmentEndpoint, this.attachmentFormData)
+            return Nova.request().post(this.attachmentEndpoint, this.attachmentFormData, {
+                params: {
+                    editing: true,
+                    editMode: 'attach',
+                },
+            })
         },
 
         /**

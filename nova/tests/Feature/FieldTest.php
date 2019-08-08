@@ -215,6 +215,34 @@ class FieldTest extends IntegrationTest
         $this->assertFalse($field->isReadonly(NovaRequest::create('/', 'get')));
     }
 
+    public function test_can_set_field_to_readonly_on_create_requests()
+    {
+        $request = NovaRequest::create('/nova-api/users', 'POST', [
+            'editing' => true,
+            'editMode' => 'create',
+        ]);
+
+        $field = Text::make('Name')->readonly(function ($request) {
+            return $request->isCreateOrAttachRequest();
+        });
+
+        $this->assertTrue($field->isReadonly($request));
+    }
+
+    public function test_can_set_field_to_readonly_on_update_requests()
+    {
+        $request = NovaRequest::create('/nova-api/users/1', 'PUT', [
+            'editing' => true,
+            'editMode' => 'update',
+        ]);
+
+        $field = Text::make('Name')->readonly(function ($request) {
+            return $request->isUpdateOrUpdateAttachedRequest();
+        });
+
+        $this->assertTrue($field->isReadonly($request));
+    }
+
     public function test_collision_of_request_properties()
     {
         $request = new NovaRequest([], [

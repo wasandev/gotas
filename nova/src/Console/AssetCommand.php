@@ -121,7 +121,7 @@ class AssetCommand extends Command
 
         file_put_contents(
             base_path('composer.json'),
-            json_encode($composer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
+            json_encode($composer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
         );
     }
 

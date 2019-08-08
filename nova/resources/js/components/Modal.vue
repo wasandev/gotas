@@ -42,7 +42,7 @@ export default {
             e.stopPropagation()
 
             if (e.keyCode == 27) {
-                this.close()
+                this.close(e)
             }
         },
 

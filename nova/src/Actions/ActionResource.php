@@ -65,7 +65,9 @@ class ActionResource extends Resource
     {
         return [
             ID::make('ID', 'id'),
-            Text::make(__('Action Name'), 'name'),
+            Text::make(__('Action Name'), 'name', function ($value) {
+                return __($value);
+            }),
 
             Text::make(__('Action Initiated By'), function () {
                 return $this->user->name ?? $this->user->email ?? __('Nova User');
@@ -74,8 +76,8 @@ class ActionResource extends Resource
             MorphToActionTarget::make(__('Action Target'), 'target'),
 
             Status::make(__('Action Status'), 'status', function ($value) {
-                return ucfirst($value);
-            })->loadingWhen(['Waiting', 'Running'])->failedWhen(['Failed']),
+                return __(ucfirst($value));
+            })->loadingWhen([__('Waiting'), __('Running')])->failedWhen([__('Failed')]),
 
             $this->when(isset($this->original), function () {
                 return KeyValue::make(__('Original'));

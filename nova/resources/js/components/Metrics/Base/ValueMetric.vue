@@ -71,6 +71,7 @@
 
 <script>
 import numeral from 'numeral'
+import 'numeral/locales'
 import { SingularOrPlural } from 'laravel-nova'
 
 export default {
@@ -135,6 +136,10 @@ export default {
 
         formattedValue() {
             if (!this.isNullValue) {
+                if (Nova.config.locale) {
+                    numeral.locale(Nova.config.locale)
+                }
+
                 return this.prefix + numeral(this.value).format(this.format)
             }
 

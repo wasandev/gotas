@@ -31,6 +31,7 @@ use Laravel\Nova\Tests\Fixtures\RequiredFieldAction;
 use Laravel\Nova\Tests\Fixtures\QueuedResourceAction;
 use Laravel\Nova\Tests\Fixtures\QueuedUpdateStatusAction;
 use Laravel\Nova\Tests\Fixtures\NoopActionWithoutActionable;
+use Laravel\Nova\Tests\Fixtures\UnrunnableDestructiveAction;
 
 class ActionControllerTest extends IntegrationTest
 {
@@ -192,6 +193,22 @@ class ActionControllerTest extends IntegrationTest
 
         $response->assertStatus(200);
         $this->assertEmpty(UnrunnableAction::$applied);
+        $this->assertCount(0, ActionEvent::all());
+    }
+
+    public function test_action_cant_be_applied_if_not_authorized_to_run_destructive_action()
+    {
+        $user = factory(User::class)->create();
+
+        $response = $this->withExceptionHandling()
+                        ->post('/nova-api/users/action?action='.(new UnrunnableDestructiveAction)->uriKey(), [
+                            'resources' => $user->id,
+                            'test' => 'Taylor Otwell',
+                            'callback' => '',
+                        ]);
+
+        $response->assertStatus(200);
+        $this->assertEmpty(UnrunnableDestructiveAction::$applied);
         $this->assertCount(0, ActionEvent::all());
     }
 
@@ -406,8 +423,8 @@ class ActionControllerTest extends IntegrationTest
 
         $response->assertStatus(200);
 
-        $this->assertEquals($user->id, $_SERVER['queuedAction.applied'][0][0]->id);
-        $this->assertEquals($user2->id, $_SERVER['queuedAction.applied'][0][1]->id);
+        $this->assertEquals($user2->id, $_SERVER['queuedAction.applied'][0][0]->id);
+        $this->assertEquals($user->id, $_SERVER['queuedAction.applied'][0][1]->id);
         $this->assertEquals('Taylor Otwell', $_SERVER['queuedAction.appliedFields'][0]->test);
 
         $this->assertCount(2, ActionEvent::all());
@@ -449,8 +466,8 @@ class ActionControllerTest extends IntegrationTest
                         ]);
 
         $response->assertStatus(200);
-        $this->assertEquals($user->id, $_SERVER['queuedAction.applied'][0][0]->id);
-        $this->assertEquals($user2->id, $_SERVER['queuedAction.applied'][0][1]->id);
+        $this->assertEquals($user2->id, $_SERVER['queuedAction.applied'][0][0]->id);
+        $this->assertEquals($user->id, $_SERVER['queuedAction.applied'][0][1]->id);
         $this->assertCount(2, ActionEvent::all());
     }
 

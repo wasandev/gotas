@@ -182,7 +182,13 @@ export default {
         createRequest() {
             return Nova.request().post(
                 `/nova-api/${this.resourceName}`,
-                this.createResourceFormData()
+                this.createResourceFormData(),
+                {
+                    params: {
+                        editing: true,
+                        editMode: 'create',
+                    },
+                }
             )
         },
 
@@ -191,11 +197,9 @@ export default {
          */
         createResourceFormData() {
             return _.tap(new FormData(), formData => {
-                // _.each(this.panels, panel => {
                 _.each(this.fields, field => {
                     field.fill(formData)
                 })
-                // })
 
                 formData.append('viaResource', this.viaResource)
                 formData.append('viaResourceId', this.viaResourceId)

@@ -432,7 +432,7 @@ class ResourceCreationTest extends IntegrationTest
         $_SERVER['weight-field.readonly'] = true;
 
         $this->withExceptionHandling()
-            ->postJson('/nova-api/users', [
+            ->postJson('/nova-api/users?editing=true&editMode=create', [
                 'name' => 'Taylor Otwell',
                 'email' => 'taylor@laravel.com',
                 'password' => 'secret',
@@ -446,7 +446,7 @@ class ResourceCreationTest extends IntegrationTest
         $_SERVER['weight-field.readonly'] = true;
 
         $this->withExceptionHandling()
-            ->postJson('/nova-api/users', [
+            ->postJson('/nova-api/users?editing=true&editMode=create', [
                 'name' => 'Taylor Otwell',
                 'email' => 'taylor@laravel.com',
                 'weight' => 190,

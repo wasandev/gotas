@@ -38,7 +38,7 @@ class AttachableController extends Controller
                         })
                         ->map(function ($resource) use ($request, $field) {
                             return $field->formatAttachableResource($request, $resource);
-                        })->sortBy('display')->values(),
+                        })->sortBy('display', SORT_NATURAL | SORT_FLAG_CASE)->values(),
             'withTrashed' => $withTrashed,
             'softDeletes' => $associatedResource::softDeletes(),
         ];

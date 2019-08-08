@@ -24,12 +24,13 @@ Route::group(['namespace' => 'System'], function () {
     Route::get('setup', 'UsersController@showSetup')->name('setup');
 
     Route::get('home', 'HomeController@index')->name('home');
+
+
+    Route::get('show-profile', 'ProfileController@showProfileToUser')->name('show-profile');
+    Route::get('determine-profile-route', 'ProfileController@determineProfileRoute')->name('determine-profile-route');
+    Route::resource('profile', 'ProfileController');
+
+    //setting
+    Route::get('settings', 'SettingsController@settings')->name('settings');
+    Route::post('settings', 'SettingsController@update')->name('user-update');
 });
-
-Route::get('show-profile', 'ProfileController@showProfileToUser')->name('show-profile');
-Route::get('determine-profile-route', 'ProfileController@determineProfileRoute')->name('determine-profile-route');
-Route::resource('profile', 'ProfileController');
-
-//setting
-Route::get('settings', 'SettingsController@settings')->name('settings');
-Route::post('settings', 'SettingsController@update')->name('user-update');

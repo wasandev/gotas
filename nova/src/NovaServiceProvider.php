@@ -146,6 +146,7 @@ class NovaServiceProvider extends ServiceProvider
                 'translations' => $this->getTranslations(),
                 'userTimezone' => Nova::resolveUserTimezone($event->request),
                 'pagination' => config('nova.pagination', 'links'),
+                'locale' => config('app.locale', 'en'),
             ]);
         });
     }

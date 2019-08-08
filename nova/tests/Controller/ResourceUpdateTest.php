@@ -313,7 +313,7 @@ class ResourceUpdateTest extends IntegrationTest
         $user = factory(User::class)->create(['weight' => 250]);
 
         $this->withExceptionHandling()
-            ->putJson('/nova-api/users/'.$user->id, [
+            ->putJson(sprintf('/nova-api/users/%s?editing=true&editMode=update', $user->id), [
                 'name' => 'Taylor Otwell',
                 'email' => 'taylor@laravel.com',
                 // 'weight' => 190,
@@ -329,8 +329,8 @@ class ResourceUpdateTest extends IntegrationTest
 
         $user = factory(User::class)->create(['weight' => 250]);
 
-        $this->withExceptionHandling()
-            ->putJson('/nova-api/users/'.$user->id, [
+        $this->withoutExceptionHandling()
+            ->putJson(sprintf('/nova-api/users/%s?editing=true&editMode=update', $user->id), [
                 'name' => 'Taylor Otwell',
                 'email' => 'taylor@laravel.com',
                 'weight' => 190,

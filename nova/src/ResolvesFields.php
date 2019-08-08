@@ -75,7 +75,7 @@ trait ResolvesFields
     /**
      * Resolve the detail fields and assign them to their associated panel.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Illuminate\Support\Collection
      */
     public function detailFieldsWithinPanels(NovaRequest $request)
@@ -102,7 +102,7 @@ trait ResolvesFields
     /**
      * Return the creation fields excluding any readonly ones.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Illuminate\Support\Collection
      */
     public function creationFieldsWithoutReadonly(NovaRequest $request)
@@ -116,7 +116,7 @@ trait ResolvesFields
     /**
      * Resolve the creation fields and assign them to their associated panel.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Illuminate\Support\Collection
      */
     public function creationFieldsWithinPanels(NovaRequest $request)
@@ -132,7 +132,7 @@ trait ResolvesFields
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Illuminate\Support\Collection  $relatedResource
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function creationPivotFields(NovaRequest $request, $relatedResource)
     {
@@ -174,7 +174,7 @@ trait ResolvesFields
     /**
      * Return the update fields excluding any readonly ones.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Illuminate\Support\Collection
      */
     public function updateFieldsWithoutReadonly(NovaRequest $request)
@@ -188,7 +188,7 @@ trait ResolvesFields
     /**
      * Resolve the update fields and assign them to their associated panel.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Illuminate\Support\Collection
      */
     public function updateFieldsWithinPanels(NovaRequest $request)
@@ -204,7 +204,7 @@ trait ResolvesFields
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Illuminate\Support\Collection  $relatedResource
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function updatePivotFields(NovaRequest $request, $relatedResource)
     {
@@ -233,8 +233,8 @@ trait ResolvesFields
     /**
      * Resolve the given fields to their values.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param  \Closure|null $filter
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Closure|null  $filter
      * @return \Illuminate\Support\Collection
      */
     protected function resolveFields(NovaRequest $request, Closure $filter = null)
@@ -273,7 +273,7 @@ trait ResolvesFields
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  string  $attribute
-     * @param  string  $morphType
+     * @param  string|null  $morphType
      * @return \Illuminate\Support\Collection
      */
     public function resolveInverseFieldsForAttribute(NovaRequest $request, $attribute, $morphType = null)
@@ -324,7 +324,7 @@ trait ResolvesFields
     /**
      * Get the panels that are available for the given create request.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Illuminate\Support\Collection
      */
     public function availablePanelsForCreate($request)
@@ -335,7 +335,7 @@ trait ResolvesFields
     /**
      * Get the panels that are available for the given update request.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Illuminate\Support\Collection
      */
     public function availablePanelsForUpdate($request)
@@ -346,7 +346,7 @@ trait ResolvesFields
     /**
      * Get the panels that are available for the given detail request.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Illuminate\Support\Collection
      */
     public function availablePanelsForDetail($request)
@@ -358,7 +358,7 @@ trait ResolvesFields
      * Get the fields that are available for the given request.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return \Illuminate\Support\Collection
+     * @return \Laravel\Nova\Fields\FieldCollection
      */
     public function availableFields(NovaRequest $request)
     {
@@ -370,7 +370,7 @@ trait ResolvesFields
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  array  $fields
-     * @return \Illuminate\Support\Collection
+     * @return \Laravel\Nova\Fields\FieldCollection
      */
     protected function withPivotFields(NovaRequest $request, array $fields)
     {
@@ -489,8 +489,8 @@ trait ResolvesFields
     /**
      * Return the panels for this request with the default label.
      *
-     * @param string $label
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  string  $label
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Illuminate\Support\Collection
      */
     protected function panelsWithDefaultLabel($label, NovaRequest $request)
@@ -508,8 +508,8 @@ trait ResolvesFields
     /**
      * Assign the fields with the given panels to their parent panel.
      *
-     * @param string $label
-     * @param \Illuminate\Support\Collection $panels
+     * @param  string  $label
+     * @param  \Illuminate\Support\Collection  $panels
      * @return \Illuminate\Support\Collection
      */
     protected function assignToPanels($label, Collection $panels)

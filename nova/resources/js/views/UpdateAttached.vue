@@ -313,7 +313,13 @@ export default {
         updateRequest() {
             return Nova.request().post(
                 `/nova-api/${this.resourceName}/${this.resourceId}/update-attached/${this.relatedResourceName}/${this.relatedResourceId}`,
-                this.updateAttachmentFormData
+                this.updateAttachmentFormData,
+                {
+                    params: {
+                        editing: true,
+                        editMode: 'update-attached',
+                    },
+                }
             )
         },
 

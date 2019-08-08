@@ -65,7 +65,7 @@
                 :action="selectedAction"
                 :errors="errors"
                 @confirm="executeAction"
-                @close="confirmActionModalOpened = false"
+                @close="closeConfirmationModal"
             />
         </transition>
         <!-- </portal> -->
@@ -154,6 +154,7 @@ export default {
          */
         closeConfirmationModal() {
             this.confirmActionModalOpened = false
+            this.errors = new Errors()
         },
 
         /**
