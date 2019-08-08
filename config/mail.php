@@ -56,8 +56,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'info@mg.moresmartstore.com'),
-        'name' => env('MAIL_FROM_NAME', 'mStore'),
+        'address' => env('MAIL_FROM_ADDRESS', 'info@mail.gotas.online'),
+        'name' => env('MAIL_FROM_NAME', 'GOTAS'),
     ],
 
     /*
