@@ -155,6 +155,8 @@ return [
              */
             'vhost-files' => [
                 '/etc/nginx/sites-enabled/'
+                //'storage/app/tenancy/webserver/nginx/'
+
             ],
 
             /**
