@@ -154,8 +154,8 @@ return [
              * Location where vhost configuration files can be found.
              */
             'vhost-files' => [
-                '/etc/nginx/sites-enabled/'
-                //'storage/app/tenancy/webserver/nginx/'
+                // '/etc/nginx/sites-enabled/'
+                'storage/app/tenancy/webserver/nginx/'
 
             ],
 
