@@ -115,7 +115,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
             new NovaDocumentation,
             new NovaGrid,
-
+            new \Cloudstudio\ResourceGenerator\ResourceGenerator(),
 
 
         ];

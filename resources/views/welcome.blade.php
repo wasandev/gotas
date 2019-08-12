@@ -7,21 +7,21 @@
 @section('content')
 
         <!--image-->
-        <div class="w-full max-w-4xl mx-auto bg-white bg-cover block"  style="background-image:url('{{  Storage::url('gotashome.jpg') }}'); height: 80vh;">
+        <div class="w-full max-w-full  mx-auto bg-white bg-cover "  style="background-image:url('{{  Storage::url('gotashome.jpg') }}'); height: 65vh;">
         </div>
         <!--Container-->
-        <div class="max-w-3xl mx-auto -mt-32">
+        <div class="max-w-full mx-auto -mt-32">
 
             <div class="mx-0 sm:mx-6">
 
-                <div class=" bg-green-darkest bg-transparent w-full p-4 md:p-12 t text-white leading-normal rounded-lg" style="opacity: .75;" >
+                <div class=" bg-black bg-transparent w-full p-4 md:p-12 t text-white leading-normal rounded-lg" style="opacity: .75;" >
 
                     <!--Lead Para-->
                     <p class="text-2xl md:text-3xl mb-2 text-center ">
-                        GOTAS : Transportation Application Service
+                        Transportation Application Service
                     </p>
 
-                    <p class="py-4 text-base text-center text-gray-darkest mt-8">
+                    <p class="py-4 text-base text-center text-gray-darkest mt-8 md:mt-12">
                         Cloud Application for Transportation Management
 
                     </p>
@@ -32,7 +32,7 @@
         </div>
 
 
-    <div class="flex flex-wrap max-w-3xl mx-auto my-8">
+    <div class="flex flex-wrap max-w-2xl mx-auto my-8">
 
             <div class="w-full md:w-1/2 lg:w-1/3 flex flex-col  ">
                 <a href="/home" class=" flex flex-col flex-1 rounded shadow hover:shadow-lg translateY-2px m-6 no-underline transition" >
@@ -53,7 +53,7 @@
             </div>
 
             <div class="w-full md:w-1/2 lg:w-1/3 flex flex-col  ">
-                <a href="/retailers" class=" flex flex-col flex-1 rounded shadow hover:shadow-lg translateY-2px m-6 no-underline transition" >
+                <a href="/prices" class=" flex flex-col flex-1 rounded shadow hover:shadow-lg translateY-2px m-6 no-underline transition" >
 
                     <div class="aspect-16x9 rounded-t-lg" style="background:url('{{  Storage::url('prices.jpg') }}') no-repeat center center/cover"></div>
                     <div class="p-6 flex flex-col flex-1 bg-white text-center">
@@ -69,7 +69,7 @@
             </div>
 
             <div class="w-full md:w-1/2 lg:w-1/3 flex flex-col ">
-                <a href="/wholesaler" class=" flex flex-col flex-1 rounded shadow hover:shadow-lg translateY-2px m-6 no-underline transition" >
+                <a href="/blog" class=" flex flex-col flex-1 rounded shadow hover:shadow-lg translateY-2px m-6 no-underline transition" >
 
                     <div class="aspect-16x9 rounded-t-lg" style="background:url('{{  Storage::url('blog.jpg') }}') no-repeat center center/cover"></div>
                     <div class="p-6 flex flex-col flex-1 bg-white text-center" >

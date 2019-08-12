@@ -41,7 +41,7 @@ class NewPost extends Notification implements ShouldQueue
             'post_id' => $this->post->id,
             'level' => $this->level,
             'message' => $this->message,
-            'url' => 'https://moresmartshop.com',
+            'url' => 'https://gotas.online',
         ];
     }
     public function toArray($notifiable)
@@ -55,7 +55,7 @@ class NewPost extends Notification implements ShouldQueue
                 'post_id' => $this->post->id,
                 'level' => $this->level,
                 'message' => $this->message,
-                'url' => 'https://moresmartshop.com',
+                'url' => 'https://gotas.online',
             ],
         ];
     }

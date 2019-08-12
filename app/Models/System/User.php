@@ -40,15 +40,7 @@ class User extends SharedUser implements MustVerifyEmail
 
 
 
-    /**
-     * The channels the user receives notification broadcasts on.
-     *
-     * @return string
-     */
-    public function receivesBroadcastNotificationsOn()
-    {
-        return 'users.' . $this->id;
-    }
+
 
     public function website(): HasOne
     {

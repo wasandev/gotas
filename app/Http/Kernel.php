@@ -67,7 +67,7 @@ class Kernel extends HttpKernel
         //'member' => \App\Http\Middleware\AllowIfMember::class,
         'new' => \App\Http\Middleware\EnsureUserIsNotSetUp::class,
         'set-up' => \App\Http\Middleware\EnsureUserIsSetUp::class,
-        'tenancy.enforce' => \App\Http\Middleware\EnforceTenancy::class,
+        //'tenancy.enforce' => \App\Http\Middleware\EnforceTenancy::class,
     ];
 
     /**

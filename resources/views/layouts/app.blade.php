@@ -41,7 +41,7 @@
         @stack('scripts')
     </head>
 
-    <body class=" h-full bg-grey-dark font-sans leading-normal tracking-normal">
+    <body class=" h-full bg-grey-lighest font-sans leading-normal tracking-normal">
        <div id="app">
             @yield('nav')
 
