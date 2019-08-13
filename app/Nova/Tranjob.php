@@ -67,13 +67,13 @@ class Tranjob extends Resource
                 ->exceptOnForms(),
             Text::make('เลขที่ใบรับงาน', 'tranjob_no')
                 ->withMeta(['value' => Tranjob::nextTranjobNumber()])
-                ->size('w-1/3'),
-
-            Text::make('รหัสติดตามสินค้า', 'tracking_no')
-                ->size('w-1/3'),
+                ->size('w-1/2'),
             Date::make('วันที่ใบรับงาน', 'tranjob_date')
                 ->withMeta(['value' => Carbon::now()->toDateTimeString()])
-                ->size('w-1/3'),
+                ->size('w-1/2'),
+            Text::make('รหัสติดตามสินค้า', 'tracking_no')
+                ->size('w-1/2'),
+
             BelongsTo::make('สาขาต้นทาง', 'branch_send', 'App\Nova\Branch')
                 ->hideFromIndex()
                 ->withMeta([

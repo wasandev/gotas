@@ -16,7 +16,7 @@ class EnforceTenancy
      */
     public function handle($request, Closure $next)
     {
-        Config::set('database.default', Config::get('tenancy.db.tenant-connection-name', 'tenants'));
+        Config::set('database.default', Config::get('tenancy.db.system-connection-name', 'system'));
         return $next($request);
     }
 }

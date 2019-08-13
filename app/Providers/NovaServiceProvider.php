@@ -40,6 +40,8 @@ use App\Nova\Tranjob_detail;
 use App\Nova\Province;
 use App\Nova\Company_expense;
 use App\Nova\Car_expense;
+use App\Nova\SystemUser;
+
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
@@ -91,7 +93,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function cards()
     {
         return [
-            (new Tmsdashboard)->companyName(),
+            //(new Tmsdashboard)->companyName(),
         ];
     }
 
@@ -166,6 +168,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             Province::class,
             Car_expense::class,
             Company_expense::class,
+            SystemUser::class,
 
         ]);
     }

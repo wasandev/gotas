@@ -36,6 +36,9 @@
                   <h2 class="mb-3 text-grey-darkest text-xl">จัดการ Application</h2>
                   <p class="text-grey-darker mb-6 text-sm">
                     url สำหรับเข้าใช้ Application :    {{ $fqdn }}
+                    {{ config('nova.url') }}
+                    {{ config('app.url') }}
+
                   </p>
                   <div class="mb-4 w-full mx-auto text-center text-sm">
                       <button class="w-1/2 btn btn-mstore btn-mstore:hover focus:outline-none"  >

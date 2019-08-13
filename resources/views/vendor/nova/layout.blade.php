@@ -45,9 +45,11 @@
                         <global-search></global-search>
                     @endif
 
-                    <dropdown class="ml-auto h-9 flex items-center dropdown-right">
+                   <dropdown class="ml-auto h-9 flex items-center dropdown-right">
                         @include('nova::partials.user')
                     </dropdown>
+
+
                     @include('nova_notification_feed::notification_feed')
                 </div>
 

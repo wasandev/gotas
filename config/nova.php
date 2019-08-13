@@ -4,7 +4,6 @@ use Laravel\Nova\Http\Middleware\Authorize;
 use Laravel\Nova\Http\Middleware\BootTools;
 use Laravel\Nova\Http\Middleware\Authenticate;
 use Laravel\Nova\Http\Middleware\DispatchServingNovaEvent;
-//use App\Http\Middleware\EnforceTenancy;
 
 return [
 
@@ -76,7 +75,6 @@ return [
 
     'middleware' => [
         'web',
-        //EnforceTenancy::class,
         Authenticate::class,
         DispatchServingNovaEvent::class,
         BootTools::class,
@@ -95,5 +93,7 @@ return [
     */
 
     'pagination' => 'links',
+
+
 
 ];
