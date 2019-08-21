@@ -36,6 +36,10 @@ export default {
 
         inputListeners() {
             return _.assign({}, this.$listeners, {
+                change: event => {
+                    this.$emit('input', event.target.value)
+                    this.$emit('change', event)
+                },
                 input: event => {
                     this.$emit('input', event.target.value)
                 },

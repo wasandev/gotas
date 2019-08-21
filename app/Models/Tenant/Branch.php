@@ -21,7 +21,8 @@ class Branch extends Model
         'phoneno',
         'type',
         'location_lat',
-        'location_lng'
+        'location_lng',
+        'user_id',
     ];
 
     public function branch_areas()
@@ -37,7 +38,10 @@ class Branch extends Model
         ];
     }
 
-
+    public function user()
+    {
+        return $this->belongsTo('App\Models\Tenant\User');
+    }
 
     /*
 	Transform the returned value from the Nova field

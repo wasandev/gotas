@@ -19,6 +19,11 @@ class EmployeeObserver
         $employee->user_id = auth()->user()->id;
         $employee->country = 'thailand';
     }
+    public function saving(Employee $employee)
+    {
+        $employee->user_id = auth()->user()->id;
+        $employee->country = 'thailand';
+    }
 
     /**
      * Handle the retailer "created" event.

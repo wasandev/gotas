@@ -16,9 +16,9 @@ use Laravel\Nova\Fields\BelongsTo;
 
 class User extends Resource
 {
-    public static $displayInNavigation = false;
-    public static $group = 'ข้อมูลบริษัท';
-    public static $subGroup = "ข้อมูลผู้ใช้งาน";
+    //public static $displayInNavigation = false;
+    public static $group = '1.งานสำหรับผู้ดูแลระบบ';
+    //public static $subGroup = "ข้อมูลผู้ใช้งาน";
 
     /**
      * The model the resource corresponds to.
@@ -79,7 +79,7 @@ class User extends Resource
                 ->updateRules('nullable', 'string', 'min:6')
                 ->size('w-1/2'),
             BelongsTo::make('สังกัดสาขา', 'branch', 'App\Nova\Branch')
-                ->size('w-1/2'),
+                ->size('w-1/2')->sortable(),
             Select::make('สิทธิ์การใช้งาน', 'role')->options([
                 'employee' => 'พนักงาน',
                 'admin' => 'Admin',
@@ -87,6 +87,7 @@ class User extends Resource
                 'driver' => 'พนักงานขับรถ'
             ])->displayUsingLabels()
                 ->size('w-1/2'),
+            BelongsToMany::make('Roles', 'roles', \Pktharindu\NovaPermissions\Nova\Role::class),
 
         ];
     }
@@ -133,5 +134,13 @@ class User extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+    public static function availableForNavigation(Request $request)
+    {
+        $hostname  = app(\Hyn\Tenancy\Environment::class)->hostname();
+        if (is_null($hostname)) {
+            return false;
+        }
+        return true;
     }
 }

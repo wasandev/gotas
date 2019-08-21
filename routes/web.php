@@ -1,7 +1,11 @@
 <?php
+
+use Laravel\Nova\Nova;
+
 Route::get('/', function () {
     return view('welcome');
 });
+
 
 Route::group(['namespace' => 'System'], function () {
     Route::post('register', 'Auth\RegisterController@register');

@@ -40,6 +40,7 @@ class CreateTenantEmployeesTable extends Migration
             $table->string('driving_license_no', 20)->nullable();
             $table->date('driving_license_date')->nullable();
             $table->date('driving_license_enddate')->nullable();
+            $table->integer('user_id')->unsigned()->nullable();
             $table->timestamps();
         });
     }

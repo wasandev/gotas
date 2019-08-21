@@ -6,12 +6,13 @@ use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\BelongsTo;
 
 class Cartype extends Resource
 {
-    public static $displayInNavigation = false;
-    public static $group = "ฝ่ายงานรถบรรทุก";
-    public static $subGroup = "ข้อมูลเบื้องต้น";
+    //public static $displayInNavigation = false;
+    public static $group = "3.งานด้านรถบรรทุก";
+    //public static $subGroup = "ข้อมูลเบื้องต้น";
 
     /**
      * The model the resource corresponds to.
@@ -50,6 +51,8 @@ class Cartype extends Resource
         return [
             ID::make()->sortable(),
             Text::make('ชื่อประเภทรถ', 'name')->sortable(),
+            BelongsTo::make('ผู้ทำรายการ', 'user', 'App\Nova\User')
+                ->onlyOnDetail(),
         ];
     }
 
@@ -95,5 +98,13 @@ class Cartype extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+    public static function availableForNavigation(Request $request)
+    {
+        $hostname  = app(\Hyn\Tenancy\Environment::class)->hostname();
+        if (is_null($hostname)) {
+            return false;
+        }
+        return true;
     }
 }

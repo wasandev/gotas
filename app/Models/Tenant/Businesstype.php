@@ -10,11 +10,16 @@ class Businesstype extends Model
     use UsesTenantConnection;
 
     protected $fillable = [
-        'name'
+        'name', 'user_id'
     ];
 
     public function customers()
     {
         return $this->hasMany('App\Models\Tenant\Customer');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\Tenant\User');
     }
 }

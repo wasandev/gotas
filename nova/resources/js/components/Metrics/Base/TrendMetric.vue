@@ -29,7 +29,9 @@
 </template>
 
 <script>
-import numeral from 'numeral'
+import numbro from 'numbro'
+import numbroLanguages from 'numbro/dist/languages.min'
+Object.values(numbroLanguages).forEach(l => numbro.registerLanguage(l))
 import _ from 'lodash'
 import Chartist from 'chartist'
 import 'chartist-plugin-tooltips'
@@ -59,7 +61,7 @@ export default {
         selectedRangeKey: [String, Number],
         format: {
             type: String,
-            default: '(0[.]00a)',
+            default: '0[.]00a',
         },
     },
 
@@ -76,6 +78,10 @@ export default {
     },
 
     mounted() {
+        if (Nova.config.locale) {
+            numbro.setLanguage(Nova.config.locale.replace('_', '-'))
+        }
+
         this.chartist = new Chartist.Line(this.$refs.chart, this.chartData, {
             lineSmooth: Chartist.Interpolation.none(),
             fullWidth: true,
@@ -137,7 +143,12 @@ export default {
 
         formattedValue() {
             if (!this.isNullValue) {
-                return this.prefix + numeral(this.value).format(this.format)
+                if (this.value) {
+                    return this.prefix + numbro(this.value).format(this.format)
+                }
+
+                // Always return the prefix even without value
+                return this.prefix
             }
 
             return ''

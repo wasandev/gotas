@@ -41,6 +41,7 @@
                 @change="selectResourceFromSelectControl"
                 :disabled="isLocked || isReadonly"
                 :options="availableResources"
+                :value="selectedResourceId"
                 :selected="selectedResourceId"
                 label="display"
             >
@@ -48,7 +49,7 @@
             </select-control>
 
             <!-- Trashed State -->
-            <div v-if="softDeletes && !isLocked">
+            <div v-if="softDeletes && !isLocked && !isReadonly">
                 <checkbox-with-label
                     :dusk="`${field.resourceName}-with-trashed-checkbox`"
                     :checked="withTrashed"

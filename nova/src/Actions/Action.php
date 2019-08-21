@@ -3,6 +3,7 @@
 namespace Laravel\Nova\Actions;
 
 use Closure;
+use ReflectionClass;
 use JsonSerializable;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Metable;
@@ -143,6 +144,23 @@ class Action implements JsonSerializable
     public static function redirect($url)
     {
         return ['redirect' => $url];
+    }
+
+    /**
+     * Return a Vue router response from the action.
+     *
+     * @param  string  $path
+     * @param  array   $query
+     * @return array
+     */
+    public static function push($path, $query = [])
+    {
+        return [
+            'push' => [
+                'path' => $path,
+                'query' => $query,
+            ],
+        ];
     }
 
     /**
@@ -394,5 +412,19 @@ class Action implements JsonSerializable
             'onlyOnIndex' => $this->onlyOnIndex,
             'withoutConfirmation' => $this->withoutConfirmation,
         ], $this->meta());
+    }
+
+    /**
+     * Prepare the instance for serialization.
+     *
+     * @return array
+     */
+    public function __sleep()
+    {
+        $properties = (new ReflectionClass($this))->getProperties();
+
+        return array_values(array_filter(array_map(function ($p) {
+            return ($p->isStatic() || in_array($name = $p->getName(), ['runCallback', 'seeCallback'])) ? null : $name;
+        }, $properties)));
     }
 }

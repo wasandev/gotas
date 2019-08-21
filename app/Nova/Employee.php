@@ -18,9 +18,9 @@ use Wasandev\InputThaiAddress\MapAddress;
 
 class Employee extends Resource
 {
-    public static $displayInNavigation = false;
-    public static $group = 'ข้อมูลบริษัท';
-    public static $subGroup = "ข้อมูลบริษัท";
+    //public static $displayInNavigation = false;
+    public static $group = '2.งานด้านบุคคล';
+    //public static $subGroup = "ข้อมูลบริษัท";
     /**
      * The model the resource corresponds to.
      *
@@ -65,6 +65,7 @@ class Employee extends Resource
             new Panel('กรณีเป็นพนักงานขับรถ', $this->drivingFields()),
 
 
+
         ];
     }
     protected function empdetailFields()
@@ -94,15 +95,15 @@ class Employee extends Resource
             ])->displayUsingLabels()
                 ->size('w-1/2'),
             Select::make('สถานะพนักงาน', 'status')->options([
-                'ประจำ',
-                'ทดลองงาน',
-                'สัญญาจ้าง',
-                'ชั่วคราว',
-                'รายวัน',
-                'ปลด/ไล่ออก',
-                'ลาออก',
-                'เลิกจ้าง',
-                'นักศึกษาฝึกงาน'
+                'ประจำ' => 'ประจำ',
+                'ทดลองงาน' => 'ทดลองงาน',
+                'สัญญาจ้าง' => 'สัญญาจ้าง',
+                'ชั่วคราว' => 'ชั่วคราว',
+                'รายวัน' => 'รายวัน',
+                'ปลด/ไล่ออก' => 'ปลด/ไล่ออก',
+                'ลาออก' => 'ลาออก',
+                'เลิกจ้าง' => 'เลิกจ้าง',
+                'นักศึกษาฝึกงาน' => 'นักศึกษาฝึกงาน'
             ])->size('w-1/2')
                 ->sortable(),
         ];
@@ -160,7 +161,9 @@ class Employee extends Resource
                 ->hideFromIndex(),
 
             MapAddress::make('ตำแหน่งที่ตั้งบน Google Map', 'Location')
-                ->hideFromIndex()
+                ->hideFromIndex(),
+            BelongsTo::make('ผู้ทำรายการ', 'user', 'App\Nova\User')
+                ->onlyOnDetail(),
 
         ];
     }
@@ -206,5 +209,13 @@ class Employee extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+    public static function availableForNavigation(Request $request)
+    {
+        $hostname  = app(\Hyn\Tenancy\Environment::class)->hostname();
+        if (is_null($hostname)) {
+            return false;
+        }
+        return true;
     }
 }

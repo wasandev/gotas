@@ -1,5 +1,7 @@
 <template>
-    <span class="whitespace-no-wrap">{{ localizedDateTime }}</span>
+    <div :class="`text-${field.textAlign}`">
+        <span class="whitespace-no-wrap">{{ localizedDateTime }}</span>
+    </div>
 </template>
 
 <script>

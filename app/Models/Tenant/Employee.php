@@ -34,7 +34,8 @@ class Employee extends Model
         'driving_license_type_id',
         'driving_license_no',
         'driving_license_date',
-        'driving_license_enddate'
+        'driving_license_enddate',
+        'user_id'
     ];
 
     protected $casts = [
@@ -43,7 +44,7 @@ class Employee extends Model
     ];
     public function user()
     {
-        return $this->hasOne('App\Models\Tenant\User');
+        return $this->belongsTo('App\Models\Tenant\User');
     }
 
 

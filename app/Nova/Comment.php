@@ -47,7 +47,8 @@ class Comment extends Resource
             ID::make()->sortable(),
             Text::make('หัวข้อ', 'title'),
             Textarea::make('ความเห็น', 'comment'),
-            BelongsTo::make('สมาชิก', 'user', 'App\Nova\User'),
+            BelongsTo::make('สมาชิก', 'user', 'App\Nova\User')
+                ->onlyOnDetail(),
         ];
     }
 

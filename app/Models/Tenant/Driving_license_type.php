@@ -11,11 +11,16 @@ class Driving_license_type extends Model
 
 
     protected $fillable = [
-        'name'
+        'name', 'user_id'
     ];
 
     public function employee()
     {
         return $this->belongsTo('App\Models\Tenant\Employee');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\Tenant\User');
     }
 }

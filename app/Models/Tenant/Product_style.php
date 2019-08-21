@@ -12,12 +12,16 @@ class Product_style extends Model
 
 
     protected $fillable = [
-        'name'
+        'name', 'user_id'
     ];
 
 
     public function product()
     {
         return $this->belongsTo('App\Models\Tenant\Product');
+    }
+    public function user()
+    {
+        return $this->belongsTo('App\Models\Tenant\User');
     }
 }

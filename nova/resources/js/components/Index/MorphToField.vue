@@ -9,6 +9,7 @@
             },
         }"
         class="no-underline dim text-primary font-bold"
+        :class="`text-${field.textAlign}`"
     >
         {{ field.resourceLabel }}: {{ field.value }}
     </router-link>

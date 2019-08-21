@@ -1,5 +1,5 @@
 <template>
-    <div class="absolute pin bg-40 z-50 flex items-center justify-center min-w-site p-6">
+    <div class="fixed pin bg-40 z-50 flex items-center justify-center min-w-site p-6">
         <div class="flex items-center w-error">
             <div class="flex-no-shrink illustration">
                 <svg

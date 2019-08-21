@@ -21,9 +21,9 @@ use Epartment\NovaDependencyContainer\NovaDependencyContainer;
 class Car extends Resource
 {
     use HasDependencies;
-    public static $displayInNavigation = false;
-    public static $group = "ฝ่ายงานรถบรรทุก";
-    public static $subGroup = "ข้อมูลรถ";
+    //public static $displayInNavigation = false;
+    public static $group = "3.งานด้านรถบรรทุก";
+    //public static $subGroup = "ข้อมูลรถ";
     /**
      * The model the resource corresponds to.
      *
@@ -77,6 +77,7 @@ class Car extends Resource
             Image::make('รูปรถ', 'carimage')->hideFromIndex(),
             new Panel('รายละเอียดของรถ', $this->carFields()),
             new Panel('รายละเอียดอื่นๆของรถ', $this->carotherFields()),
+
 
         ];
     }
@@ -179,6 +180,8 @@ class Car extends Resource
             Currency::make('น้ำหนักบรรทุก', 'load_weight')
                 ->size('w-1/2')
                 ->hideFromIndex(),
+            BelongsTo::make('ผู้ทำรายการ', 'user', 'App\Nova\User')
+                ->onlyOnDetail(),
         ];
     }
     /**
@@ -223,5 +226,13 @@ class Car extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+    public static function availableForNavigation(Request $request)
+    {
+        $hostname  = app(\Hyn\Tenancy\Environment::class)->hostname();
+        if (is_null($hostname)) {
+            return false;
+        }
+        return true;
     }
 }

@@ -5,6 +5,7 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Pktharindu\NovaPermissions\Traits\ValidatesPermissions;
 use App\Models\Tenant\User;
 use App\Policies\Tenant\UserPolicy;
 use App\Models\Tenant\CompanyProfile;
@@ -19,6 +20,7 @@ use App\Policies\Tenant\CustomerPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
+    use ValidatesPermissions;
     /**
      * The policy mappings for the application.
      *
@@ -39,8 +41,19 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
+
         $this->registerPolicies();
 
+        foreach (config('novapermissions.permissions') as $key => $permissions) {
+            Gate::define($key, function (User $user) use ($key) {
+                if ($this->nobodyHasAccess($key)) {
+                    return true;
+                }
+
+                return $user->hasPermissionTo($key);
+            });
+        }
         //
     }
 }

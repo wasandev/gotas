@@ -11,14 +11,22 @@ use Laravel\Nova\Panel;
 use Wasandev\InputThaiAddress\InputThaiAddress;
 use Wasandev\InputThaiAddress\ThaiAddressMetadata;
 use Wasandev\InputThaiAddress\MapAddress;
+use Laravel\Nova\Fields\BelongsTo;
+
 
 
 class Branch extends Resource
 {
 
-    public static $displayInNavigation = false;
-    public static $group = 'ข้อมูลบริษัท';
-    public static $subGroup = "ข้อมูลบริษัท";
+
+
+    //public static $displayInNavigation = false;
+    public static $group = '1.งานสำหรับผู้ดูแลระบบ';
+
+
+
+
+    //public static $subGroup = "ข้อมูลบริษัท";
     /**
      * The model the resource corresponds to.
      *
@@ -70,6 +78,8 @@ class Branch extends Resource
 
             new Panel('ที่อยู่', $this->addressFields()),
 
+
+
         ];
     }
     /**
@@ -91,7 +101,9 @@ class Branch extends Resource
             ThaiAddressMetadata::make('รหัสไปรษณีย์', 'postal_code')->fromValue('zipcode')
                 ->hideFromIndex(),
             MapAddress::make('ตำแหน่งที่ตั้งบน Google Map', 'Location')
-                ->hideFromIndex()
+                ->hideFromIndex(),
+            BelongsTo::make('ผู้ทำรายการ', 'user', 'App\Nova\User')
+                ->onlyOnDetail(),
 
         ];
     }
@@ -137,5 +149,15 @@ class Branch extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+
+    public static function availableForNavigation(Request $request)
+    {
+        $hostname  = app(\Hyn\Tenancy\Environment::class)->hostname();
+
+        if (is_null($hostname)) {
+            return false;
+        }
+        return true;
     }
 }

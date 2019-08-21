@@ -10,16 +10,7 @@ class CompanyProfilePolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can view any company profiles.
-     *
-     * @param  \App\Models\Tenant\User  $user
-     * @return mixed
-     */
-    public function viewAny(User $user)
-    {
-        return $user->role == 'admin' || $user->role == 'employee';
-    }
+
 
     /**
      * Determine whether the user can view the company profile.
@@ -30,7 +21,7 @@ class CompanyProfilePolicy
      */
     public function view(User $user, CompanyProfile $companyProfile)
     {
-        return true;
+        return $user->hasPermissionTo('view companyprofile');
     }
 
     /**
@@ -41,7 +32,7 @@ class CompanyProfilePolicy
      */
     public function create(User $user)
     {
-        return false;
+        return $user->hasPermissionTo('create companyprofile');
     }
 
     /**
@@ -53,7 +44,7 @@ class CompanyProfilePolicy
      */
     public function update(User $user, CompanyProfile $companyProfile)
     {
-        return $user->role == 'admin';
+        return $user->hasPermissionTo('edit companyprofile');
     }
 
     /**
@@ -65,30 +56,6 @@ class CompanyProfilePolicy
      */
     public function delete(User $user, CompanyProfile $companyProfile)
     {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can restore the company profile.
-     *
-     * @param  \App\Models\Tenant\User  $user
-     * @param  \App\Models\Tenant\CompanyProfile  $companyProfile
-     * @return mixed
-     */
-    public function restore(User $user, CompanyProfile $companyProfile)
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the company profile.
-     *
-     * @param  \App\Models\Tenant\User  $user
-     * @param  \App\Models\Tenant\CompanyProfile  $companyProfile
-     * @return mixed
-     */
-    public function forceDelete(User $user, CompanyProfile $companyProfile)
-    {
-        return false;
+        return $user->hasPermissionTo('delete companyprofile');
     }
 }

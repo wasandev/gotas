@@ -27,6 +27,7 @@ class CreateTenantBranchesTable extends Migration
             $table->string('location_lng')->nullable();
             $table->string('phoneno', 30)->nullable();
             $table->enum('type', ['owner', 'pathner'])->default('owner');
+            $table->integer('user_id')->unsigned()->nullable();
             $table->timestamps();
         });
     }

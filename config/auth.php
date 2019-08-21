@@ -99,7 +99,7 @@ return [
 
     'passwords' => [
         'users' => [
-            'provider' => 'tenants',
+            'provider' => 'users',
             'table' => 'password_resets',
             'connection' => env('TENANCY_TENANT_CONNECTION_NAME', Hyn\Tenancy\Database\Connection::DEFAULT_TENANT_NAME),
             'expire' => 60,
@@ -111,6 +111,7 @@ return [
             'expire' => 60,
 
         ],
+
     ],
 
 ];

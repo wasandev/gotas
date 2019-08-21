@@ -183,7 +183,9 @@ export default {
 
         write() {
             this.mode = 'write'
-            this.codemirror.refresh()
+            this.$nextTick(() => {
+                this.codemirror.refresh()
+            })
         },
 
         preview() {

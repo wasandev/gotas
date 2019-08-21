@@ -21,9 +21,9 @@ use Yassi\NestedForm\NestedForm;
 
 class Customer extends Resource
 {
-    public static $displayInNavigation = false;
-    public static $group = "ฝ่ายขาย/การตลาด";
-    public static $subGroup = "ข้อมูลลูกค้า";
+    //public static $displayInNavigation = false;
+    public static $group = "4.งานด้านการขาย";
+    //public static $subGroup = "ข้อมูลลูกค้า";
 
     /**
      * The model the resource corresponds to.
@@ -82,6 +82,7 @@ class Customer extends Resource
             new Panel('ข้อมูลการติดต่อ', $this->contactFields()),
             new Panel('ที่อยู่', $this->addressFields()),
             new Panel('อื่นๆ', $this->otherFields()),
+
             HasMany::make('จุดรับ-ส่งสินค้า', 'addresses', 'App\Nova\Address'),
 
 
@@ -145,7 +146,8 @@ class Customer extends Resource
             Image::make('ภาพหน้าร้าน', 'imagefile')
                 ->hideFromIndex(),
             Textarea::make('รายละเอียดอื่นๆ', 'description')->hideFromIndex(),
-
+            BelongsTo::make('ผู้ทำรายการ', 'user', 'App\Nova\User')
+                ->onlyOnDetail(),
         ];
     }
 
@@ -191,5 +193,13 @@ class Customer extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+    public static function availableForNavigation(Request $request)
+    {
+        $hostname  = app(\Hyn\Tenancy\Environment::class)->hostname();
+        if (is_null($hostname)) {
+            return false;
+        }
+        return true;
     }
 }

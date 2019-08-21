@@ -33,6 +33,7 @@ class CreateTenantCompanyProfilesTable extends Migration
             $table->string('email', 200)->nullable();
             $table->string('location_lat')->nullable();
             $table->string('location_lng')->nullable();
+            $table->integer('user_id')->unsigned()->nullable();
             $table->timestamps();
         });
     }

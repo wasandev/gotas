@@ -6,12 +6,13 @@ use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\BelongsTo;
 
 class Department extends Resource
 {
-    public static $displayInNavigation = false;
-    public static $group = "ข้อมูลบริษัท";
-    public static $subGroup = "ข้อมูลบริษัท";
+    //public static $displayInNavigation = false;
+    public static $group = "2.งานด้านบุคคล";
+    //public static $subGroup = "ข้อมูลบริษัท";
 
     /**
      * The model the resource corresponds to.
@@ -50,6 +51,8 @@ class Department extends Resource
         return [
             ID::make()->sortable(),
             Text::make('ชื่อฝ่าย/แผนก', 'name')->sortable(),
+            BelongsTo::make('ผู้ทำรายการ', 'user', 'App\Nova\User')
+                ->onlyOnDetail(),
         ];
     }
 
@@ -95,5 +98,13 @@ class Department extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+    public static function availableForNavigation(Request $request)
+    {
+        $hostname  = app(\Hyn\Tenancy\Environment::class)->hostname();
+        if (is_null($hostname)) {
+            return false;
+        }
+        return true;
     }
 }

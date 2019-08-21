@@ -16,6 +16,7 @@ class CreateTenantPartsTable extends Migration
         Schema::create('parts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 100);
+            $table->integer('user_id')->unsigned()->nullable();
             $table->timestamps();
         });
     }

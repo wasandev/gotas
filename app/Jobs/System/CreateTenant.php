@@ -38,7 +38,9 @@ class CreateTenant implements ShouldQueue
 
     public function handle()
     {
-        //app(Connection::class)->statement("SET GLOBAL validate_password_policy=LOW");
+        //for local dev only remark when  production
+        app(Connection::class)->statement("SET GLOBAL validate_password_policy=LOW");
+
         $website = new Website;
         $website->user_id = $this->user->id;
 
@@ -56,6 +58,6 @@ class CreateTenant implements ShouldQueue
 
 
 
-        $this->user->notify(new TenantCreated($hostname));
+        //$this->user->notify(new TenantCreated($hostname));
     }
 }

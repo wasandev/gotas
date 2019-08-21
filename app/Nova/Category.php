@@ -6,13 +6,14 @@ use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Category extends Resource
 {
-    public static $displayInNavigation = false;
-    public static $group = "ฝ่ายขาย/การตลาด";
-    public static $subGroup = "ข้อมูลเบื้องต้น";
+    //public static $displayInNavigation = false;
+    public static $group = "4.งานด้านการขาย";
+    //public static $subGroup = "ข้อมูลเบื้องต้น";
 
     /**
      * The model the resource corresponds to.
@@ -59,6 +60,8 @@ class Category extends Resource
         return [
             ID::make()->sortable(),
             Text::make('ประเภทสินค้า', 'name')->sortable(),
+            BelongsTo::make('ผู้ทำรายการ', 'user', 'App\Nova\User')
+                ->onlyOnDetail(),
             HasMany::make('สินค้า', 'products', 'App\Nova\Product'),
         ];
     }
@@ -105,5 +108,13 @@ class Category extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+    public static function availableForNavigation(Request $request)
+    {
+        $hostname  = app(\Hyn\Tenancy\Environment::class)->hostname();
+        if (is_null($hostname)) {
+            return false;
+        }
+        return true;
     }
 }

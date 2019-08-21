@@ -19,9 +19,9 @@ use Laravel\Nova\Fields\Textarea;
 
 class Vendor extends Resource
 {
-    public static $displayInNavigation = false;
-    public static $group = "ฝ่ายงานรถบรรทุก";
-    public static $subGroup = "ข้อมูลผู้จำหน่าย/เจ้าหนี้";
+    //public static $displayInNavigation = false;
+    public static $group = "6.งานด้านค่าใช้จ่าย";
+    //public static $subGroup = "ข้อมูลผู้จำหน่าย/เจ้าหนี้";
     /**
      * The model the resource corresponds to.
      *
@@ -76,6 +76,7 @@ class Vendor extends Resource
             new Panel('ข้อมูลการติดต่อ', $this->contactFields()),
             new Panel('ที่อยู่', $this->addressFields()),
             new Panel('อื่นๆ', $this->otherFields()),
+
 
         ];
     }
@@ -136,7 +137,8 @@ class Vendor extends Resource
             Image::make('ภาพหน้าร้าน', 'imagefile')
                 ->hideFromIndex(),
             Textarea::make('รายละเอียดอื่นๆ', 'description')->hideFromIndex(),
-
+            BelongsTo::make('ผู้ทำรายการ', 'user', 'App\Nova\User')
+                ->onlyOnDetail(),
         ];
     }
     /**
@@ -181,5 +183,13 @@ class Vendor extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+    public static function availableForNavigation(Request $request)
+    {
+        $hostname  = app(\Hyn\Tenancy\Environment::class)->hostname();
+        if (is_null($hostname)) {
+            return false;
+        }
+        return true;
     }
 }

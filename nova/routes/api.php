@@ -22,6 +22,9 @@ Route::get('/{resource}/{resourceId}/download/{field}', 'FieldDownloadController
 Route::delete('/{resource}/{resourceId}/field/{field}', 'FieldDestroyController@handle');
 Route::delete('/{resource}/{resourceId}/{relatedResource}/{relatedResourceId}/field/{field}', 'PivotFieldDestroyController@handle');
 
+// Dashboards...
+Route::get('/dashboards/{dashboard}', 'DashboardCardController@index');
+
 // Actions...
 Route::get('/{resource}/actions', 'ActionController@index');
 Route::post('/{resource}/action', 'ActionController@store');

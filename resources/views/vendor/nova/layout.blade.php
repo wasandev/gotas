@@ -22,8 +22,8 @@
     <div id="nova">
         <div v-cloak class="flex min-h-screen">
             <!-- Sidebar -->
-            <div class="min-h-screen flex-none pt-header min-h-screen w-sidebar bg-grad-sidebar px-6">
-                <a href="/">
+            <div class="min-h-screen flex-none pt-header min-h-screen w-sidebar bg-grad-sidebar px-4">
+                <a href="/app">
                     <div class="absolute pin-t pin-l pin-r bg-logo flex items-center w-sidebar h-header px-6 text-white">
                        @include('nova::partials.logo')
                     </div>

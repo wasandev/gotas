@@ -17,6 +17,7 @@ class CreateTenantProductImagesTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('product_id')->unsigned();
             $table->string('product_image', 255)->nullable()->default('product.jpg');
+            $table->integer('user_id')->unsigned()->nullable();
             $table->timestamps();
         });
     }

@@ -27,11 +27,10 @@ class HomeController extends Controller
     public function index()
     {
         $user = auth()->user();
-
-        $fqdn = $user->website->hostnames->first()->fqdn;
-
-        $company =  $user->website->first()->company_name;
-
-        return view('members.home', compact('fqdn', 'company'));
+        if ($user->role !== 'admin') {
+            $fqdn = $user->website->hostnames->first()->fqdn;
+            $company =  $user->website->first()->company_name;
+            return view('members.home', compact('fqdn', 'company'));
+        }
     }
 }

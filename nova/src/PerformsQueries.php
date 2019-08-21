@@ -140,7 +140,7 @@ trait PerformsQueries
     protected static function applyOrderings($query, array $orderings)
     {
         if (empty($orderings)) {
-            return empty($query->orders)
+            return empty($query->getQuery()->orders)
                         ? $query->latest($query->getModel()->getQualifiedKeyName())
                         : $query;
         }

@@ -25,7 +25,7 @@ mix
         'markdown-it',
         'marked',
         'moment',
-        'numeral',
+        'numbro',
         'places.js',
         'popper.js',
         'vue-async-computed',

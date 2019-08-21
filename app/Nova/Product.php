@@ -19,9 +19,9 @@ use Maatwebsite\LaravelNovaExcel\Actions\DownloadExcel;
 
 class Product extends Resource
 {
-    public static $displayInNavigation = false;
-    public static $group = "ฝ่ายขาย/การตลาด";
-    public static $subGroup = "ข้อมูลสินค้า";
+    //public static $displayInNavigation = false;
+    public static $group = "4.งานด้านการขาย";
+    //public static $subGroup = "ข้อมูลสินค้า";
 
     //public static $displayInNavigation = false;
     /**
@@ -81,6 +81,8 @@ class Product extends Resource
 
             Currency::make('สูง(ซม.)', 'height')->format('%.2n')
                 ->size('w-1/3'),
+            BelongsTo::make('ผู้ทำรายการ', 'user', 'App\Nova\User')
+                ->onlyOnDetail(),
 
         ];
     }
@@ -130,5 +132,13 @@ class Product extends Resource
             new DownloadExcel,
 
         ];
+    }
+    public static function availableForNavigation(Request $request)
+    {
+        $hostname  = app(\Hyn\Tenancy\Environment::class)->hostname();
+        if (is_null($hostname)) {
+            return false;
+        }
+        return true;
     }
 }

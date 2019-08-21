@@ -27,7 +27,7 @@ class CreateTenantCustomersTable extends Migration
             $table->string('postal_code', 5)->nullable();
             $table->string('country')->nullable()->default('thailand');
             $table->longText('description')->nullable();
-            $table->string('contractname', 200)->nullable();
+            $table->string('contactname', 200)->nullable();
             $table->string('phoneno', 10)->nullable();
             $table->string('weburl')->nullable();
             $table->string('facebook')->nullable();

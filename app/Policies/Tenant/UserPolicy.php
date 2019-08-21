@@ -19,13 +19,10 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
-        return true;
+        return $user->hasPermissionTo('view user');
     }
 
-    public function viewAny(User $user)
-    {
-        return $user->role == 'admin' || $user->role == 'employee';
-    }
+
 
     /**
      * Determine whether the user can create models.
@@ -35,7 +32,7 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        return $user->role == 'admin';
+        return $user->hasPermissionTo('create users');
     }
 
     /**
@@ -47,8 +44,7 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-
-        return ($user->id == $model->id) || ($user->role == 'admin');
+        return $user->hasPermissionTo('edit users');
     }
 
     /**
@@ -60,30 +56,6 @@ class UserPolicy
      */
     public function delete(User $user, User $model)
     {
-        return $user->role == 'admin';
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param  \App\Models\Tenant\User  $user
-     * @param  \App\Models\Tenant\User  $model
-     * @return mixed
-     */
-    public function restore(User $user, User $model)
-    {
-        return $user->role == 'admin';
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param  \App\Models\Tenant\User  $user
-     * @param  \App\Models\Tenant\User  $model
-     * @return mixed
-     */
-    public function forceDelete(User $user, User $model)
-    {
-        return $user->role == 'admin';
+        return $user->hasPermissionTo('delete users');
     }
 }

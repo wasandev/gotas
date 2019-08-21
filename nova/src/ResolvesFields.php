@@ -28,9 +28,9 @@ trait ResolvesFields
      */
     public function indexFields(NovaRequest $request)
     {
-        return $this->resolveFields($request, function (Collection $fields) {
-            return $fields->reject(function ($field) {
-                return $field instanceof ListableField || ! $field->showOnIndex;
+        return $this->resolveFields($request, function (Collection $fields) use ($request) {
+            return $fields->reject(function ($field) use ($request) {
+                return $field instanceof ListableField || ! $field->isShownOnIndex($request, $this->resource);
             });
         })->each(function ($field) use ($request) {
             if ($field instanceof Resolvable && ! $field->pivot) {
@@ -53,8 +53,8 @@ trait ResolvesFields
      */
     public function detailFields(NovaRequest $request)
     {
-        return $this->resolveFields($request, function (Collection $fields) {
-            return $fields->filter->showOnDetail;
+        return $this->resolveFields($request, function (Collection $fields) use ($request) {
+            return $fields->filter->isShownOnDetail($request, $this->resource);
         })->when(in_array(Actionable::class, class_uses_recursive(static::newModel())), function ($fields) {
             return $fields->push(MorphMany::make(__('Actions'), 'actions', ActionResource::class));
         })->each(function ($field) use ($request) {
@@ -94,8 +94,8 @@ trait ResolvesFields
      */
     public function creationFields(NovaRequest $request)
     {
-        return $this->resolveFields($request, function ($fields) {
-            return $this->removeNonCreationFields($fields);
+        return $this->resolveFields($request, function ($fields) use ($request) {
+            return $this->removeNonCreationFields($request, $fields);
         });
     }
 
@@ -137,24 +137,25 @@ trait ResolvesFields
     public function creationPivotFields(NovaRequest $request, $relatedResource)
     {
         return $this->removeNonCreationFields(
-            $this->resolvePivotFields($request, $relatedResource)
+            $request, $this->resolvePivotFields($request, $relatedResource)
         );
     }
 
     /**
      * Remove non-creation fields from the given collection.
      *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Illuminate\Support\Collection  $fields
      * @return \Illuminate\Support\Collection
      */
-    protected function removeNonCreationFields(Collection $fields)
+    protected function removeNonCreationFields(NovaRequest $request, Collection $fields)
     {
-        return $fields->reject(function ($field) {
+        return $fields->reject(function ($field) use ($request) {
             return $field instanceof ListableField ||
                    $field instanceof ResourceToolElement ||
                    $field->attribute === 'ComputedField' ||
                    ($field instanceof ID && $field->attribute === $this->resource->getKeyName()) ||
-                   ! $field->showOnCreation;
+                   ! $field->isShownOnCreation($request);
         });
     }
 
@@ -166,8 +167,8 @@ trait ResolvesFields
      */
     public function updateFields(NovaRequest $request)
     {
-        return $this->resolveFields($request, function ($fields) {
-            return $this->removeNonUpdateFields($fields);
+        return $this->resolveFields($request, function ($fields) use ($request) {
+            return $this->removeNonUpdateFields($request, $fields);
         });
     }
 
@@ -209,24 +210,25 @@ trait ResolvesFields
     public function updatePivotFields(NovaRequest $request, $relatedResource)
     {
         return $this->removeNonUpdateFields(
-            $this->resolvePivotFields($request, $relatedResource)
+            $request, $this->resolvePivotFields($request, $relatedResource)
         );
     }
 
     /**
      * Remove non-update fields from the given collection.
      *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Illuminate\Support\Collection  $fields
      * @return \Illuminate\Support\Collection
      */
-    protected function removeNonUpdateFields(Collection $fields)
+    protected function removeNonUpdateFields(NovaRequest $request, Collection $fields)
     {
-        return $fields->reject(function ($field) {
+        return $fields->reject(function ($field) use ($request) {
             return $field instanceof ListableField ||
                    $field instanceof ResourceToolElement ||
                    $field->attribute === 'ComputedField' ||
                    ($field instanceof ID && $field->attribute === $this->resource->getKeyName()) ||
-                   ! $field->showOnUpdate;
+                   ! $field->isShownOnUpdate($request, $this->resource);
         });
     }
 

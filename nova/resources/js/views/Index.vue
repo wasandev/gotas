@@ -24,7 +24,8 @@
             <!-- Search -->
             <div
                 v-if="resourceInformation.searchable && !viaHasOne"
-                class="relative h-9 mb-6 flex-no-shrink"
+                class="relative h-9 flex-no-shrink"
+                :class="{ 'mb-6': resourceInformation.searchable && !viaHasOne }"
             >
                 <icon type="search" class="absolute search-icon-center ml-3 text-70" />
 
@@ -40,7 +41,7 @@
                 />
             </div>
 
-            <div class="w-full flex items-center mb-6">
+            <div class="w-full flex items-center" :class="{ 'mb-6': !viaResource }">
                 <custom-index-toolbar v-if="!viaResource" :resource-name="resourceName" />
 
                 <!-- Create / Attach Button -->
@@ -54,12 +55,19 @@
                     :authorized-to-create="authorizedToCreate && !resourceIsFull"
                     :authorized-to-relate="authorizedToRelate"
                     class="flex-no-shrink ml-auto"
+                    :class="{ 'mb-6': viaResource }"
                 />
             </div>
         </div>
 
         <card>
-            <div class="py-3 flex items-center border-b border-50">
+            <div
+                class="flex items-center"
+                :class="{
+                    'py-3 border-b border-50':
+                        shouldShowCheckBoxes || shouldShowDeleteMenu || softDeletes || !viaResource,
+                }"
+            >
                 <div class="flex items-center">
                     <div class="px-3" v-if="shouldShowCheckBoxes">
                         <!-- Select All -->
@@ -630,12 +638,14 @@ export default {
          * Sort the resources by the given field.
          */
         orderByField(field) {
-            var direction = this.currentOrderByDirection == 'asc' ? 'desc' : 'asc'
-            if (this.currentOrderBy != field.attribute) {
+            let direction = this.currentOrderByDirection == 'asc' ? 'desc' : 'asc'
+
+            if (this.currentOrderBy != field.sortableUriKey) {
                 direction = 'asc'
             }
+
             this.updateQueryString({
-                [this.orderByParameter]: field.attribute,
+                [this.orderByParameter]: field.sortableUriKey,
                 [this.orderByDirectionParameter]: direction,
             })
         },
@@ -689,7 +699,10 @@ export default {
          * Sync the per page values from the query string.
          */
         initializePerPageFromQueryString() {
-            this.perPage = this.$route.query[this.perPageParameter] || _.first(this.perPageOptions)
+            this.perPage =
+                this.$route.query[this.perPageParameter] ||
+                _.first(this.perPageOptions) ||
+                this.perPage
         },
     },
 
@@ -720,42 +733,52 @@ export default {
          * Get the name of the search query string variable.
          */
         searchParameter() {
-            return this.resourceName + '_search'
+            return this.viaRelationship + '_search'
         },
 
         /**
          * Get the name of the order by query string variable.
          */
         orderByParameter() {
-            return this.resourceName + '_order'
+            return this.viaRelationship
+                ? this.viaRelationship + '_order'
+                : this.resourceName + '_order'
         },
 
         /**
          * Get the name of the order by direction query string variable.
          */
         orderByDirectionParameter() {
-            return this.resourceName + '_direction'
+            return this.viaRelationship
+                ? this.viaRelationship + '_direction'
+                : this.resourceName + '_direction'
         },
 
         /**
          * Get the name of the trashed constraint query string variable.
          */
         trashedParameter() {
-            return this.resourceName + '_trashed'
+            return this.viaRelationship
+                ? this.viaRelationship + '_trashed'
+                : this.resourceName + '_trashed'
         },
 
         /**
          * Get the name of the per page query string variable.
          */
         perPageParameter() {
-            return this.resourceName + '_per_page'
+            return this.viaRelationship
+                ? this.viaRelationship + '_per_page'
+                : this.resourceName + '_per_page'
         },
 
         /**
          * Get the name of the page query string variable.
          */
         pageParameter() {
-            return this.resourceName + '_page'
+            return this.viaRelationship
+                ? this.viaRelationship + '_page'
+                : this.resourceName + '_page'
         },
 
         /**

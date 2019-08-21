@@ -4,13 +4,13 @@ namespace App\Nova;
 
 use Laravel\Nova\Resource as NovaResource;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Wasandev\GotasMenugroup\GotasMenugroup;
-use Wasandev\GotasMenugroup\DisplaysInGotasMenugroup;
+//use Wasandev\GotasMenugroup\GotasMenugroup;
+//use Wasandev\GotasMenugroup\DisplaysInGotasMenugroup;
 use Titasgailius\SearchRelations\SearchesRelations;
 
 abstract class Resource extends NovaResource
 {
-    use DisplaysInGotasMenugroup, SearchesRelations;
+    use  SearchesRelations;
     /**
      * Build an "index" query for the given resource.
      *

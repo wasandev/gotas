@@ -17,7 +17,8 @@ class Product extends Model
         'status',
         'weight',
         'length',
-        'height'
+        'height',
+        'user_id'
     ];
 
     public function category()
@@ -38,5 +39,9 @@ class Product extends Model
     public function product_style()
     {
         return $this->belongsTo('App\Models\Tenant\Product_style');
+    }
+    public function user()
+    {
+        return $this->belongsTo('App\Models\Tenant\User');
     }
 }

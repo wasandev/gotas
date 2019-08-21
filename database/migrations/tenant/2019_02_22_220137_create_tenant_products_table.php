@@ -23,6 +23,7 @@ class CreateTenantProductsTable extends Migration
             $table->double('height', 5, 2)->nullable()->default(0.00);
             $table->double('length', 5, 2)->nullable()->default(0.00);
             $table->boolean('status')->nullable()->default(false);
+            $table->integer('user_id')->unsigned()->nullable();
             $table->timestamps();
         });
     }

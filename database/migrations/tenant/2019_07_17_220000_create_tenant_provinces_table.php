@@ -16,6 +16,7 @@ class CreateTenantProvincesTable extends Migration
         Schema::create('provinces', function (Blueprint $table) {
             $table->Increments('id');
             $table->string('name')->unique();
+            $table->integer('user_id')->unsigned()->nullable();
             $table->timestamps();
         });
     }

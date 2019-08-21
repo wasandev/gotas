@@ -23,10 +23,11 @@ class CreateTenantAddressesTable extends Migration
             $table->string('province')->nullable();
             $table->string('postal_code', 5)->nullable();
             $table->string('country')->nullable()->default('thailand');
-            $table->string('contractname', 200)->nullable();
+            $table->string('contactname', 200)->nullable();
             $table->string('phoneno', 20)->nullable();
             $table->string('location_lat')->nullable();
             $table->string('location_lng')->nullable();
+            $table->integer('user_id')->unsigned()->nullable();
             $table->timestamps();
         });
     }

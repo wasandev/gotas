@@ -70,8 +70,9 @@
 </template>
 
 <script>
-import numeral from 'numeral'
-import 'numeral/locales'
+import numbro from 'numbro'
+import numbroLanguages from 'numbro/dist/languages.min'
+Object.values(numbroLanguages).forEach(l => numbro.registerLanguage(l))
 import { SingularOrPlural } from 'laravel-nova'
 
 export default {
@@ -89,6 +90,12 @@ export default {
             type: String,
             default: '(0[.]00a)',
         },
+    },
+
+    mounted() {
+        if (Nova.config.locale) {
+            numbro.setLanguage(Nova.config.locale.replace('_', '-'))
+        }
     },
 
     methods: {
@@ -136,11 +143,7 @@ export default {
 
         formattedValue() {
             if (!this.isNullValue) {
-                if (Nova.config.locale) {
-                    numeral.locale(Nova.config.locale)
-                }
-
-                return this.prefix + numeral(this.value).format(this.format)
+                return this.prefix + numbro(this.value).format(this.format)
             }
 
             return ''

@@ -60,7 +60,7 @@ class KeyValue extends Field
     /**
      * The label that should be used for the key table heading.
      *
-     * @param string $label
+     * @param  string  $label
      * @return $this
      */
     public function keyLabel($label)
@@ -73,7 +73,7 @@ class KeyValue extends Field
     /**
      * The label that should be used for the value table heading.
      *
-     * @param string $label
+     * @param  string  $label
      * @return $this
      */
     public function valueLabel($label)
@@ -86,7 +86,7 @@ class KeyValue extends Field
     /**
      * The label that should be used for the add row button.
      *
-     * @param string $label
+     * @param  string  $label
      * @return $this
      */
     public function actionText($label)

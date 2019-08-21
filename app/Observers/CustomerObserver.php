@@ -20,6 +20,12 @@ class CustomerObserver
         $customer->country = 'thailand';
     }
 
+    public function saving(Customer $customer)
+    {
+        $customer->user_id = auth()->user()->id;
+        $customer->country = 'thailand';
+    }
+
     /**
      * Handle the retailer "created" event.
      *

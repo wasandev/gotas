@@ -15,13 +15,16 @@ class FinishUserSetup
     {
         app(Environment::class)->tenant($event->website);
 
-        User::create([
+        $admin = User::create([
             'name' => $event->website->user->name,
             'email' => $event->website->user->email,
             'password' => $event->website->user->password,
             'role' => 'admin',
             //'password' => bcrypt(str_random(10)),
         ]);
+
+        //$admin->guard_name = 'tenants';
+        //$admin->assignRole('admin');
 
         CompanyProfile::create([
             'company_name' => $event->website->company_name,

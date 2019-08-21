@@ -11,12 +11,18 @@ class Product_image extends Model
 
     protected $fillable = [
         'product_id',
-        'product_image'
+        'product_image',
+        'user_id'
 
     ];
 
     public function product()
     {
         return $this->belongsTo('App\Models\Tenant\Product');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\Tenant\User');
     }
 }

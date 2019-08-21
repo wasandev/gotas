@@ -4,15 +4,17 @@ namespace App\Nova;
 
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\BelongsTo;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Car_expense extends Resource
 {
-    public static $displayInNavigation = false;
-    public static $group = "ฝ่ายการเงิน/บัญชี";
-    public static $subGroup = "ข้อมูลเบื้องต้น";
+    //public static $displayInNavigation = false;
+    public static $group = "6.งานด้านค่าใช้จ่าย";
+    //public static $category = "6.งานด้านค่าใช้จ่าย";
+    //public static $subGroup = "ข้อมูลเบื้องต้น";
     /**
      * The model the resource corresponds to.
      *
@@ -49,7 +51,9 @@ class Car_expense extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('หมวดค่าใช้จ่ายรถ', 'name')
+            Text::make('หมวดค่าใช้จ่ายรถ', 'name'),
+            BelongsTo::make('ผู้ทำรายการ', 'user', 'App\Nova\User')
+                ->onlyOnDetail(),
         ];
     }
 
@@ -95,5 +99,14 @@ class Car_expense extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+
+    public static function availableForNavigation(Request $request)
+    {
+        $hostname  = app(\Hyn\Tenancy\Environment::class)->hostname();
+        if (is_null($hostname)) {
+            return false;
+        }
+        return true;
     }
 }

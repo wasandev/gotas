@@ -18,10 +18,11 @@ class Address extends Model
         'province',
         'postal_code',
         'country',
-        'contractname',
+        'contactname',
         'phoneno',
         'location_lat',
         'location_lng',
+        'user_id'
     ];
 
 
@@ -30,12 +31,17 @@ class Address extends Model
         return $this->belongsTo('App\Models\Tenant\Customer');
     }
 
+    public function user()
+    {
+        return $this->belongsTo('App\Models\Tenant\User');
+    }
+
     /*
 	Provide the Location value to the Nova field
 	*/
     public function getLocationAttribute()
     {
-        return (object)[
+        return (object) [
             'latitude' => $this->location_lat,
             'longitude' => $this->location_lng,
         ];

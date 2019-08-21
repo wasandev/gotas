@@ -30,7 +30,7 @@ class CustomerPolicy
      */
     public function view(User $user, Customer $customer)
     {
-        return $user->role == 'admin' || $user->role == 'employee';
+        return true;
     }
 
     /**

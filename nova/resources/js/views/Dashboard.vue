@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div :dusk="'dashboard-' + this.name">
         <heading v-if="cards.length > 1" class="mb-6">{{ __('Dashboard') }}</heading>
 
         <div v-if="shouldShowCards">
@@ -15,12 +15,20 @@ import { HasCards } from 'laravel-nova'
 export default {
     mixins: [HasCards],
 
+    props: {
+        name: {
+            type: String,
+            required: false,
+            default: 'main',
+        },
+    },
+
     computed: {
         /**
-         * Get the endpoint for this dashboard's metrics.
+         * Get the endpoint for this dashboard's cards.
          */
         cardsEndpoint() {
-            return `/nova-api/cards`
+            return `/nova-api/dashboards/${this.name}`
         },
     },
 }

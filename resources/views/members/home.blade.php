@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('nav')
-  @include('partials.member-nav')
+  @include('partials.nav')
 @endsection
 
 @section('content')

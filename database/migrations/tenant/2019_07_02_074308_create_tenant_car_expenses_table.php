@@ -16,6 +16,7 @@ class CreateTenantCarExpensesTable extends Migration
         Schema::create('car_expenses', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name', 200);
+            $table->integer('user_id')->unsigned()->nullable();
             $table->timestamps();
         });
     }

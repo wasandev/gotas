@@ -13,6 +13,11 @@ export default [
     {
         name: 'dashboard',
         path: '/',
+        redirect: '/dashboards/main',
+    },
+    {
+        name: 'dashboard.custom',
+        path: '/dashboards/:name',
         component: Dashboard,
         props: true,
     },

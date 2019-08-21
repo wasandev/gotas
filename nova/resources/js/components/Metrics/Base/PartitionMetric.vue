@@ -95,6 +95,7 @@ export default {
                 'vertical-center',
                 'rounded-b-lg',
                 'ct-chart',
+                'mr-4',
                 this.formattedTotal <= 0 ? 'invisible' : '',
             ]
         },

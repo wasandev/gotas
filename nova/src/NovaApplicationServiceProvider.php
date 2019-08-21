@@ -24,6 +24,7 @@ class NovaApplicationServiceProvider extends ServiceProvider
             $this->registerExceptionHandler();
             $this->resources();
             Nova::cards($this->cards());
+            Nova::dashboards($this->dashboards());
             Nova::tools($this->tools());
         });
     }
@@ -77,6 +78,16 @@ class NovaApplicationServiceProvider extends ServiceProvider
      * @return array
      */
     protected function cards()
+    {
+        return [];
+    }
+
+    /**
+     * Get the cards that should be displayed on the Nova dashboard.
+     *
+     * @return array
+     */
+    protected function dashboards()
     {
         return [];
     }

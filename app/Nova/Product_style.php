@@ -6,12 +6,13 @@ use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\BelongsTo;
 
 class Product_style extends Resource
 {
-    public static $displayInNavigation = false;
-    public static $group = "ฝ่ายขาย/การตลาด";
-    public static $subGroup = "ข้อมูลเบื้องต้น";
+    //public static $displayInNavigation = false;
+    public static $group = "4.งานด้านการขาย";
+    //public static $subGroup = "ข้อมูลเบื้องต้น";
 
 
     /**
@@ -56,7 +57,9 @@ class Product_style extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('ลักษณะสินค้า', 'name')
+            Text::make('ลักษณะสินค้า', 'name'),
+            BelongsTo::make('ผู้ทำรายการ', 'user', 'App\Nova\User')
+                ->onlyOnDetail(),
         ];
     }
 
@@ -102,5 +105,13 @@ class Product_style extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+    public static function availableForNavigation(Request $request)
+    {
+        $hostname  = app(\Hyn\Tenancy\Environment::class)->hostname();
+        if (is_null($hostname)) {
+            return false;
+        }
+        return true;
     }
 }

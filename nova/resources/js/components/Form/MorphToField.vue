@@ -2,6 +2,7 @@
     <div>
         <default-field :field="field" :show-errors="false" :field-name="fieldName">
             <select
+                v-if="hasMorphToTypes"
                 :disabled="isLocked || isReadonly"
                 :data-testid="`${field.attribute}-type`"
                 :dusk="`${field.attribute}-type`"
@@ -23,6 +24,10 @@
                     {{ option.singularLabel }}
                 </option>
             </select>
+
+            <label v-else slot="field" class="flex items-center select-none mt-3">
+                {{ __('There are no available options for this resource.') }}
+            </label>
         </default-field>
 
         <default-field
@@ -30,6 +35,7 @@
             :errors="errors"
             :show-help-text="false"
             :field-name="fieldTypeName"
+            v-if="hasMorphToTypes"
         >
             <template slot="field">
                 <search-input
@@ -87,7 +93,7 @@
                 </select-control>
 
                 <!-- Trashed State -->
-                <div v-if="softDeletes && !isLocked">
+                <div v-if="softDeletes && !isLocked && !isReadonly">
                     <checkbox-with-label
                         :dusk="field.attribute + '-with-trashed-checkbox'"
                         :checked="withTrashed"
@@ -326,6 +332,13 @@ export default {
          */
         isReadonly() {
             return this.field.readonly || _.get(this.field, 'extraAttributes.readonly')
+        },
+
+        /**
+         * Determine whether there are any morph to types.
+         */
+        hasMorphToTypes() {
+            return this.field.morphToTypes.length > 0
         },
     },
 }

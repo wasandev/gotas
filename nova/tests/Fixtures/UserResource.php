@@ -192,7 +192,16 @@ class UserResource extends Resource
             new ExceptionAction,
             new FailingAction,
             new NoopAction,
-            new QueuedAction,
+            tap(new QueuedAction, function (QueuedAction $action) {
+                if ($_SERVER['nova.user.actionCallbacks'] ?? false) {
+                    $action->canRun(function ($request, $model) {
+                        return $model->id % 2;
+                    });
+                    $action->canSee(function () {
+                        return true;
+                    });
+                }
+            }),
             new QueuedResourceAction,
             new QueuedUpdateStatusAction,
             new RequiredFieldAction,

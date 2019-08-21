@@ -419,7 +419,8 @@ class File extends Field implements DeletableContract
     /**
      * Disable downloading the file.
      *
-     * @param bool $disabled
+     * @param  bool  $disabled
+     * @return $this
      */
     public function disableDownload()
     {

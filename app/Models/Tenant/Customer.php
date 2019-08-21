@@ -34,6 +34,7 @@ class Customer extends Model
         'location_lat',
         'location_lng',
         'bussinesstype_id',
+        'user_id'
     ];
 
     public function user()
@@ -56,7 +57,7 @@ class Customer extends Model
 	*/
     public function getLocationAttribute()
     {
-        return (object)[
+        return (object) [
             'latitude' => $this->location_lat,
             'longitude' => $this->location_lng,
         ];

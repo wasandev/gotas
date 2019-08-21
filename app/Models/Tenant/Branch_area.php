@@ -17,10 +17,16 @@ class Branch_area extends Model
         'province',
         'postal_code',
         'country',
+        'user_id'
     ];
 
     public function branch()
     {
         return $this->belongsTo('App\Models\Tenant\Branch');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\Tenant\User');
     }
 }

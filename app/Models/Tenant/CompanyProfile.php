@@ -26,9 +26,14 @@ class CompanyProfile extends Model
         'facebook',
         'line',
         'location_lat',
-        'location_lng'
+        'location_lng',
+        'user_id'
     ];
 
+    public function user()
+    {
+        return $this->belongsTo('App\Models\Tenant\User');
+    }
     /*
 	Provide the Location value to the Nova field
 	*/

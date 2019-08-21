@@ -26,6 +26,8 @@ class TrendDateExpressionFactory
                 return new MySqlTrendDateExpression($query, $column, $unit, $timezone);
             case 'pgsql':
                 return new PostgresTrendDateExpression($query, $column, $unit, $timezone);
+            case 'sqlsrv':
+                return new SqlSrvTrendDateExpression($query, $column, $unit, $timezone);
             default:
                 throw new InvalidArgumentException('Trend metric helpers are not supported for this database.');
         }

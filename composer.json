@@ -28,6 +28,8 @@
         "laravel/scout": "^7.0",
         "laravel/tinker": "^1.0",
         "maatwebsite/laravel-nova-excel": "^1.1",
+        "orlyapps/nova-belongsto-depend": "^2.0",
+        "pktharindu/nova-permissions": "^1.1",
         "pusher/pusher-php-server": "^3.4",
         "ramsey/uuid": "^3.8",
         "stephenlake/nova-fixed-bars": "^1.1",

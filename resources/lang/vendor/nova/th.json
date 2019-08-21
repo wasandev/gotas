@@ -6,7 +6,7 @@
     "Sorry! You are not authorized to perform this action.": "Sorry! You are not authorized to perform this action.",
     "You are receiving this email because we received a password reset request for your account.": "You are receiving this email because we received a password reset request for your account.",
     "Confirm Password": "ยืนยันรหัสผ่าน",
-    "Dashboard": "หน้าหลัก",
+    "Dashboard": "Dashboard",
     "Email Address": "อีเมลของคุณ",
     "Forgot Your Password?": "ลืมรหัสผ่าน?",
     "Forgot your password?": "ลืมรหัสผ่าน?",
@@ -371,5 +371,6 @@
     "of": "of",
     "no file selected": "no file selected",
     "Sorry, your session has expired.": "Sorry, your session has expired.",
-    "Reload": "Reload"
+    "Reload": "Reload",
+    "Role": "สิทธิ์การใช้งาน"
 }

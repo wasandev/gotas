@@ -16,6 +16,7 @@ class CreateTenantProductStylesTable extends Migration
         Schema::create('product_styles', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 100);
+            $table->integer('user_id')->unsigned()->nullable();
             $table->timestamps();
         });
     }

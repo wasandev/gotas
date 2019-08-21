@@ -41,7 +41,7 @@ class EmployeePolicy
      */
     public function create(User $user)
     {
-        return $user->role == 'admin';
+        return $user->role == 'admin' || $user->role == 'employee';
     }
 
     /**
@@ -53,7 +53,7 @@ class EmployeePolicy
      */
     public function update(User $user, Employee $employee)
     {
-        return $user->role == 'admin';
+        return $user->role == 'admin' || $user->role == 'employee';
     }
 
     /**
@@ -65,7 +65,7 @@ class EmployeePolicy
      */
     public function delete(User $user, Employee $employee)
     {
-        return $user->role == 'admin';
+        return $user->role == 'admin' || $user->role == 'employee';
     }
 
     /**
@@ -77,7 +77,7 @@ class EmployeePolicy
      */
     public function restore(User $user, Employee $employee)
     {
-        return $user->role == 'admin';
+        return $user->role == 'admin' || $user->role == 'employee';
     }
 
     /**
@@ -89,6 +89,6 @@ class EmployeePolicy
      */
     public function forceDelete(User $user, Employee $employee)
     {
-        return $user->role == 'admin';
+        return $user->role == 'admin' || $user->role == 'employee';
     }
 }

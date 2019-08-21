@@ -20,6 +20,20 @@ class Nova
     use AuthorizesRequests;
 
     /**
+     * The registered dashboard names.
+     *
+     * @var array
+     */
+    public static $dashboards = [];
+
+    /**
+     * The registered cards for the default dashboard.
+     *
+     * @var array
+     */
+    public static $defaultDashboardCards = [];
+
+    /**
      * The registered resource names.
      *
      * @var array
@@ -104,13 +118,20 @@ class Nova
     public static $runsMigrations = true;
 
     /**
+     * The translations that should be made available on the Nova JavaScript object.
+     *
+     * @var array
+     */
+    public static $translations = [];
+
+    /**
      * Get the current Nova version.
      *
      * @return string
      */
     public static function version()
     {
-        return '2.0.10';
+        return '2.1.0';
     }
 
     /**
@@ -350,17 +371,6 @@ class Nova
     }
 
     /**
-     * Get the available dashboard cards for the given request.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return \Illuminate\Support\Collection
-     */
-    public static function availableDashboardCards(NovaRequest $request)
-    {
-        return collect(static::$cards)->filter->authorize($request)->values();
-    }
-
-    /**
      * Create a new user instance.
      *
      * @param  \Illuminate\Console\Command
@@ -551,6 +561,78 @@ class Nova
     }
 
     /**
+     * Copy the cards to cards to the default dashboard.
+     *
+     * @return static
+     */
+    public static function copyDefaultDashboardCards()
+    {
+        static::$defaultDashboardCards = static::$cards;
+
+        return new static;
+    }
+
+    /**
+     * Get the dashboards registered with Nova.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public static function availableDashboards(Request $request)
+    {
+        return collect(static::$dashboards)->filter->authorize($request)->all();
+    }
+
+    /**
+     * Register the dashboards.
+     *
+     * @param  array  $dashboards
+     * @return static
+     */
+    public static function dashboards(array $dashboards)
+    {
+        static::$dashboards = array_merge(static::$dashboards, $dashboards);
+
+        return new static;
+    }
+
+    /**
+     * Get the available dashboard cards for the given request.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return \Illuminate\Support\Collection
+     */
+    public static function allAvailableDashboardCards(NovaRequest $request)
+    {
+        return collect(static::$dashboards)
+            ->filter
+            ->authorize($request)
+            ->flatMap(function ($dashboard) {
+                return $dashboard->cards();
+            })->merge(static::$cards)
+            ->unique()
+            ->filter
+            ->authorize($request)
+            ->values();
+    }
+
+    /**
+     * Get the available dashboard cards for the given request.
+     *
+     * @param  string  $dashboard
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return \Illuminate\Support\Collection
+     */
+    public static function availableDashboardCardsForDashboard($dashboard, NovaRequest $request)
+    {
+        return collect(static::$dashboards)->filter->authorize($request)->filter(function ($dash) use ($dashboard) {
+            return $dash->uriKey() === $dashboard;
+        })->flatMap(function ($dashboard) {
+            return $dashboard->cards();
+        })->filter->authorize($request)->values();
+    }
+
+    /**
      * Get all of the additional scripts that should be registered.
      *
      * @return array
@@ -631,6 +713,37 @@ class Nova
         static::$styles[$name] = $path;
 
         return new static;
+    }
+
+    /**
+     * Register the given translations with Nova.
+     *
+     * @param  array|string  $translations
+     * @return static
+     */
+    public static function translations($translations)
+    {
+        if (is_string($translations)) {
+            if (! is_readable($translations)) {
+                return new static;
+            }
+
+            $translations = json_decode(file_get_contents($translations), true);
+        }
+
+        static::$translations = array_merge(static::$translations, $translations);
+
+        return new static;
+    }
+
+    /**
+     * Get all of the additional stylesheets that should be loaded.
+     *
+     * @return array
+     */
+    public static function allTranslations()
+    {
+        return static::$translations;
     }
 
     /**

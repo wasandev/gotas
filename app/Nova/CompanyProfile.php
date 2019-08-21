@@ -8,7 +8,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Panel;
 use Laravel\Nova\Fields\Image;
-//use Laravel\Nova\Fields\Trix;
+use Laravel\Nova\Fields\BelongsTo;
 use Wasandev\InputThaiAddress\InputThaiAddress;
 use Wasandev\InputThaiAddress\ThaiAddressMetadata;
 use Wasandev\InputThaiAddress\MapAddress;
@@ -16,9 +16,9 @@ use Laravel\Nova\Fields\Textarea;
 
 class CompanyProfile extends Resource
 {
-    public static $displayInNavigation = false;
-    public static $group = 'ข้อมูลบริษัท';
-    public static $subGroup = "ข้อมูลบริษัท";
+    //public static $displayInNavigation = false;
+    public static $group = '1.งานสำหรับผู้ดูแลระบบ';
+    //public static $subGroup = "ข้อมูลบริษัท";
 
     /**
      * The model the resource corresponds to.
@@ -64,6 +64,7 @@ class CompanyProfile extends Resource
 
             new Panel('อื่นๆ', $this->otherFields()),
 
+
         ];
     }
     /**
@@ -101,12 +102,15 @@ class CompanyProfile extends Resource
 
 
             ThaiAddressMetadata::make('อำเภอ/เขต', 'district')
-                ->fromValue('amphoe'),
+                ->fromValue('amphoe')
+                ->hideFromIndex(),
 
             ThaiAddressMetadata::make('จังหวัด', 'province')
-                ->fromValue('province'),
+                ->fromValue('province')
+                ->hideFromIndex(),
             ThaiAddressMetadata::make('รหัสไปรษณีย์', 'postal_code')
-                ->fromValue('zipcode'),
+                ->fromValue('zipcode')
+                ->hideFromIndex(),
 
             MapAddress::make('ตำแหน่งที่ตั้งบน Google Map', 'Location')->hideFromIndex()
 
@@ -125,7 +129,8 @@ class CompanyProfile extends Resource
             Image::make('ภาพหน้าร้าน', 'imagefile')
                 ->hideFromIndex(),
             Textarea::make('รายละเอียดอื่นๆ', 'description')->hideFromIndex(),
-
+            BelongsTo::make('ผู้ทำรายการ', 'user', 'App\Nova\User')
+                ->onlyOnDetail(),
         ];
     }
     /**
@@ -170,5 +175,13 @@ class CompanyProfile extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+    public static function availableForNavigation(Request $request)
+    {
+        $hostname  = app(\Hyn\Tenancy\Environment::class)->hostname();
+        if (is_null($hostname)) {
+            return false;
+        }
+        return true;
     }
 }

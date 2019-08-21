@@ -164,19 +164,30 @@ class Trix extends Field implements DeletableContract
      * @param  string  $requestAttribute
      * @param  object  $model
      * @param  string  $attribute
-     * @return void
+     * @return void|\Closure
      */
     protected function fillAttribute(NovaRequest $request, $requestAttribute, $model, $attribute)
     {
-        parent::fillAttribute($request, $requestAttribute, $model, $attribute);
+        $callbacks = [];
+
+        $maybeCallback = parent::fillAttribute($request, $requestAttribute, $model, $attribute);
+        if (is_callable($maybeCallback)) {
+            $callbacks[] = $maybeCallback;
+        }
 
         if ($request->{$this->attribute.'DraftId'} && $this->withFiles) {
-            return function () use ($request, $model, $attribute) {
+            $callbacks[] = function () use ($request, $model, $attribute) {
                 PendingAttachment::persistDraft(
                     $request->{$this->attribute.'DraftId'},
                     $this,
                     $model
                 );
+            };
+        }
+
+        if (count($callbacks)) {
+            return function () use ($callbacks) {
+                collect($callbacks)->each->__invoke();
             };
         }
     }

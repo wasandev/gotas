@@ -35,7 +35,7 @@ class BusinesstypePolicy
      */
     public function create(User $user)
     {
-        return $user->role == 'admin';
+        return $user->role == 'admin' || $user->role == 'employee';
     }
 
     /**
@@ -47,7 +47,7 @@ class BusinesstypePolicy
      */
     public function update(User $user, Businesstype $businesstype)
     {
-        return $user->role == 'admin';
+        return $user->role == 'admin' || $user->role == 'employee';
     }
 
     /**
@@ -59,7 +59,7 @@ class BusinesstypePolicy
      */
     public function delete(User $user, Businesstype $businesstype)
     {
-        return $user->role == 'admin';
+        return $user->role == 'admin' || $user->role == 'employee';
     }
 
     /**
@@ -71,7 +71,7 @@ class BusinesstypePolicy
      */
     public function restore(User $user, Businesstype $businesstype)
     {
-        return $user->role == 'admin';
+        return $user->role == 'admin' || $user->role == 'employee';
     }
 
     /**
@@ -83,6 +83,6 @@ class BusinesstypePolicy
      */
     public function forceDelete(User $user, Businesstype $businesstype)
     {
-        return $user->role == 'admin';
+        return $user->role == 'admin' || $user->role == 'employee';
     }
 }

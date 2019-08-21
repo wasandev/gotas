@@ -23,7 +23,7 @@
                     <sortable-icon
                         @sort="requestOrderByChange(field)"
                         :resource-name="resourceName"
-                        :uri-key="field.attribute"
+                        :uri-key="field.sortableUriKey"
                         v-if="field.sortable"
                     >
                         {{ field.indexName }}

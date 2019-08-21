@@ -431,6 +431,34 @@ class ActionControllerTest extends IntegrationTest
         $this->assertEquals('finished', ActionEvent::first()->status);
     }
 
+    public function test_queued_actions_can_be_serialized_when_have_callbacks()
+    {
+        config(['queue.default' => 'sync']);
+
+        $user = factory(User::class)->create();
+        $user2 = factory(User::class)->create();
+
+        $_SERVER['nova.user.actionCallbacks'] = true;
+
+        $response = $this->withExceptionHandling()
+                         ->post('/nova-api/users/action?action='.(new QueuedAction)->uriKey(), [
+                             'resources' => implode(',', [$user->id, $user2->id]),
+                             'test' => 'Taylor Otwell',
+                             'callback' => '',
+                         ]);
+
+        unset($_SERVER['nova.user.actionCallbacks']);
+
+        $response->assertStatus(200);
+
+        $this->assertCount(1, $_SERVER['queuedAction.applied'][0]);
+        $this->assertEquals($user->id, $_SERVER['queuedAction.applied'][0][1]->id);
+        $this->assertEquals('Taylor Otwell', $_SERVER['queuedAction.appliedFields'][0]->test);
+
+        $this->assertCount(1, ActionEvent::all());
+        $this->assertEquals('finished', ActionEvent::first()->status);
+    }
+
     public function test_queued_actions_can_be_dispatched_for_an_entire_resource()
     {
         config(['queue.default' => 'sync']);

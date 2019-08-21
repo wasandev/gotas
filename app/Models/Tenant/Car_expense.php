@@ -10,6 +10,12 @@ class Car_expense extends Model
     use UsesTenantConnection;
 
     protected $fillable = [
-        'name'
+        'name', 'user_id'
     ];
+
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\Tenant\User');
+    }
 }

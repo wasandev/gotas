@@ -10,16 +10,7 @@ class BranchPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can view any company profiles.
-     *
-     * @param  \App\Models\Tenant\User  $user
-     * @return mixed
-     */
-    public function viewAny(User $user)
-    {
-        return $user->role == 'admin' || $user->role == 'employee';
-    }
+
 
     /**
      * Determine whether the user can view the company profile.
@@ -30,7 +21,9 @@ class BranchPolicy
      */
     public function view(User $user, Branch $branch)
     {
-        return true;
+
+
+        return $user->hasPermissionTo('view branches');
     }
 
     /**
@@ -41,7 +34,7 @@ class BranchPolicy
      */
     public function create(User $user)
     {
-        return $user->role == 'admin';
+        return $user->hasPermissionTo('create branches');
     }
 
     /**
@@ -53,7 +46,8 @@ class BranchPolicy
      */
     public function update(User $user, Branch $branch)
     {
-        return $user->role == 'admin';
+
+        return $user->hasPermissionTo('edit branches');
     }
 
     /**
@@ -65,30 +59,6 @@ class BranchPolicy
      */
     public function delete(User $user, Branch $branch)
     {
-        return $user->role == 'admin';
-    }
-
-    /**
-     * Determine whether the user can restore the company profile.
-     *
-     * @param  \App\Models\Tenant\User  $user
-     * @param  \App\Models\Tenant\Branch  $branch
-     * @return mixed
-     */
-    public function restore(User $user, Branch $branch)
-    {
-        return $user->role == 'admin';
-    }
-
-    /**
-     * Determine whether the user can permanently delete the company profile.
-     *
-     * @param  \App\Models\Tenant\User  $user
-     * @param  \App\Models\Tenant\Branch  $branch
-     * @return mixed
-     */
-    public function forceDelete(User $user, Branch $branch)
-    {
-        return $user->role == 'admin';
+        return $user->hasPermissionTo('delete branches');
     }
 }

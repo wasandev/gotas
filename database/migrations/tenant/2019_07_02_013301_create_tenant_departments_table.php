@@ -16,6 +16,7 @@ class CreateTenantDepartmentsTable extends Migration
         Schema::create('departments', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 150);
+            $table->integer('user_id')->unsigned()->nullable();
             $table->timestamps();
         });
     }

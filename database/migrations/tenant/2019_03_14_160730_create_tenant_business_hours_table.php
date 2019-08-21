@@ -18,6 +18,7 @@ class CreateTenantBusinessHoursTable extends Migration
             $table->enum('day', ['จันทร์', 'อังคาร', 'พุธ', 'พฤหัส', 'ศุกร์', 'เสาร์', 'อาทิตย์']);
             $table->time('open_time')->nullable();
             $table->time('close_time')->nullable();
+            $table->integer('user_id')->unsigned()->nullable();
             $table->timestamps();
         });
     }

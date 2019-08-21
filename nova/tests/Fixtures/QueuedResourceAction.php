@@ -6,13 +6,10 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Actions\Action;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Fields\ActionFields;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class QueuedResourceAction extends Action implements ShouldQueue
 {
-    use SerializesModels;
-
     /**
      * Perform the action on the given models.
      *

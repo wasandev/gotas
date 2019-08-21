@@ -14,9 +14,9 @@ use Laravel\Nova\Fields\HasMany;
 
 class Post extends Resource
 {
-    public static $displayInNavigation = false;
-    public static $group = "ฝ่ายขาย/การตลาด";
-    public static $subGroup = "Online Marketing";
+    //public static $displayInNavigation = false;
+    public static $group = "4.งานด้านการขาย";
+    //public static $subGroup = "Online Marketing";
     /**
      * The model the resource corresponds to.
      *
@@ -47,7 +47,7 @@ class Post extends Resource
      */
     public static function label()
     {
-        return 'โพสข่าวสาร/ข่าวประชาสัมพันธ์';
+        return 'โพส';
     }
 
     /**
@@ -141,5 +141,13 @@ class Post extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+    public static function availableForNavigation(Request $request)
+    {
+        $hostname  = app(\Hyn\Tenancy\Environment::class)->hostname();
+        if (is_null($hostname)) {
+            return false;
+        }
+        return true;
     }
 }

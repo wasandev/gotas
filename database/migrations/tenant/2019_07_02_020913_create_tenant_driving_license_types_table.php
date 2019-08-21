@@ -16,6 +16,7 @@ class CreateTenantDrivingLicenseTypesTable extends Migration
         Schema::create('driving_license_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 120);
+            $table->integer('user_id')->unsigned()->nullable();
             $table->timestamps();
         });
     }

@@ -10,11 +10,16 @@ class Tiretype extends Model
     use UsesTenantConnection;
 
     protected $fillable = [
-        'name'
+        'name', 'user_id'
     ];
 
     public function car()
     {
         return $this->belongsTo('App\Modeles\Tenant\Car');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\Tenant\User');
     }
 }

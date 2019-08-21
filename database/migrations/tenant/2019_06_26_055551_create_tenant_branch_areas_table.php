@@ -21,6 +21,7 @@ class CreateTenantBranchAreasTable extends Migration
             $table->string('province')->nullable();
             $table->string('postal_code', 5)->nullable();
             $table->string('country')->nullable()->default('thailand');
+            $table->integer('user_id')->unsigned()->nullable();
             $table->timestamps();
         });
     }

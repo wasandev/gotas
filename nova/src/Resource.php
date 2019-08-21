@@ -312,6 +312,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     {
         return array_merge($this->serializeWithId($fields ?: $this->indexFields($request)), [
             'authorizedToView' => $this->authorizedToView($request),
+            'authorizedToCreate' => $this->authorizedToCreate($request),
             'authorizedToUpdate' => $this->authorizedToUpdateForSerialization($request),
             'authorizedToDelete' => $this->authorizedToDeleteForSerialization($request),
             'authorizedToRestore' => static::softDeletes() && $this->authorizedToRestore($request),
@@ -330,6 +331,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     public function serializeForDetail(NovaRequest $request)
     {
         return array_merge($this->serializeWithId($this->detailFieldsWithinPanels($request)), [
+            'authorizedToCreate' => $this->authorizedToCreate($request),
             'authorizedToUpdate' => $this->authorizedToUpdate($request),
             'authorizedToDelete' => $this->authorizedToDelete($request),
             'authorizedToRestore' => static::softDeletes() && $this->authorizedToRestore($request),
@@ -413,8 +415,8 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Return the location to redirect the user after creation.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \App\Nova\Resource $resource
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \App\Nova\Resource  $resource
      * @return string
      */
     public static function redirectAfterCreate(NovaRequest $request, $resource)
@@ -425,8 +427,8 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Return the location to redirect the user after update.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \App\Nova\Resource $resource
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \App\Nova\Resource  $resource
      * @return string
      */
     public static function redirectAfterUpdate(NovaRequest $request, $resource)

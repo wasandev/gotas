@@ -2,6 +2,7 @@
 
 namespace Laravel\Nova\Console;
 
+use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Console\DetectsApplicationNamespace;
 
@@ -54,7 +55,7 @@ class InstallCommand extends Command
      */
     protected function registerNovaServiceProvider()
     {
-        $namespace = str_replace_last('\\', '', $this->getAppNamespace());
+        $namespace = Str::replaceLast('\\', '', $this->getAppNamespace());
 
         file_put_contents(config_path('app.php'), str_replace(
             "{$namespace}\\Providers\EventServiceProvider::class,".PHP_EOL,

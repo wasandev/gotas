@@ -1,8 +1,8 @@
 <template>
-    <div class="text-center">
+    <div :class="`text-${field.textAlign}`">
         <span
-            class="inline-block rounded-full w-2 h-2"
-            :class="{ 'bg-success': field.value, 'bg-danger': !field.value }"
+            class="boolean-field"
+            :class="{ 'boolean-field-true': field.value, 'boolean-field-false': !field.value }"
         />
     </div>
 </template>

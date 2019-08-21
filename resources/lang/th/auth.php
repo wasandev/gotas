@@ -37,6 +37,6 @@ return [
     'Female' => 'หญิง',
     'Mobile No' => 'เบอร์โทรศัพท์',
     'Account Setting' => 'จัดการบัญชี',
-    'Role' => 'ประเภทสมาชิก',
+    'Role' => 'สิทธิ์การใช้งาน',
     'Verify your Email Address' => 'ยืนยันอีเมล',
 ];
