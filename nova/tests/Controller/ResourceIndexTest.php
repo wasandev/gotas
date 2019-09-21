@@ -2,18 +2,18 @@
 
 namespace Laravel\Nova\Tests\Controller;
 
-use Laravel\Nova\Nova;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Nova\Nova;
+use Laravel\Nova\Tests\Fixtures\ColumnFilter;
+use Laravel\Nova\Tests\Fixtures\Comment;
+use Laravel\Nova\Tests\Fixtures\CustomKeyFilter;
+use Laravel\Nova\Tests\Fixtures\IdFilter;
 use Laravel\Nova\Tests\Fixtures\Post;
 use Laravel\Nova\Tests\Fixtures\Role;
 use Laravel\Nova\Tests\Fixtures\User;
-use Laravel\Nova\Tests\IntegrationTest;
-use Laravel\Nova\Tests\Fixtures\Comment;
-use Laravel\Nova\Tests\Fixtures\IdFilter;
 use Laravel\Nova\Tests\Fixtures\UserPolicy;
-use Laravel\Nova\Tests\Fixtures\ColumnFilter;
-use Laravel\Nova\Tests\Fixtures\CustomKeyFilter;
+use Laravel\Nova\Tests\IntegrationTest;
 
 class ResourceIndexTest extends IntegrationTest
 {

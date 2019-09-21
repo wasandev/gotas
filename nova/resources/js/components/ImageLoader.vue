@@ -22,9 +22,15 @@ import { Minimum } from 'laravel-nova'
 export default {
     props: {
         src: String,
+
         maxWidth: {
             type: Number,
             default: 320,
+        },
+
+        rounded: {
+            type: Boolean,
+            default: false,
         },
     },
 
@@ -37,6 +43,7 @@ export default {
         cardClasses() {
             return {
                 'max-w-xs': !this.maxWidth || this.loading || this.missing,
+                'rounded-full': this.rounded,
             }
         },
     },

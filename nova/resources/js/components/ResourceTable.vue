@@ -29,14 +29,11 @@
                         {{ field.indexName }}
                     </sortable-icon>
 
-                    <span v-else> {{ field.indexName }} </span>
+                    <span v-else>{{ field.indexName }}</span>
                 </th>
 
-                <th>
-                    &nbsp;<!--
-                        View, Edit, Delete
-                    -->
-                </th>
+                <!-- View, Edit, Delete -->
+                <th>&nbsp;</th>
             </tr>
         </thead>
         <tbody>

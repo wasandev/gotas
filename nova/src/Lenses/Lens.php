@@ -2,26 +2,26 @@
 
 namespace Laravel\Nova\Lenses;
 
-use stdClass;
 use ArrayAccess;
-use JsonSerializable;
-use Laravel\Nova\Nova;
-use Illuminate\Support\Str;
-use Laravel\Nova\Fields\ID;
+use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Http\Request;
-use Laravel\Nova\ResolvesCards;
-use Laravel\Nova\AuthorizedToSee;
-use Laravel\Nova\ResolvesActions;
-use Laravel\Nova\ResolvesFilters;
+use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
+use Illuminate\Http\Resources\DelegatesToResource;
 use Illuminate\Support\Collection;
-use Laravel\Nova\ProxiesCanSeeToGate;
-use Laravel\Nova\Fields\FieldCollection;
+use Illuminate\Support\Str;
+use JsonSerializable;
+use Laravel\Nova\AuthorizedToSee;
 use Laravel\Nova\Contracts\ListableField;
+use Laravel\Nova\Fields\FieldCollection;
+use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Http\Requests\LensRequest;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Illuminate\Contracts\Routing\UrlRoutable;
-use Illuminate\Http\Resources\DelegatesToResource;
-use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
+use Laravel\Nova\Nova;
+use Laravel\Nova\ProxiesCanSeeToGate;
+use Laravel\Nova\ResolvesActions;
+use Laravel\Nova\ResolvesCards;
+use Laravel\Nova\ResolvesFilters;
+use stdClass;
 
 abstract class Lens implements ArrayAccess, JsonSerializable, UrlRoutable
 {

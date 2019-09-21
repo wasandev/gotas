@@ -142,12 +142,4 @@ class Post extends Resource
     {
         return [];
     }
-    public static function availableForNavigation(Request $request)
-    {
-        $hostname  = app(\Hyn\Tenancy\Environment::class)->hostname();
-        if (is_null($hostname)) {
-            return false;
-        }
-        return true;
-    }
 }

@@ -2,11 +2,11 @@
 
 namespace Laravel\Nova\Tests\Fixtures;
 
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Actions\Action;
-use Illuminate\Support\Collection;
-use Laravel\Nova\Fields\ActionFields;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Collection;
+use Laravel\Nova\Actions\Action;
+use Laravel\Nova\Fields\ActionFields;
+use Laravel\Nova\Fields\Text;
 
 class QueuedAction extends Action implements ShouldQueue
 {

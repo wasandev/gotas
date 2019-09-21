@@ -18,7 +18,7 @@ class CreateTenantEmployeesTable extends Migration
             $table->enum('status', ['ประจำ', 'ทดลองงาน', 'สัญญาจ้าง', 'ชั่วคราว', 'รายวัน', 'ปลด/ไล่ออก', 'ลาออก', 'เลิกจ้าง', 'นักศึกษาฝึกงาน'])->nullable()->default('ประจำ');
             $table->integer('branch_id')->unsigned()->nullable();
             $table->integer('department_id')->unsigned()->nullable();
-            $table->string('name', 250);
+            $table->string('name', 250)->unique();
             $table->string('nickname', 20)->nullable();
             $table->integer('position_id')->nullable();
             $table->string('taxid', 13)->nullable();

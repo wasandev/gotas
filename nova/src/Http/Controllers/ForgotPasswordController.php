@@ -2,11 +2,11 @@
 
 namespace Laravel\Nova\Http\Controllers;
 
-use Illuminate\Routing\Controller;
 use Illuminate\Auth\Notifications\ResetPassword;
-use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Routing\Controller;
 
 class ForgotPasswordController extends Controller
 {

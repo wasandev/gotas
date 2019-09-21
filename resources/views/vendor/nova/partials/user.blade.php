@@ -14,15 +14,9 @@
 <dropdown-menu slot="menu" width="200" direction="rtl">
     <ul class="list-reset">
         <li>
-            <a href="{{ route('nova.logout') }}" class="block no-underline text-90 hover:bg-30 p-3"
-                onclick="event.preventDefault();
-                    document.getElementById('logout-form').submit();">
-                    {{ __('Logout') }}
+            <a href="{{ route('nova.logout') }}" class="block no-underline text-90 hover:bg-30 p-3">
+                {{ __('Logout') }}
             </a>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                      @csrf
-                  </form>
-            
         </li>
     </ul>
 </dropdown-menu>

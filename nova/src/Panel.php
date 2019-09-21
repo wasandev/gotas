@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova;
 
-use JsonSerializable;
 use Illuminate\Http\Resources\MergeValue;
+use JsonSerializable;
 
 class Panel extends MergeValue implements JsonSerializable
 {
@@ -36,6 +36,13 @@ class Panel extends MergeValue implements JsonSerializable
      * @var bool
      */
     public $showToolbar = false;
+
+    /**
+     * The initial field display limit.
+     *
+     * @var int|null
+     */
+    public $limit = null;
 
     /**
      * Create a new panel instance.
@@ -116,6 +123,19 @@ class Panel extends MergeValue implements JsonSerializable
     }
 
     /**
+     * Set the number of initially visible fields.
+     *
+     * @param int $limit
+     * @return $this
+     */
+    public function limit($limit)
+    {
+        $this->limit = $limit;
+
+        return $this;
+    }
+
+    /**
      * Set the Vue component key for the panel.
      *
      * @param  string  $component
@@ -149,6 +169,7 @@ class Panel extends MergeValue implements JsonSerializable
             'component' => $this->component(),
             'name' => $this->name,
             'showToolbar' => $this->showToolbar,
+            'limit' => $this->limit,
         ], $this->meta());
     }
 }

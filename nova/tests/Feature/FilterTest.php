@@ -3,9 +3,9 @@
 namespace Laravel\Nova\Tests\Feature;
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Tests\IntegrationTest;
-use Laravel\Nova\Tests\Fixtures\IdFilter;
 use Laravel\Nova\Tests\Fixtures\CreateDateFilter;
+use Laravel\Nova\Tests\Fixtures\IdFilter;
+use Laravel\Nova\Tests\IntegrationTest;
 
 class FilterTest extends IntegrationTest
 {

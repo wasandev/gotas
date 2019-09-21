@@ -16,18 +16,18 @@ class TenantTableSeeder extends Seeder
     public function run()
     {
         $this->call([
-            CategoriesTableSeeder::class,
-            ProductStylesTableSeeder::class,
-            DepartmentsTableSeeder::class,
-            PositionsTableSeeder::class,
-            DrivingLicenseTypesTableSeeder::class,
-            UnitsTableSeeder::class,
-            CartypesTableSeeder::class,
-            CarstylesTableSeeder::class,
-            BusinesstypesTableSeeder::class,
-            TiretypesTableSeeder::class,
-            ProvincesTableSeeder::class,
-            BranchsTableSeeder::class,
+            // CategoriesTableSeeder::class,
+            // ProductStylesTableSeeder::class,
+            // DepartmentsTableSeeder::class,
+            // PositionsTableSeeder::class,
+            // DrivingLicenseTypesTableSeeder::class,
+            // UnitsTableSeeder::class,
+            // CartypesTableSeeder::class,
+            // CarstylesTableSeeder::class,
+            // BusinesstypesTableSeeder::class,
+            // TiretypesTableSeeder::class,
+            // BranchsTableSeeder::class,
+            //ThaiAddressTablesSeeder::class,
 
         ]);
         //$this->addRolesAndPermissions();

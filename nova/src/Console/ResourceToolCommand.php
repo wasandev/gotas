@@ -2,11 +2,11 @@
 
 namespace Laravel\Nova\Console;
 
-use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\Process\Process;
+use Illuminate\Support\Str;
 use Laravel\Nova\Console\Concerns\AcceptsNameAndVendor;
+use Symfony\Component\Process\Process;
 
 class ResourceToolCommand extends Command
 {
@@ -173,7 +173,7 @@ class ResourceToolCommand extends Command
      */
     protected function installNpmDependencies()
     {
-        $this->runCommand('npm set progress=false && npm install', $this->toolPath());
+        $this->executeCommand('npm set progress=false && npm install', $this->toolPath());
     }
 
     /**
@@ -183,7 +183,7 @@ class ResourceToolCommand extends Command
      */
     protected function compile()
     {
-        $this->runCommand('npm run dev', $this->toolPath());
+        $this->executeCommand('npm run dev', $this->toolPath());
     }
 
     /**
@@ -193,7 +193,7 @@ class ResourceToolCommand extends Command
      */
     protected function composerUpdate()
     {
-        $this->runCommand('composer update', getcwd());
+        $this->executeCommand('composer update', getcwd());
     }
 
     /**
@@ -203,7 +203,7 @@ class ResourceToolCommand extends Command
      * @param  string  $path
      * @return void
      */
-    protected function runCommand($command, $path)
+    protected function executeCommand($command, $path)
     {
         $process = (new Process($command, $path))->setTimeout(null);
 

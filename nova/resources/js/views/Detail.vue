@@ -275,7 +275,7 @@ export default {
                         return
                     }
 
-                    this.$toasted.show(this.__('This resource no longer exists'), { type: 'error' })
+                    Nova.error(this.__('This resource no longer exists'))
 
                     this.$router.push({
                         name: 'index',
@@ -337,11 +337,10 @@ export default {
          */
         async confirmDelete() {
             this.deleteResources([this.resource], () => {
-                this.$toasted.show(
+                Nova.success(
                     this.__('The :resource was deleted!', {
                         resource: this.resourceInformation.singularLabel.toLowerCase(),
-                    }),
-                    { type: 'success' }
+                    })
                 )
 
                 if (!this.resource.softDeletes) {
@@ -376,11 +375,10 @@ export default {
          */
         async confirmRestore() {
             this.restoreResources([this.resource], () => {
-                this.$toasted.show(
+                Nova.success(
                     this.__('The :resource was restored!', {
                         resource: this.resourceInformation.singularLabel.toLowerCase(),
-                    }),
-                    { type: 'success' }
+                    })
                 )
 
                 this.closeRestoreModal()
@@ -407,11 +405,10 @@ export default {
          */
         async confirmForceDelete() {
             this.forceDeleteResources([this.resource], () => {
-                this.$toasted.show(
+                Nova.success(
                     this.__('The :resource was deleted!', {
                         resource: this.resourceInformation.singularLabel.toLowerCase(),
-                    }),
-                    { type: 'success' }
+                    })
                 )
 
                 this.$router.push({ name: 'index', params: { resourceName: this.resourceName } })

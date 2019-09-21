@@ -7,8 +7,8 @@ use Laravel\Nova\ResourceToolElement;
 use Laravel\Nova\Tests\Fixtures\Post;
 use Laravel\Nova\Tests\Fixtures\Role;
 use Laravel\Nova\Tests\Fixtures\User;
-use Laravel\Nova\Tests\IntegrationTest;
 use Laravel\Nova\Tests\Fixtures\UserPolicy;
+use Laravel\Nova\Tests\IntegrationTest;
 
 class ResourceShowTest extends IntegrationTest
 {

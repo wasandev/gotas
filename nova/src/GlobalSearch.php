@@ -55,6 +55,7 @@ class GlobalSearch
                     'resourceId' => $model->getKey(),
                     'url' => url(Nova::path().'/resources/'.$resource::uriKey().'/'.$model->getKey()),
                     'avatar' => $instance->resolveAvatarUrl($this->request),
+                    'rounded' => $instance->resolveIfAvatarShouldBeRounded($this->request),
                 ];
             }
         }

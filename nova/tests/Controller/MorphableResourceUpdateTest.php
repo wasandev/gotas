@@ -3,9 +3,9 @@
 namespace Laravel\Nova\Tests\Controller;
 
 use Illuminate\Support\Facades\Gate;
-use Laravel\Nova\Tests\IntegrationTest;
 use Laravel\Nova\Tests\Fixtures\Comment;
 use Laravel\Nova\Tests\Fixtures\CommentPolicy;
+use Laravel\Nova\Tests\IntegrationTest;
 
 class MorphableResourceUpdateTest extends IntegrationTest
 {

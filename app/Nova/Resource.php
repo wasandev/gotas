@@ -4,13 +4,19 @@ namespace App\Nova;
 
 use Laravel\Nova\Resource as NovaResource;
 use Laravel\Nova\Http\Requests\NovaRequest;
-//use Wasandev\GotasMenugroup\GotasMenugroup;
-//use Wasandev\GotasMenugroup\DisplaysInGotasMenugroup;
-use Titasgailius\SearchRelations\SearchesRelations;
+
 
 abstract class Resource extends NovaResource
 {
-    use  SearchesRelations;
+
+    /**
+     * Default ordering for index query.
+     *
+     * @var array
+     */
+    public static $indexDefaultOrder = [
+        'id' => 'asc'
+    ];
     /**
      * Build an "index" query for the given resource.
      *
@@ -20,6 +26,10 @@ abstract class Resource extends NovaResource
      */
     public static function indexQuery(NovaRequest $request, $query)
     {
+        if (empty($request->get('orderBy'))) {
+            $query->getQuery()->orders = [];
+            return $query->orderBy(key(static::$indexDefaultOrder), reset(static::$indexDefaultOrder));
+        }
         return $query;
     }
 

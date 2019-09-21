@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Http\Requests;
 
-use Laravel\Nova\Nova;
 use Laravel\Nova\Metrics\Metric;
+use Laravel\Nova\Nova;
 
 class DashboardMetricRequest extends NovaRequest
 {

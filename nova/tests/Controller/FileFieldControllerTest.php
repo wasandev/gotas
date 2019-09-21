@@ -2,16 +2,16 @@
 
 namespace Laravel\Nova\Tests\Controller;
 
-use Laravel\Nova\Fields\Image;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
+use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Tests\Fixtures\File;
 use Laravel\Nova\Tests\Fixtures\Role;
-use Laravel\Nova\Tests\Fixtures\User;
-use Illuminate\Support\Facades\Storage;
-use Laravel\Nova\Tests\IntegrationTest;
-use Laravel\Nova\Tests\Fixtures\UserPolicy;
 use Laravel\Nova\Tests\Fixtures\SoftDeletingFile;
+use Laravel\Nova\Tests\Fixtures\User;
+use Laravel\Nova\Tests\Fixtures\UserPolicy;
+use Laravel\Nova\Tests\IntegrationTest;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class FileFieldControllerTest extends IntegrationTest

@@ -6,7 +6,7 @@
                 class="w-full form-control form-input form-input-bordered"
                 :name="field.name"
                 :value="value"
-                dateFormat="Y-m-d"
+                :dateFormat="pickerFormat"
                 :placeholder="placeholder"
                 :enable-time="false"
                 :enable-seconds="false"
@@ -31,7 +31,15 @@ export default {
         },
 
         placeholder() {
-            return this.field.placeholder || moment().format('YYYY-MM-DD')
+            return this.field.placeholder || moment().format(this.format)
+        },
+
+        format() {
+            return this.field.format || 'YYYY-MM-DD'
+        },
+
+        pickerFormat() {
+            return this.field.pickerFormat || 'Y-m-d'
         },
     },
 }

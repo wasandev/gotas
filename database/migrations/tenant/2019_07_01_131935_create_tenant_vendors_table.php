@@ -15,11 +15,11 @@ class CreateTenantVendorsTable extends Migration
     {
         Schema::create('vendors', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->boolean('status')->nullable()->default(false);
+            $table->boolean('status')->nullable()->default(true);
             $table->enum('type', ['company', 'person'])->nullable()->default('company');
             $table->integer('user_id')->unsigned()->nullable();
             $table->string('taxid', 13)->nullable();
-            $table->string('name', 250);
+            $table->string('name', 250)->unique();
             $table->string('address')->nullable();
             $table->string('sub_district')->nullable();
             $table->string('district')->nullable();

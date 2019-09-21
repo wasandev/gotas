@@ -18,12 +18,14 @@ class CustomerObserver
     {
         $customer->user_id = auth()->user()->id;
         $customer->country = 'thailand';
+        $customer->status = '1';
     }
 
     public function saving(Customer $customer)
     {
         $customer->user_id = auth()->user()->id;
         $customer->country = 'thailand';
+        $customer->status = '1';
     }
 
     /**

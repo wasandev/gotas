@@ -79,14 +79,16 @@ class User extends Resource
                 ->updateRules('nullable', 'string', 'min:6')
                 ->size('w-1/2'),
             BelongsTo::make('สังกัดสาขา', 'branch', 'App\Nova\Branch')
-                ->size('w-1/2')->sortable(),
+                ->size('w-1/2')->sortable()
+                ->rules('required'),
             Select::make('สิทธิ์การใช้งาน', 'role')->options([
                 'employee' => 'พนักงาน',
                 'admin' => 'Admin',
                 'customer' => 'ลูกค้า',
                 'driver' => 'พนักงานขับรถ'
             ])->displayUsingLabels()
-                ->size('w-1/2'),
+                ->size('w-1/2')
+                ->rules('required'),
             BelongsToMany::make('Roles', 'roles', \Pktharindu\NovaPermissions\Nova\Role::class),
 
         ];
@@ -134,13 +136,5 @@ class User extends Resource
     public function actions(Request $request)
     {
         return [];
-    }
-    public static function availableForNavigation(Request $request)
-    {
-        $hostname  = app(\Hyn\Tenancy\Environment::class)->hostname();
-        if (is_null($hostname)) {
-            return false;
-        }
-        return true;
     }
 }

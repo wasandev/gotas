@@ -3,17 +3,17 @@
 namespace Laravel\Nova;
 
 use ArrayAccess;
-use JsonSerializable;
-use Illuminate\Support\Str;
-use Laravel\Nova\Fields\ID;
-use Illuminate\Http\Request;
-use Laravel\Scout\Searchable;
-use Illuminate\Support\Collection;
-use Laravel\Nova\Http\Requests\NovaRequest;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Http\Resources\DelegatesToResource;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
+use Illuminate\Http\Resources\DelegatesToResource;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+use JsonSerializable;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Scout\Searchable;
 
 abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
 {

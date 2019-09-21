@@ -89,7 +89,7 @@
             </card>
 
             <!-- Attach Button -->
-            <div class="flex">
+            <div class="flex items-center">
                 <cancel-button />
 
                 <progress-button
@@ -288,6 +288,7 @@ export default {
 
                 if (error.response.status == 422) {
                     this.validationErrors = new Errors(error.response.data.errors)
+                    Nova.error(this.__('There was a problem submitting the form.'))
                 }
             }
         },
@@ -310,6 +311,7 @@ export default {
 
                 if (error.response.status == 422) {
                     this.validationErrors = new Errors(error.response.data.errors)
+                    Nova.error(this.__('There was a problem submitting the form.'))
                 }
             }
         },

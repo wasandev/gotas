@@ -17,6 +17,7 @@
                     >
                         {{ __('Cancel') }}
                     </button>
+
                     <button
                         dusk="confirm-upload-delete-button"
                         ref="confirmButton"

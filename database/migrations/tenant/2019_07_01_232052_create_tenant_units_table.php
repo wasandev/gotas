@@ -15,7 +15,7 @@ class CreateTenantUnitsTable extends Migration
     {
         Schema::create('units', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name', 120)->nullable();
+            $table->string('name', 120)->unique();
             $table->integer('user_id')->unsigned()->nullable();
             $table->timestamps();
         });

@@ -3,13 +3,13 @@
 namespace Laravel\Nova\Tests\Feature;
 
 use Cake\Chronos\Chronos;
-use Laravel\Nova\Tests\Fixtures\Post;
-use Laravel\Nova\Tests\Fixtures\User;
-use Laravel\Nova\Tests\IntegrationTest;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Tests\Fixtures\TotalUsers;
+use Laravel\Nova\Tests\Fixtures\Post;
 use Laravel\Nova\Tests\Fixtures\PostCountTrend;
 use Laravel\Nova\Tests\Fixtures\PostWithCustomCreatedAt;
+use Laravel\Nova\Tests\Fixtures\TotalUsers;
+use Laravel\Nova\Tests\Fixtures\User;
+use Laravel\Nova\Tests\IntegrationTest;
 
 class MetricTest extends IntegrationTest
 {

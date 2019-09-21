@@ -5,8 +5,10 @@ namespace App\Nova;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Wasandev\InputThaiAddress\InputThaiAddress;
-use Wasandev\InputThaiAddress\ThaiAddressMetadata;
+use Wasandev\InputThaiAddress\InputSubDistrict;
+use Wasandev\InputThaiAddress\InputDistrict;
+use Wasandev\InputThaiAddress\InputProvince;
+use Wasandev\InputThaiAddress\InputPostalCode;
 use Wasandev\InputThaiAddress\MapAddress;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Text;
@@ -54,7 +56,8 @@ class Address extends Resource
             Text::make('ชื่อจุดรับส่งสินค้า', 'name')->sortable()->size('w-1/2'),
             Text::make('ชื่อผู้ติดต่อ', 'contactname')->sortable()->size('w-1/2'),
             Text::make('โทรศัพท์', 'phoneno')
-                ->size('w-1/2'),
+                ->size('w-1/2')
+                ->rules('required', 'numeric'),
             new Panel('ที่อยู่', $this->addressFields()),
             BelongsTo::make('ผู้ทำรายการ', 'user', 'App\Nova\User')
                 ->onlyOnDetail(),
@@ -69,16 +72,27 @@ class Address extends Resource
     {
         return [
 
-            Text::make('ที่อยู่', 'address')->hideFromIndex(),
-            InputThaiAddress::make('ตำบล/แขวง', 'sub_district')
+            Text::make('ที่อยู่', 'address')->hideFromIndex()
+                ->rules('required'),
+            InputSubDistrict::make('ตำบล/แขวง', 'sub_district')
                 ->withValues(['district', 'amphoe', 'province', 'zipcode'])
+                ->fromValue('district')
                 ->hideFromIndex(),
-            ThaiAddressMetadata::make('อำเภอ/เขต', 'district')
+            InputDistrict::make('อำเภอ/เขต', 'district')
+                ->withValues(['district', 'amphoe', 'province', 'zipcode'])
                 ->fromValue('amphoe')
-                ->sortable(),
-            ThaiAddressMetadata::make('จังหวัด', 'province')->fromValue('province')
-                ->sortable(),
-            ThaiAddressMetadata::make('รหัสไปรษณีย์', 'postal_code')->fromValue('zipcode'),
+                ->sortable()
+                ->rules('required'),
+            InputProvince::make('จังหวัด', 'province')
+                ->withValues(['district', 'amphoe', 'province', 'zipcode'])
+                ->fromValue('province')
+                ->sortable()
+                ->rules('required'),
+            InputPostalCode::make('รหัสไปรษณีย์', 'postal_code')
+                ->withValues(['district', 'amphoe', 'province', 'zipcode'])
+                ->fromValue('zipcode')
+                ->hideFromIndex(),
+
             MapAddress::make('ตำแหน่งที่ตั้งบน Google Map', 'Location')->hideFromIndex()
 
         ];

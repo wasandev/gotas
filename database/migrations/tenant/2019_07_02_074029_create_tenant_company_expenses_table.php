@@ -15,7 +15,7 @@ class CreateTenantCompanyExpensesTable extends Migration
     {
         Schema::create('company_expenses', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name', 200);
+            $table->string('name', 200)->unique();
             $table->integer('user_id')->unsigned()->nullable();
             $table->timestamps();
         });

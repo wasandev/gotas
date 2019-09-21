@@ -89,7 +89,7 @@ class HasOne extends Field implements ListableField
     /**
      * Set the displayable singular label of the resource.
      *
-     * @return string
+     * @return $this
      */
     public function singularLabel($singularLabel)
     {

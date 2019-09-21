@@ -144,12 +144,13 @@ export default {
 
                 this.submittedViaUpdateResource = false
 
-                this.$toasted.show(
+                Nova.success(
                     this.__('The :resource was updated!', {
                         resource: this.resourceInformation.singularLabel.toLowerCase(),
-                    }),
-                    { type: 'success' }
+                    })
                 )
+
+                await this.updateLastRetrievedAtTimestamp()
 
                 this.$router.push({ path: redirect })
             } catch (error) {
@@ -157,14 +158,14 @@ export default {
 
                 if (error.response.status == 422) {
                     this.validationErrors = new Errors(error.response.data.errors)
+                    Nova.error(this.__('There was a problem submitting the form.'))
                 }
 
                 if (error.response.status == 409) {
-                    this.$toasted.show(
+                    Nova.error(
                         this.__(
                             'Another user has updated this resource since this page was loaded. Please refresh the page and try again.'
-                        ),
-                        { type: 'error' }
+                        )
                     )
                 }
             }
@@ -181,11 +182,10 @@ export default {
 
                 this.submittedViaUpdateAndContinueEditing = false
 
-                this.$toasted.show(
+                Nova.success(
                     this.__('The :resource was updated!', {
                         resource: this.resourceInformation.singularLabel.toLowerCase(),
-                    }),
-                    { type: 'success' }
+                    })
                 )
 
                 // Reset the form by refetching the fields
@@ -199,14 +199,14 @@ export default {
 
                 if (error.response.status == 422) {
                     this.validationErrors = new Errors(error.response.data.errors)
+                    Nova.error(this.__('There was a problem submitting the form.'))
                 }
 
                 if (error.response.status == 409) {
-                    this.$toasted.show(
+                    Nova.error(
                         this.__(
                             'Another user has updated this resource since this page was loaded. Please refresh the page and try again.'
-                        ),
-                        { type: 'error' }
+                        )
                     )
                 }
             }

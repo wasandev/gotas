@@ -10,11 +10,13 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Textarea;
-
 use Laravel\Nova\Panel;
 use Illuminate\Http\Request;
-use Wasandev\InputThaiAddress\InputThaiAddress;
-use Wasandev\InputThaiAddress\ThaiAddressMetadata;
+use Laravel\Nova\Fields\BelongsToMany;
+use Wasandev\InputThaiAddress\InputSubDistrict;
+use Wasandev\InputThaiAddress\InputDistrict;
+use Wasandev\InputThaiAddress\InputProvince;
+use Wasandev\InputThaiAddress\InputPostalCode;
 use Wasandev\InputThaiAddress\MapAddress;
 use Laravel\Nova\Fields\Select;
 use Yassi\NestedForm\NestedForm;
@@ -62,13 +64,16 @@ class Customer extends Resource
     {
         return [
             ID::make()->sortable(),
-            Boolean::make('ใช้งาน', 'status')->size('w-full'),
+            Boolean::make('ใช้งาน', 'status')->size('w-full')
+                ->hideWhenCreating(),
             Text::make('ชื่อลูกค้า', 'name')
                 ->sortable()
-                ->size('w-1/2'),
+                ->size('w-1/2')
+                ->rules('required', 'max:250'),
             Text::make('เลขประจำตัวผู้เสียภาษี', 'taxid')
                 ->hideFromIndex()
-                ->size('w-1/2'),
+                ->size('w-1/2')
+                ->rules('required', 'digits:13', 'numeric'),
             Select::make('ประเภท', 'type')->options([
                 'company' => 'นิติบุคคล',
                 'person' => 'บุคคลธรรมดา'
@@ -84,6 +89,12 @@ class Customer extends Resource
             new Panel('อื่นๆ', $this->otherFields()),
 
             HasMany::make('จุดรับ-ส่งสินค้า', 'addresses', 'App\Nova\Address'),
+            BelongsToMany::make('สินค้าที่ใช้ส่งประจำ', 'product', 'App\Nova\Product')
+                ->fields(function () {
+                    return [
+                        Text::make('ราคาค่าขนส่ง', 'price'),
+                    ];
+                }),
 
 
 
@@ -98,10 +109,11 @@ class Customer extends Resource
     protected function contactFields()
     {
         return [
-            Text::make('ชื่อผู้ติดต่อ', 'contractname')
+            Text::make('ชื่อผู้ติดต่อ', 'contactname')
                 ->hideFromIndex()
                 ->size('w-1/2'),
-            Text::make('โทรศัพท์', 'phoneno')->size('w-1/2'),
+            Text::make('โทรศัพท์', 'phoneno')->size('w-1/2')
+                ->rules('required', 'numeric'),
             Text::make('เว็บไซต์', 'weburl')->size('w-1/2')
                 ->hideFromIndex(),
             Text::make('Facebook', 'facebook')->size('w-1/2')
@@ -120,16 +132,26 @@ class Customer extends Resource
     {
         return [
 
-            Text::make('ที่อยู่', 'address')->hideFromIndex(),
-            InputThaiAddress::make('ตำบล/แขวง', 'sub_district')
+            Text::make('ที่อยู่', 'address')->hideFromIndex()
+                ->rules('required'),
+            InputSubDistrict::make('ตำบล/แขวง', 'sub_district')
                 ->withValues(['district', 'amphoe', 'province', 'zipcode'])
+                ->fromValue('district')
                 ->hideFromIndex(),
-            ThaiAddressMetadata::make('อำเภอ/เขต', 'district')
+            InputDistrict::make('อำเภอ/เขต', 'district')
+                ->withValues(['district', 'amphoe', 'province', 'zipcode'])
                 ->fromValue('amphoe')
-                ->sortable(),
-            ThaiAddressMetadata::make('จังหวัด', 'province')->fromValue('province')
-                ->sortable(),
-            ThaiAddressMetadata::make('รหัสไปรษณีย์', 'postal_code')->fromValue('zipcode'),
+                ->sortable()
+                ->rules('required'),
+            InputProvince::make('จังหวัด', 'province')
+                ->withValues(['district', 'amphoe', 'province', 'zipcode'])
+                ->fromValue('province')
+                ->sortable()
+                ->rules('required'),
+            InputPostalCode::make('รหัสไปรษณีย์', 'postal_code')
+                ->withValues(['district', 'amphoe', 'province', 'zipcode'])
+                ->fromValue('zipcode')
+                ->hideFromIndex(),
             MapAddress::make('ตำแหน่งที่ตั้งบน Google Map', 'Location')->hideFromIndex()
 
         ];
@@ -193,13 +215,5 @@ class Customer extends Resource
     public function actions(Request $request)
     {
         return [];
-    }
-    public static function availableForNavigation(Request $request)
-    {
-        $hostname  = app(\Hyn\Tenancy\Environment::class)->hostname();
-        if (is_null($hostname)) {
-            return false;
-        }
-        return true;
     }
 }

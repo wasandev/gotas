@@ -14,7 +14,7 @@ class AddStatusToTenantCarsTable extends Migration
     public function up()
     {
         Schema::table('cars', function (Blueprint $table) {
-            $table->boolean('status')->default(false);
+            $table->boolean('status')->default(true);
             $table->string('carimage')->nullable();
         });
     }

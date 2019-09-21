@@ -21,6 +21,8 @@ use App\Models\Tenant\Address;
 use App\Observers\AddressObserver;
 use App\Models\Tenant\Branch;
 use App\Observers\BranchObserver;
+use App\Models\Tenant\Branch_area;
+use App\Observers\BranchAreaObserver;
 use App\Models\Tenant\Businesstype;
 use App\Observers\BusinesstypeObserver;
 use App\Models\Tenant\Car_expense;
@@ -48,15 +50,22 @@ use App\Observers\Product_imageObserver;
 use App\Models\Tenant\Product_style;
 use App\Observers\Product_styleObserver;
 use App\Models\Tenant\Product;
+use App\Models\Tenant\Productservice_price;
+use App\Models\Tenant\Routeto_branch;
 use App\Observers\ProductObserver;
-use App\Models\Tenant\Province;
-use App\Observers\ProvinceObserver;
 use App\Models\Tenant\Tiretype;
 use App\Observers\TiretypeObserver;
 use App\Models\Tenant\Unit;
 use App\Observers\UnitObserver;
 use App\Models\Tenant\Vendor;
+
+use App\Models\Tenant\Branch_route;
+use App\Observers\BranchRouteObserver;
+
+use App\Observers\ProductServicepriceObserver;
+use App\Observers\RoutetoBranchObserver;
 use App\Observers\VendorObserver;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -86,6 +95,9 @@ class AppServiceProvider extends ServiceProvider
         CompanyProfile::observe(CompanyProfileObserver::class);
         Address::observe(AddressObserver::class);
         Branch::observe(BranchObserver::class);
+        Branch_area::observe(BranchAreaObserver::class);
+        //Branch_route::observer(BranchRouteObserver::class);
+        //Routeto_branch::observer(RoutetoBranchObserver::class);
         Businesstype::observe(BusinesstypeObserver::class);
         Car_expense::observe(Car_expenseObserver::class);
         Car::observe(CarObserver::class);
@@ -100,7 +112,7 @@ class AppServiceProvider extends ServiceProvider
         Product_image::observe(Product_imageObserver::class);
         Product_style::observe(Product_styleObserver::class);
         Product::observe(ProductObserver::class);
-        Province::observe(ProvinceObserver::class);
+        //Productservice_price::observer(ProductServicepriceObserver::class);
         Tiretype::observe(TiretypeObserver::class);
         Unit::observe(UnitObserver::class);
         Vendor::observe(VendorObserver::class);

@@ -3,13 +3,13 @@
 namespace Laravel\Nova\Actions;
 
 use DateTime;
-use Laravel\Nova\Nova;
-use Illuminate\Support\Str;
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Http\Requests\ActionRequest;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+use Laravel\Nova\Http\Requests\ActionRequest;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Nova;
 
 class ActionEvent extends Model
 {

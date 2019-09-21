@@ -2,13 +2,13 @@
 
 namespace Laravel\Nova\Fields;
 
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Laravel\Nova\TrashedStatus;
-use Laravel\Nova\Rules\Relatable;
-use Laravel\Nova\Http\Requests\NovaRequest;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Http\Requests\ResourceIndexRequest;
+use Laravel\Nova\Rules\Relatable;
+use Laravel\Nova\TrashedStatus;
 
 class BelongsTo extends Field
 {

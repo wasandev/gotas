@@ -16,7 +16,7 @@ use Illuminate\Support\Carbon;
 class Tranjob extends Resource
 {
     //public static $displayInNavigation = false;
-    public static $group = "5.งานด้านบริการขนส่ง";
+    public static $group = "5.งานจัดการการขนส่ง";
     //public static $subGroup = "บันทึกใบรับงานขนส่ง";
     /**
      * The model the resource corresponds to.
@@ -43,7 +43,7 @@ class Tranjob extends Resource
 
     public static function label()
     {
-        return 'ใบรับงานขนส่งเหมาเที่ยว';
+        return 'ใบรับงานขนส่งแบบเหมา';
     }
 
 
@@ -175,13 +175,5 @@ class Tranjob extends Resource
     public function actions(Request $request)
     {
         return [];
-    }
-    public static function availableForNavigation(Request $request)
-    {
-        $hostname  = app(\Hyn\Tenancy\Environment::class)->hostname();
-        if (is_null($hostname)) {
-            return false;
-        }
-        return true;
     }
 }

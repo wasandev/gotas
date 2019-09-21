@@ -73,7 +73,8 @@ class Car extends Resource
 
         return [
             ID::make()->sortable(),
-            Boolean::make('ใช้งาน', 'status'),
+            Boolean::make('ใช้งาน', 'status')->size('w-full')
+                ->hideWhenCreating(),
             Image::make('รูปรถ', 'carimage')->hideFromIndex(),
             new Panel('รายละเอียดของรถ', $this->carFields()),
             new Panel('รายละเอียดอื่นๆของรถ', $this->carotherFields()),
@@ -91,23 +92,22 @@ class Car extends Resource
         return [
             Text::make('ทะเบียนรถ', 'car_regist')
                 ->size('w-1/2')
-                ->rules('required', 'max:7')
+                ->rules('required')
                 ->sortable(),
             BelongsTo::make('จังหวัด', 'province', Province::class)
                 ->searchable()
-                ->size('w-1/2'),
+                ->size('w-1/2')
+                ->rules('required'),
 
             Text::make('หมายเลขรถของบริษัท', 'carno')
                 ->sortable()
-                ->size('w-1/2')
-                ->hideFromIndex(),
+                ->size('w-1/2'),
             Select::make('ตำแหน่งรถ', 'carposition')->options([
                 'tractor' => 'หัว',
                 'trailer' => 'หาง'
             ])->displayUsingLabels()
                 ->sortable()
-                ->size('w-1/2')
-                ->hideFromIndex(),
+                ->size('w-1/2'),
             Select::make('การเป็นเจ้าของ', 'ownertype')->options([
                 'owner' => 'รถบริษัท',
                 'partner' => 'รถร่วมบริการ'
@@ -130,9 +130,11 @@ class Car extends Resource
 
 
             BelongsTo::make('ประเภทรถ', 'cartype', 'App\Nova\Cartype')
-                ->size('w-1/2'),
+                ->size('w-1/2')
+                ->hideFromIndex(),
             BelongsTo::make('ลักษณะรถ', 'carstyle', 'App\Nova\Carstyle')
-                ->size('w-1/2'),
+                ->size('w-1/2')
+                ->hideFromIndex(),
             BelongsTo::make('ตำแหน่งยาง', 'tiretype', 'App\Nova\Tiretype')
                 ->size('w-1/2')
                 ->hideFromIndex(),
@@ -226,13 +228,5 @@ class Car extends Resource
     public function actions(Request $request)
     {
         return [];
-    }
-    public static function availableForNavigation(Request $request)
-    {
-        $hostname  = app(\Hyn\Tenancy\Environment::class)->hostname();
-        if (is_null($hostname)) {
-            return false;
-        }
-        return true;
     }
 }

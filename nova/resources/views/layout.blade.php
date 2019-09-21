@@ -20,6 +20,11 @@
 
     <!-- Custom Meta Data -->
     @include('nova::partials.meta')
+
+    <!-- Theme Styles -->
+    @foreach(Nova::themeStyles() as $publicPath)
+        <link rel="stylesheet" href="{{ $publicPath }}">
+    @endforeach
 </head>
 <body class="min-w-site bg-40 text-black min-h-full">
     <div id="nova">

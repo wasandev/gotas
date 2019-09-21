@@ -10,8 +10,8 @@ use Laravel\Nova\Fields\BelongsTo;
 
 class Province extends Resource
 {
-
     public static $displayInNavigation = false;
+    //public static $displayInNavigation = false;
     public static $group = '1.งานสำหรับผู้ดูแลระบบ';
     //public static $subGroup = "ข้อมูลเบื้องต้น";
     /**
@@ -50,9 +50,8 @@ class Province extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('จังหวัด', 'name'),
-            BelongsTo::make('ผู้ทำรายการ', 'user', 'App\Nova\User')
-                ->onlyOnDetail(),
+            Text::make('จังหวัด', 'name')->sortable(),
+
         ];
     }
 
@@ -98,13 +97,5 @@ class Province extends Resource
     public function actions(Request $request)
     {
         return [];
-    }
-    public static function availableForNavigation(Request $request)
-    {
-        $hostname  = app(\Hyn\Tenancy\Environment::class)->hostname();
-        if (is_null($hostname)) {
-            return false;
-        }
-        return true;
     }
 }

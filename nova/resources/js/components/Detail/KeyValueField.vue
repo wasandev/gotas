@@ -1,10 +1,10 @@
 <template>
     <panel-item :field="field">
         <template slot="value">
-            <KeyValueTable :edit-mode="false" class="overflow-hidden">
+            <KeyValueTable v-if="theData.length > 0" :edit-mode="false" class="overflow-hidden">
                 <KeyValueHeader :key-label="field.keyLabel" :value-label="field.valueLabel" />
 
-                <div class="bg-white overflow-hidden">
+                <div class="bg-white overflow-hidden key-value-items">
                     <KeyValueItem
                         v-for="item in theData"
                         :item="item"

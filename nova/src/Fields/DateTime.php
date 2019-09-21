@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Fields;
 
-use Exception;
 use DateTimeInterface;
+use Exception;
 
 class DateTime extends Field
 {
@@ -51,6 +51,17 @@ class DateTime extends Field
      * @return $this
      */
     public function format($format)
+    {
+        return $this->withMeta([__FUNCTION__ => $format]);
+    }
+
+    /**
+     * Set the date format (flatpickr.js) that should be used to display the date in the input field (picker).
+     *
+     * @param  string  $format
+     * @return $this
+     */
+    public function pickerFormat($format)
     {
         return $this->withMeta([__FUNCTION__ => $format]);
     }

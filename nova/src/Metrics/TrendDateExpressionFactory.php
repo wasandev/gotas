@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Metrics;
 
-use InvalidArgumentException;
 use Illuminate\Database\Eloquent\Builder;
+use InvalidArgumentException;
 
 class TrendDateExpressionFactory
 {

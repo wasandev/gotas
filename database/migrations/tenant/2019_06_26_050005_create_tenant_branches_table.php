@@ -16,7 +16,7 @@ class CreateTenantBranchesTable extends Migration
         Schema::create('branches', function (Blueprint $table) {
             $table->increments('id');
             $table->char('code', 5);
-            $table->string('name', 250);
+            $table->string('name', 250)->unique();
             $table->string('address')->nullable();
             $table->string('sub_district')->nullable();
             $table->string('district')->nullable();

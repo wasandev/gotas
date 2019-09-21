@@ -1,6 +1,6 @@
 <template>
-    <div v-if="isNotObject" class="flex items-center">
-        <div class="flex flex-grow border-b border-50">
+    <div v-if="isNotObject" class="flex items-center key-value-item">
+        <div class="flex flex-grow border-b border-50 key-value-fields">
             <div class="w-48 cursor-text">
                 <textarea
                     :dusk="`key-value-key-${index}`"
@@ -8,8 +8,9 @@
                     @focus="handleKeyFieldFocus"
                     ref="keyField"
                     type="text"
-                    class="font-mono text-sm resize-none block min-h-input w-full form-control form-input form-input-row py-4"
+                    class="font-mono text-sm resize-none block min-h-input w-full form-control form-input form-input-row py-4 text-90"
                     :disabled="disabled"
+                    style="background-clip: border-box;"
                     :class="{
                         '!bg-white': disabled,
                         'hover:bg-20 focus:bg-white': !disabled,
@@ -24,7 +25,7 @@
                     @focus="handleValueFieldFocus"
                     ref="valueField"
                     type="text"
-                    class="font-mono text-sm hover:bg-20 focus:bg-white block min-h-input w-full form-control form-input form-input-row py-4"
+                    class="font-mono text-sm hover:bg-20 focus:bg-white block min-h-input w-full form-control form-input form-input-row py-4 text-90"
                     :disabled="disabled"
                     :class="{
                         '!bg-white': disabled,
@@ -39,7 +40,7 @@
                 @click="$emit('remove-row', item.id)"
                 type="button"
                 tabindex="-1"
-                class="flex appearance-none cursor-pointer text-70 hover:text-primary"
+                class="flex appearance-none cursor-pointer text-70 hover:text-primary active:outline-none active:shadow-outline focus:outline-none focus:shadow-outline"
                 title="Delete"
             >
                 <icon />

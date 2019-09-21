@@ -2,11 +2,11 @@
 
 namespace Laravel\Nova\Tests\Feature;
 
-use Laravel\Nova\Fields\Trix;
-use Laravel\Nova\Tests\Fixtures\Post;
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Nova\Tests\IntegrationTest;
+use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Tests\Fixtures\Post;
+use Laravel\Nova\Tests\IntegrationTest;
 
 class TrixTest extends IntegrationTest
 {

@@ -2,18 +2,18 @@
 
 namespace Laravel\Nova\Tests\Feature;
 
-use stdClass;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Trix;
-use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\Password;
-use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Tests\IntegrationTest;
+use Laravel\Nova\Fields\Password;
+use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Tests\Fixtures\UserResource;
+use Laravel\Nova\Tests\IntegrationTest;
+use stdClass;
 
 class FieldTest extends IntegrationTest
 {

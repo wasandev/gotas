@@ -2,28 +2,28 @@
 
 namespace Laravel\Nova\Tests;
 
-use Mockery;
-use Laravel\Nova\Nova;
-use Orchestra\Testbench\TestCase;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Queue\WorkerOptions;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Nova\Tests\Fixtures\NoopAction;
-use Laravel\Nova\Tests\Fixtures\TagResource;
-use Laravel\Nova\Tests\Fixtures\FileResource;
-use Laravel\Nova\Tests\Fixtures\PostResource;
-use Laravel\Nova\Tests\Fixtures\RoleResource;
-use Laravel\Nova\Tests\Fixtures\UserResource;
-use Illuminate\Contracts\Auth\Authenticatable;
-use Laravel\Nova\Tests\Fixtures\PanelResource;
+use Laravel\Nova\Nova;
 use Laravel\Nova\Tests\Fixtures\AddressResource;
 use Laravel\Nova\Tests\Fixtures\BooleanResource;
 use Laravel\Nova\Tests\Fixtures\CommentResource;
 use Laravel\Nova\Tests\Fixtures\CustomKeyResource;
-use Laravel\Nova\Tests\Fixtures\RecipientResource;
-use Laravel\Nova\Tests\Fixtures\GroupedUserResource;
+use Laravel\Nova\Tests\Fixtures\FileResource;
 use Laravel\Nova\Tests\Fixtures\ForbiddenUserResource;
+use Laravel\Nova\Tests\Fixtures\GroupedUserResource;
+use Laravel\Nova\Tests\Fixtures\NoopAction;
+use Laravel\Nova\Tests\Fixtures\PanelResource;
+use Laravel\Nova\Tests\Fixtures\PostResource;
+use Laravel\Nova\Tests\Fixtures\RecipientResource;
+use Laravel\Nova\Tests\Fixtures\RoleResource;
 use Laravel\Nova\Tests\Fixtures\SoftDeletingFileResource;
+use Laravel\Nova\Tests\Fixtures\TagResource;
+use Laravel\Nova\Tests\Fixtures\UserResource;
 use Laravel\Nova\Tests\Fixtures\UserWithRedirectResource;
+use Mockery;
+use Orchestra\Testbench\TestCase;
 
 abstract class IntegrationTest extends TestCase
 {

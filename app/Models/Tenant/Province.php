@@ -10,8 +10,10 @@ class Province extends Model
 {
     use UsesTenantConnection;
 
+    protected $table = 'province';
+
     protected $fillable = [
-        'name', 'user_id'
+        'name'
     ];
 
     public function car()
@@ -19,8 +21,8 @@ class Province extends Model
         return $this->hasMany('App\Models\Tenant\Car', 'car_province');
     }
 
-    public function user()
+    public function districts()
     {
-        return $this->belongsTo('App\Models\Tenant\User');
+        return $this->hasMany('App\Models\Tenant\District');
     }
 }

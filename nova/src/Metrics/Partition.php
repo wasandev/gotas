@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Metrics;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 abstract class Partition extends Metric
 {

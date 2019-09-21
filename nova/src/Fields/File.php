@@ -3,8 +3,8 @@
 namespace Laravel\Nova\Fields;
 
 use Illuminate\Support\Facades\Storage;
-use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Contracts\Deletable as DeletableContract;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class File extends Field implements DeletableContract
 {

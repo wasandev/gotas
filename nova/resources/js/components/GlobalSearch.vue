@@ -3,7 +3,7 @@
         <div class="relative">
             <!-- Search -->
             <div class="relative">
-                <icon type="search" class="absolute search-icon-center ml-3 text-70" />
+                <icon type="search" class="absolute search-icon-center ml-3 text-80" />
 
                 <input
                     dusk="global-search"
@@ -18,7 +18,7 @@
                     v-model="searchTerm"
                     type="search"
                     :placeholder="__('Press / to search')"
-                    class="pl-search form-control form-input form-input-bordered w-full"
+                    class="pl-search w-full form-global-search"
                 />
             </div>
 
@@ -69,7 +69,11 @@
                                 <img
                                     v-if="item.avatar"
                                     :src="item.avatar"
-                                    class="h-8 w-8 rounded-full mr-3"
+                                    class="h-8 w-8 mr-3"
+                                    :class="{
+                                        'rounded-full': item.rounded,
+                                        rounded: !item.rounded,
+                                    }"
                                 />
 
                                 <div>

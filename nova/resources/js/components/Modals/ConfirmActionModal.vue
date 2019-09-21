@@ -45,7 +45,7 @@
                         dusk="cancel-action-button"
                         type="button"
                         @click.prevent="handleClose"
-                        class="btn text-80 font-normal h-9 px-3 mr-3 btn-link"
+                        class="btn btn-link dim cursor-pointer text-80 ml-auto mr-6"
                     >
                         {{ __('Cancel') }}
                     </button>

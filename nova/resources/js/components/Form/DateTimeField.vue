@@ -7,6 +7,7 @@
                     :dusk="field.attribute"
                     :name="field.name"
                     :placeholder="placeholder"
+                    :dateFormat="pickerFormat"
                     :value="localizedValue"
                     :twelve-hour-time="usesTwelveHourTime"
                     :first-day-of-week="firstDayOfWeek"
@@ -57,8 +58,16 @@ export default {
             return this.field.firstDayOfWeek || 0
         },
 
+        format() {
+            return this.field.format || 'YYYY-MM-DD HH:mm:ss'
+        },
+
         placeholder() {
-            return this.field.placeholder || moment().format('YYYY-MM-DD HH:mm:ss')
+            return this.field.placeholder || moment().format(this.format)
+        },
+
+        pickerFormat() {
+            return this.field.pickerFormat || 'Y-m-d H:i:S'
         },
     },
 }

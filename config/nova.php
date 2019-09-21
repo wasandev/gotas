@@ -1,10 +1,10 @@
 <?php
 
+use App\Http\Middleware\EnforceTenancy;
 use Laravel\Nova\Http\Middleware\Authorize;
 use Laravel\Nova\Http\Middleware\BootTools;
 use Laravel\Nova\Http\Middleware\Authenticate;
 use Laravel\Nova\Http\Middleware\DispatchServingNovaEvent;
-use App\Http\Middleware\EnforceTenancy;
 
 return [
 
@@ -32,9 +32,7 @@ return [
     |
     */
 
-    //'url' => env('APP_URL', '/'),
-    'url' => config('app.url', '/'),
-
+    'url' => env('APP_URL', '/'),
 
     /*
     |--------------------------------------------------------------------------
@@ -59,8 +57,6 @@ return [
     | of the authentication guards defined in the "auth" config file.
     |
     */
-
-
 
     'guard' => env('NOVA_GUARD', 'tenants'),
 
@@ -96,7 +92,5 @@ return [
     */
 
     'pagination' => 'links',
-
-
 
 ];

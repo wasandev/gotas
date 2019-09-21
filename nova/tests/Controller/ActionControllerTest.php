@@ -2,36 +2,36 @@
 
 namespace Laravel\Nova\Tests\Controller;
 
-use Laravel\Nova\Actions\Action;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Actions\ActionEvent;
-use Laravel\Nova\Tests\Fixtures\Post;
-use Laravel\Nova\Tests\Fixtures\User;
-use Laravel\Nova\Tests\IntegrationTest;
-use Laravel\Nova\Tests\Fixtures\Comment;
-use Laravel\Nova\Tests\Fixtures\IdFilter;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Tests\Fixtures\NoopAction;
-use Laravel\Nova\Tests\Fixtures\UserPolicy;
-use Laravel\Nova\Tests\Fixtures\EmptyAction;
-use Laravel\Nova\Tests\Fixtures\QueuedAction;
-use Laravel\Nova\Tests\Fixtures\UserResource;
-use Laravel\Nova\Tests\Fixtures\FailingAction;
-use Laravel\Nova\Tests\Fixtures\RedirectAction;
-use Laravel\Nova\Tests\Fixtures\ExceptionAction;
-use Laravel\Nova\Tests\Fixtures\UnrunnableAction;
+use Laravel\Nova\Tests\Fixtures\Comment;
 use Laravel\Nova\Tests\Fixtures\DestructiveAction;
+use Laravel\Nova\Tests\Fixtures\EmptyAction;
+use Laravel\Nova\Tests\Fixtures\ExceptionAction;
+use Laravel\Nova\Tests\Fixtures\FailingAction;
 use Laravel\Nova\Tests\Fixtures\HandleResultAction;
-use Laravel\Nova\Tests\Fixtures\UnauthorizedAction;
-use Laravel\Nova\Tests\Fixtures\UpdateStatusAction;
-use Illuminate\Database\Eloquent\Relations\Relation;
+use Laravel\Nova\Tests\Fixtures\IdFilter;
+use Laravel\Nova\Tests\Fixtures\NoopAction;
+use Laravel\Nova\Tests\Fixtures\NoopActionWithoutActionable;
 use Laravel\Nova\Tests\Fixtures\OpensInNewTabAction;
-use Laravel\Nova\Tests\Fixtures\RequiredFieldAction;
+use Laravel\Nova\Tests\Fixtures\Post;
+use Laravel\Nova\Tests\Fixtures\QueuedAction;
 use Laravel\Nova\Tests\Fixtures\QueuedResourceAction;
 use Laravel\Nova\Tests\Fixtures\QueuedUpdateStatusAction;
-use Laravel\Nova\Tests\Fixtures\NoopActionWithoutActionable;
+use Laravel\Nova\Tests\Fixtures\RedirectAction;
+use Laravel\Nova\Tests\Fixtures\RequiredFieldAction;
+use Laravel\Nova\Tests\Fixtures\UnauthorizedAction;
+use Laravel\Nova\Tests\Fixtures\UnrunnableAction;
 use Laravel\Nova\Tests\Fixtures\UnrunnableDestructiveAction;
+use Laravel\Nova\Tests\Fixtures\UpdateStatusAction;
+use Laravel\Nova\Tests\Fixtures\User;
+use Laravel\Nova\Tests\Fixtures\UserPolicy;
+use Laravel\Nova\Tests\Fixtures\UserResource;
+use Laravel\Nova\Tests\IntegrationTest;
 
 class ActionControllerTest extends IntegrationTest
 {

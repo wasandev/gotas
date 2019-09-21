@@ -1,0 +1,62 @@
+php:
+    preset: laravel
+    enabled:
+        - alpha_ordered_imports
+    disabled:
+        - length_ordered_imports
+
+css:
+    tab-width: 2
+    use-tabs: false
+    print-width: 100
+    double-quotes: false
+    finder:
+        exclude:
+            - modules
+            - node_modules
+            - storage
+            - vendor
+            - public
+        name:
+            - '*.css'
+            - '*.scss'
+            - '*.less'
+
+vue:
+    tab-width: 4
+    use-tabs: false
+    print-width: 100
+    double-quotes: false
+    trailing-commas: es5
+    semicolons: false
+    arrow-parens: avoid
+    bracket-spacing: true
+    finder:
+        exclude:
+            - modules
+            - node_modules
+            - storage
+            - vendor
+        name: '*.vue'
+
+js:
+    tab-width: 4
+    use-tabs: false
+    print-width: 100
+    double-quotes: false
+    trailing-commas: es5
+    semicolons: false
+    arrow-parens: avoid
+    bracket-spacing: true
+    finder:
+        exclude:
+            - public
+            - modules
+            - node_modules
+            - storage
+            - vendor
+        name:
+            - '*.js'
+            - '*.jsx'
+        not-name:
+            - '*.min.js'

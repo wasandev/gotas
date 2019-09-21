@@ -2,9 +2,9 @@
 
 namespace Laravel\Nova\Tests\Feature;
 
-use Laravel\Nova\Nova;
-use Laravel\Nova\Dashboard;
 use Illuminate\Http\Request;
+use Laravel\Nova\Dashboard;
+use Laravel\Nova\Nova;
 use Laravel\Nova\Tests\IntegrationTest;
 
 class DashboardTest extends IntegrationTest

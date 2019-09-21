@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Http\Controllers;
 
-use Illuminate\Support\Carbon;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Laravel\Nova\Actions\ActionEvent;
 use Laravel\Nova\Http\Requests\UpdateResourceRequest;

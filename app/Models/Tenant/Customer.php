@@ -52,6 +52,11 @@ class Customer extends Model
         return $this->hasMany('App\Models\Tenant\Address');
     }
 
+    public function product()
+    {
+        return $this->belongsToMany('App\Models\Tenant\Product')->withPivot('price')
+            ->withTimestamps();
+    }
     /*
 	Provide the Location value to the Nova field
 	*/

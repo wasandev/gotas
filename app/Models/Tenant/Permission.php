@@ -4,9 +4,9 @@ namespace App\Models\Tenant;
 
 use Hyn\Tenancy\Traits\UsesTenantConnection;
 
-use Spatie\Permission\Models\Permission as SpatiePermission;
+use Pktharindu\NovaPermissions\Permission as NovaPermission;
 
-class Permission extends SpatiePermission
+class Permission extends NovaPermission
 {
     use UsesTenantConnection;
     protected $guard_name = 'tenants';

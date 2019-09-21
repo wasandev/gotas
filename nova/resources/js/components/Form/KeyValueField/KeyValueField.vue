@@ -4,7 +4,7 @@
             <KeyValueTable>
                 <KeyValueHeader :key-label="field.keyLabel" :value-label="field.valueLabel" />
 
-                <div class="bg-white overflow-hidden">
+                <div class="bg-white overflow-hidden key-value-items">
                     <KeyValueItem
                         v-for="(item, index) in theData"
                         :index="index"
@@ -14,16 +14,18 @@
                         :ref="item.id"
                     />
                 </div>
+            </KeyValueTable>
 
+            <div class="mr-11">
                 <button
                     @click="addRowAndSelect"
                     type="button"
-                    class="appearance-none w-full font-semibold py-3 flex items-center justify-center text-80 hover:text-primary font-bold"
+                    class="btn btn-link dim cursor-pointer rounded-lg mx-auto text-primary mt-3 px-3 rounded-b-lg flex items-center"
                 >
                     <icon type="add" width="24" height="24" view-box="0 0 24 24" />
                     <span class="ml-1">{{ field.actionText }}</span>
                 </button>
-            </KeyValueTable>
+            </div>
         </template>
     </default-field>
 </template>

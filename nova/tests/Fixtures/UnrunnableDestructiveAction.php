@@ -3,8 +3,8 @@
 namespace Laravel\Nova\Tests\Fixtures;
 
 use Illuminate\Support\Collection;
-use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Actions\DestructiveAction;
+use Laravel\Nova\Fields\ActionFields;
 
 class UnrunnableDestructiveAction extends DestructiveAction
 {

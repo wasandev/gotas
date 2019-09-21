@@ -2,15 +2,15 @@
 
 namespace Laravel\Nova\Tests\Feature;
 
-use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Tests\Fixtures\Post;
-use Laravel\Nova\Tests\Fixtures\User;
-use Laravel\Nova\Tests\IntegrationTest;
-use Laravel\Nova\Tests\Fixtures\Comment;
+use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Tests\Fixtures\Comment;
+use Laravel\Nova\Tests\Fixtures\Post;
 use Laravel\Nova\Tests\Fixtures\PostResource;
+use Laravel\Nova\Tests\Fixtures\User;
 use Laravel\Nova\Tests\Fixtures\UserResource;
+use Laravel\Nova\Tests\IntegrationTest;
 
 class RelationsTest extends IntegrationTest
 {

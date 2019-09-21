@@ -5,6 +5,7 @@
                 <ImageLoader
                     :src="imageUrl"
                     :maxWidth="maxWidth"
+                    :rounded="rounded"
                     @missing="value => (missing = value)"
                 />
             </template>
@@ -80,6 +81,10 @@ export default {
 
         imageUrl() {
             return this.field.previewUrl || this.field.thumbnailUrl
+        },
+
+        rounded() {
+            return this.field.rounded
         },
 
         maxWidth() {

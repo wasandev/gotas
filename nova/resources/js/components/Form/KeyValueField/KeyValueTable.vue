@@ -1,8 +1,7 @@
 <template>
     <div
-        class="relative rounded-t-lg rounded-b-lg shadow bg-30 border border-60"
+        class="relative rounded-lg rounded-b-lg bg-30 bg-clip border border-60"
         :class="{ 'mr-11': editMode }"
-        style="background-clip: border-box;"
     >
         <slot />
     </div>

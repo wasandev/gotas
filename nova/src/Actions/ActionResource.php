@@ -2,16 +2,16 @@
 
 namespace Laravel\Nova\Actions;
 
-use Laravel\Nova\Resource;
-use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Status;
 use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\KeyValue;
+use Laravel\Nova\Fields\MorphToActionTarget;
+use Laravel\Nova\Fields\Status;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Fields\MorphToActionTarget;
+use Laravel\Nova\Resource;
 
 class ActionResource extends Resource
 {
@@ -80,14 +80,14 @@ class ActionResource extends Resource
             })->loadingWhen([__('Waiting'), __('Running')])->failedWhen([__('Failed')]),
 
             $this->when(isset($this->original), function () {
-                return KeyValue::make(__('Original'));
+                return KeyValue::make(__('Original'), 'original');
             }),
 
             $this->when(isset($this->changes), function () {
-                return KeyValue::make(__('Changes'));
+                return KeyValue::make(__('Changes'), 'changes');
             }),
 
-            Textarea::make('Exception'),
+            Textarea::make(__('Exception'), 'exception'),
 
             DateTime::make(__('Action Happened At'), 'created_at')->exceptOnForms(),
         ];

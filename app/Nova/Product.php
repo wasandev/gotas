@@ -6,6 +6,7 @@ use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Textarea;
@@ -62,27 +63,35 @@ class Product extends Resource
 
         return [
             ID::make()->sortable(),
-            Boolean::make('ใช้งาน', 'status')
-                ->size('w-full'),
+            Boolean::make('ใช้งาน', 'status')->size('w-full')
+                ->hideWhenCreating(),
 
             BelongsTo::make('ประเภทสินค้า', 'category', 'App\Nova\Category')
-                ->size('w-1/2'),
+                ->sortable(),
             BelongsTo::make('ลักษณะสินค้า', 'product_style', 'App\Nova\Product_style')
-                ->size('w-1/2'),
+                ->sortable(),
             Text::make('ชื่อสินค้า', 'name')
-                ->size('w-1/2'),
-            BelongsTo::make('หน่วยนับ', 'unit', 'App\Nova\Unit')
-                ->size('w-1/2'),
-
-            Currency::make('กว้าง(ซม.)', 'weight')->format('%.2n')
-                ->size('w-1/3'),
-            Currency::make('ยาว(ซม.)', 'length')->format('%.2n')
-                ->size('w-1/3'),
-
-            Currency::make('สูง(ซม.)', 'height')->format('%.2n')
-                ->size('w-1/3'),
+                ->sortable()
+                ->rules('required'),
+            Currency::make('กว้าง(ซม.)', 'width')
+                ->hideFromIndex(),
+            Currency::make('ยาว(ซม.)', 'length')
+                ->hideFromIndex(),
+            Currency::make('สูง(ซม.)', 'height')
+                ->hideFromIndex(),
+            Currency::make('น้ำหนัก(กก.)', 'weight')
+                ->hideFromIndex(),
+            BelongsTo::make('หน่วยนับ', 'unit', 'App\Nova\Unit'),
             BelongsTo::make('ผู้ทำรายการ', 'user', 'App\Nova\User')
                 ->onlyOnDetail(),
+            HasMany::make('ค่าขนส่งตามสินค้า', 'productservice_price', 'App\Nova\Productservice_price'),
+            // BelongsToMany::make('ลูกค้าที่ใช้สินค้านี้', 'customer', 'App\Nova\Customer')
+            //     ->fields(function () {
+            //         return [
+            //             Text::make('ราคาค่าขนส่ง', 'price'),
+            //         ];
+            //     }),
+
 
         ];
     }
@@ -132,13 +141,5 @@ class Product extends Resource
             new DownloadExcel,
 
         ];
-    }
-    public static function availableForNavigation(Request $request)
-    {
-        $hostname  = app(\Hyn\Tenancy\Environment::class)->hostname();
-        if (is_null($hostname)) {
-            return false;
-        }
-        return true;
     }
 }

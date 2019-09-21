@@ -2,10 +2,10 @@
 
 namespace Laravel\Nova;
 
-use Illuminate\Support\Facades\Gate;
-use Laravel\Nova\Events\ServingNova;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\ServiceProvider;
+use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Exceptions\NovaExceptionHandler;
 
 class NovaApplicationServiceProvider extends ServiceProvider

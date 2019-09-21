@@ -3,11 +3,11 @@
 namespace Laravel\Nova\Fields;
 
 use Closure;
-use JsonSerializable;
-use Illuminate\Support\Str;
-use Laravel\Nova\Contracts\Resolvable;
-use Illuminate\Support\Traits\Macroable;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Macroable;
+use JsonSerializable;
+use Laravel\Nova\Contracts\Resolvable;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 abstract class Field extends FieldElement implements JsonSerializable, Resolvable
@@ -120,6 +120,13 @@ abstract class Field extends FieldElement implements JsonSerializable, Resolvabl
     public $textAlign = 'left';
 
     /**
+     * Indicates if the field label and form element should sit on top of each other.
+     *
+     * @var bool
+     */
+    public $stacked = false;
+
+    /**
      * The custom components registered for fields.
      *
      * @var array
@@ -164,6 +171,20 @@ abstract class Field extends FieldElement implements JsonSerializable, Resolvabl
     public function help($helpText)
     {
         return $this->withMeta(['helpText' => $helpText]);
+    }
+
+    /**
+     * Stack the label above the field.
+     *
+     * @param bool $stack
+     *
+     * @return $this
+     */
+    public function stacked($stack = true)
+    {
+        $this->stacked = true;
+
+        return $this;
     }
 
     /**
@@ -489,7 +510,7 @@ abstract class Field extends FieldElement implements JsonSerializable, Resolvabl
 
         switch (get_class($this)) {
             case BelongsTo::class:
-                return $request->newResource()->{$this->attribute}()->getForeignKeyName();
+                return $request->newResource()->resource->{$this->attribute}()->getForeignKeyName();
             default:
                 return $this->attribute;
         }
@@ -639,6 +660,7 @@ abstract class Field extends FieldElement implements JsonSerializable, Resolvabl
             'readonly' => $this->isReadonly(app(NovaRequest::class)),
             'textAlign' => $this->textAlign,
             'sortableUriKey' => $this->sortableUriKey(),
+            'stacked' => $this->stacked,
         ], $this->meta());
     }
 }

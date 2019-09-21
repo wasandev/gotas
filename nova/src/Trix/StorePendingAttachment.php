@@ -3,8 +3,8 @@
 namespace Laravel\Nova\Trix;
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Trix;
 use Illuminate\Support\Facades\Storage;
+use Laravel\Nova\Fields\Trix;
 
 class StorePendingAttachment
 {

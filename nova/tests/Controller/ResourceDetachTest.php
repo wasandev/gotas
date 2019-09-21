@@ -2,15 +2,15 @@
 
 namespace Laravel\Nova\Tests\Controller;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Actions\ActionEvent;
-use Laravel\Nova\Tests\Fixtures\Role;
-use Laravel\Nova\Tests\Fixtures\User;
-use Laravel\Nova\Tests\IntegrationTest;
 use Laravel\Nova\Tests\Fixtures\IdFilter;
-use Laravel\Nova\Tests\Fixtures\UserPolicy;
+use Laravel\Nova\Tests\Fixtures\Role;
 use Laravel\Nova\Tests\Fixtures\RoleAssignment;
-use Illuminate\Database\Eloquent\Relations\Relation;
+use Laravel\Nova\Tests\Fixtures\User;
+use Laravel\Nova\Tests\Fixtures\UserPolicy;
+use Laravel\Nova\Tests\IntegrationTest;
 
 class ResourceDetachTest extends IntegrationTest
 {

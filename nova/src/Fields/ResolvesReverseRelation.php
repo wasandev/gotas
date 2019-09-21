@@ -2,9 +2,9 @@
 
 namespace Laravel\Nova\Fields;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Illuminate\Database\Eloquent\Relations\Relation;
 
 trait ResolvesReverseRelation
 {

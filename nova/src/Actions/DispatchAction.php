@@ -2,10 +2,10 @@
 
 namespace Laravel\Nova\Actions;
 
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Queue;
 use Laravel\Nova\Fields\ActionFields;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Laravel\Nova\Http\Requests\ActionRequest;
 
 class DispatchAction

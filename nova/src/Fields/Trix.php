@@ -2,13 +2,13 @@
 
 namespace Laravel\Nova\Fields;
 
-use Laravel\Nova\Trix\DetachAttachment;
-use Laravel\Nova\Trix\DeleteAttachments;
-use Laravel\Nova\Trix\PendingAttachment;
-use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Trix\StorePendingAttachment;
-use Laravel\Nova\Trix\DiscardPendingAttachments;
 use Laravel\Nova\Contracts\Deletable as DeletableContract;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Trix\DeleteAttachments;
+use Laravel\Nova\Trix\DetachAttachment;
+use Laravel\Nova\Trix\DiscardPendingAttachments;
+use Laravel\Nova\Trix\PendingAttachment;
+use Laravel\Nova\Trix\StorePendingAttachment;
 
 class Trix extends Field implements DeletableContract
 {

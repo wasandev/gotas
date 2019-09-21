@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Metrics;
 
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 
 abstract class Value extends RangedMetric
 {
@@ -119,6 +119,13 @@ abstract class Value extends RangedMetric
      */
     protected function previousRange($range)
     {
+        if ($range == 'TODAY') {
+            return [
+                now()->modify('yesterday')->setTime(0, 0),
+                now()->subDays(1),
+            ];
+        }
+
         if ($range == 'MTD') {
             return [
                 now()->modify('first day of previous month')->setTime(0, 0),
@@ -164,6 +171,13 @@ abstract class Value extends RangedMetric
      */
     protected function currentRange($range)
     {
+        if ($range == 'TODAY') {
+            return [
+                now()->yesterday(),
+                now(),
+            ];
+        }
+
         if ($range == 'MTD') {
             return [
                 now()->firstOfMonth(),

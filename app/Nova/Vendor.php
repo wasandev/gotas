@@ -11,8 +11,10 @@ use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Panel;
 use Illuminate\Http\Request;
-use Wasandev\InputThaiAddress\InputThaiAddress;
-use Wasandev\InputThaiAddress\ThaiAddressMetadata;
+use Wasandev\InputThaiAddress\InputSubDistrict;
+use Wasandev\InputThaiAddress\InputDistrict;
+use Wasandev\InputThaiAddress\InputProvince;
+use Wasandev\InputThaiAddress\InputPostalCode;
 use Wasandev\InputThaiAddress\MapAddress;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Textarea;
@@ -59,7 +61,7 @@ class Vendor extends Resource
         return [
             ID::make()->sortable(),
             Boolean::make('ใช้งาน', 'status')->size('w-full'),
-            Text::make('ชื่อผู้จำหน่าย/ผู้ร่วมบริการ', 'name')
+            Text::make('ชื่อผู้จำหน่าย/ผู้ร่วมบริการ/เจ้าของรถ', 'name')
                 ->sortable()
                 ->size('w-1/2'),
             Text::make('เลขประจำตัวผู้เสียภาษี', 'taxid')
@@ -111,15 +113,19 @@ class Vendor extends Resource
         return [
 
             Text::make('ที่อยู่', 'address')->hideFromIndex(),
-            InputThaiAddress::make('ตำบล/แขวง', 'sub_district')
+            InputSubDistrict::make('ตำบล/แขวง', 'sub_district')
                 ->withValues(['district', 'amphoe', 'province', 'zipcode'])
-                ->hideFromIndex(),
-            ThaiAddressMetadata::make('อำเภอ/เขต', 'district')
-                ->fromValue('amphoe')
-                ->sortable(),
-            ThaiAddressMetadata::make('จังหวัด', 'province')->fromValue('province')
-                ->sortable(),
-            ThaiAddressMetadata::make('รหัสไปรษณีย์', 'postal_code')->fromValue('zipcode'),
+                ->fromValue('district'),
+            InputDistrict::make('อำเภอ/เขต', 'district')
+                ->withValues(['district', 'amphoe', 'province', 'zipcode'])
+                ->fromValue('amphoe'),
+            InputProvince::make('จังหวัด', 'province')
+                ->withValues(['district', 'amphoe', 'province', 'zipcode'])
+                ->fromValue('province'),
+            InputPostalCode::make('รหัสไปรษณีย์', 'postal_code')
+                ->withValues(['district', 'amphoe', 'province', 'zipcode'])
+                ->fromValue('zipcode'),
+
             MapAddress::make('ตำแหน่งที่ตั้งบน Google Map', 'Location')->hideFromIndex()
 
         ];
@@ -183,13 +189,5 @@ class Vendor extends Resource
     public function actions(Request $request)
     {
         return [];
-    }
-    public static function availableForNavigation(Request $request)
-    {
-        $hostname  = app(\Hyn\Tenancy\Environment::class)->hostname();
-        if (is_null($hostname)) {
-            return false;
-        }
-        return true;
     }
 }

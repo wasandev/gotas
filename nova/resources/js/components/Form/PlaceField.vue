@@ -46,6 +46,8 @@ export default {
             const placeType = this.field.placeType
 
             const config = {
+                appId: Nova.config.algoliaAppId,
+                apiKey: Nova.config.algoliaApiKey,
                 container: document.querySelector('#' + this.field.attribute),
                 type: this.field.placeType ? this.field.placeType : 'address',
                 templates: {

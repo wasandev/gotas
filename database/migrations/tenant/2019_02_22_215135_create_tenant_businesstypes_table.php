@@ -15,7 +15,7 @@ class CreateTenantBusinesstypesTable extends Migration
     {
         Schema::create('businesstypes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name', 250);
+            $table->string('name', 250)->unique();
             $table->integer('user_id')->unsigned()->nullable();
             $table->timestamps();
         });

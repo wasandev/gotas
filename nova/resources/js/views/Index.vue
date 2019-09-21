@@ -32,7 +32,7 @@
                 <input
                     data-testid="search-input"
                     dusk="search"
-                    class="appearance-none form-control form-input w-search pl-search"
+                    class="appearance-none form-search w-search pl-search shadow"
                     :placeholder="__('Search')"
                     type="search"
                     v-model="search"
@@ -223,7 +223,7 @@
                         </h3>
 
                         <create-resource-button
-                            classes="btn btn-sm btn-outline inline-flex items-center"
+                            classes="btn btn-sm btn-outline inline-flex items-center focus:outline-none focus:shadow-outline active:outline-none active:shadow-outline"
                             :singular-name="singularName"
                             :resource-name="resourceName"
                             :via-resource="viaResource"

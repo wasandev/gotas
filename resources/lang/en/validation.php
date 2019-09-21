@@ -145,6 +145,12 @@ return [
     |
     */
 
-    'attributes' => [],
+
+    'attributes' => [
+        'tranjob_details.*.product_id' => 'รายละเอียดสินค้า',
+        'tranjob_details.*.tranprice' => 'ค่าขนส่ง',
+        'tranjob_details.*.amount' => 'จำนวน',
+        'customer_id' => 'ลูกค้า'
+    ],
 
 ];

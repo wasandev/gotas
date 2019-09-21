@@ -1,6 +1,10 @@
 <?php
 
 use Laravel\Nova\Nova;
+//use Wasandev\TranjobEntry\Http\Controllers;
+
+
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -38,3 +42,9 @@ Route::group(['namespace' => 'System'], function () {
     Route::get('settings', 'SettingsController@settings')->name('settings');
     Route::post('settings', 'SettingsController@update')->name('user-update');
 });
+
+
+
+//
+//Route::resource('tranjob-entry', 'TranjobController');
+//Route::get('show-tranjob/{id}', 'TranjobController@show')->name('show-tranjob');

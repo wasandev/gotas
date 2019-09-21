@@ -26,6 +26,6 @@ abstract class Dashboard extends Element
      */
     public static function uriKey()
     {
-        return Str::singular(Str::snake(class_basename(get_called_class(), '-')));
+        return Str::singular(Str::snake(class_basename(get_called_class()), '-'));
     }
 }

@@ -12,8 +12,10 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Select;
-use Wasandev\InputThaiAddress\InputThaiAddress;
-use Wasandev\InputThaiAddress\ThaiAddressMetadata;
+use Wasandev\InputThaiAddress\InputSubDistrict;
+use Wasandev\InputThaiAddress\InputDistrict;
+use Wasandev\InputThaiAddress\InputProvince;
+use Wasandev\InputThaiAddress\InputPostalCode;
 use Wasandev\InputThaiAddress\MapAddress;
 
 class Employee extends Resource
@@ -58,7 +60,7 @@ class Employee extends Resource
         return [
             ID::make()->sortable(),
 
-            Image::make('รูปพนักงาน', 'imagefile')->hideFromIndex(),
+            Image::make('รูปพนักงาน', 'imagefile'),
             new Panel('ข้อมูลพนักงาน', $this->empdetailFields()),
             new Panel('ข้อมูลการติดต่อ', $this->contactFields()),
             new Panel('ที่อยู่', $this->addressFields()),
@@ -72,28 +74,39 @@ class Employee extends Resource
     {
         return [
 
-            Text::make('ชื่อพนักงาน', 'name')->sortable()
-                ->size('w-1/2'),
-            Text::make('เลขประจำตัวประชาชน', 'taxid')->sortable()->hideFromIndex()
-                ->size('w-1/2'),
-
-            Text::make('ชื่อเล่น', 'nickname')->sortable()
+            Text::make('ชื่อพนักงาน', 'name')
+                ->sortable()
                 ->size('w-1/2')
-                ->nullable(),
-            BelongsTo::make('ประจำสาขา', 'branch', 'App\Nova\Branch')
-                ->size('w-1/2'),
+                ->rules('required'),
+            Text::make('เลขประจำตัวประชาชน', 'taxid')
+                ->sortable()
+                ->hideFromIndex()
+                ->size('w-1/2')
+                ->rules('required', 'digits:13', 'numeric'),
 
-            BelongsTo::make('ฝ่ายงาน', 'department', 'App\Nova\Department')->hideFromIndex()
-                ->size('w-1/2'),
+            Text::make('ชื่อเล่น', 'nickname')
+                ->size('w-1/2')
+                ->nullable()
+                ->hideFromIndex(),
+            BelongsTo::make('ประจำสาขา', 'branch', 'App\Nova\Branch')
+                ->size('w-1/2')
+                ->rules('required'),
+
+            BelongsTo::make('ฝ่ายงาน', 'department', 'App\Nova\Department')
+                ->hideFromIndex()
+                ->size('w-1/2')
+                ->rules('required'),
             BelongsTo::make('ตำแหน่งงาน', 'position', 'App\Nova\Position')->hideFromIndex()
                 ->size('w-1/2'),
+
             Select::make('ประเภทพนักงาน', 'type')->options([
                 'พนักงานออฟฟิศ' => 'พนักงานออฟฟิศ',
                 'แรงงาน' => 'แรงงาน',
                 'พนักงานขับรถ' => 'พนักงานขับรถ',
                 'ผู้บริหาร' => 'ผู้บริหาร'
             ])->displayUsingLabels()
-                ->size('w-1/2'),
+                ->size('w-1/2')
+                ->hideFromIndex(),
             Select::make('สถานะพนักงาน', 'status')->options([
                 'ประจำ' => 'ประจำ',
                 'ทดลองงาน' => 'ทดลองงาน',
@@ -104,10 +117,13 @@ class Employee extends Resource
                 'ลาออก' => 'ลาออก',
                 'เลิกจ้าง' => 'เลิกจ้าง',
                 'นักศึกษาฝึกงาน' => 'นักศึกษาฝึกงาน'
-            ])->size('w-1/2')
-                ->sortable(),
+            ])->displayUsingLabels()
+                ->size('w-1/2')
+                ->hideFromIndex(),
+
         ];
     }
+
     protected function contactFields()
     {
         return [
@@ -149,16 +165,29 @@ class Employee extends Resource
         return [
 
             Text::make('ที่อยู่', 'address')
-                ->hideFromIndex(),
-            InputThaiAddress::make('ตำบล/แขวง', 'sub_district')
                 ->hideFromIndex()
-                ->withValues(['district', 'amphoe', 'province', 'zipcode']),
-            ThaiAddressMetadata::make('อำเภอ/เขต', 'district')->fromValue('amphoe')
+                ->rules('required'),
+            InputSubDistrict::make('ตำบล/แขวง', 'sub_district')
+                ->withValues(['district', 'amphoe', 'province', 'zipcode'])
+                ->fromValue('district')
                 ->hideFromIndex(),
-            ThaiAddressMetadata::make('จังหวัด', 'province')->fromValue('province')
+            InputDistrict::make('อำเภอ/เขต', 'district')
+                ->withValues(['district', 'amphoe', 'province', 'zipcode'])
+                ->fromValue('amphoe')
+                ->sortable()
+                ->rules('required')
                 ->hideFromIndex(),
-            ThaiAddressMetadata::make('รหัสไปรษณีย์', 'postal_code')->fromValue('zipcode')
+            InputProvince::make('จังหวัด', 'province')
+                ->withValues(['district', 'amphoe', 'province', 'zipcode'])
+                ->fromValue('province')
+                ->sortable()
+                ->rules('required')
                 ->hideFromIndex(),
+            InputPostalCode::make('รหัสไปรษณีย์', 'postal_code')
+                ->withValues(['district', 'amphoe', 'province', 'zipcode'])
+                ->fromValue('zipcode')
+                ->hideFromIndex(),
+
 
             MapAddress::make('ตำแหน่งที่ตั้งบน Google Map', 'Location')
                 ->hideFromIndex(),
@@ -209,13 +238,5 @@ class Employee extends Resource
     public function actions(Request $request)
     {
         return [];
-    }
-    public static function availableForNavigation(Request $request)
-    {
-        $hostname  = app(\Hyn\Tenancy\Environment::class)->hostname();
-        if (is_null($hostname)) {
-            return false;
-        }
-        return true;
     }
 }

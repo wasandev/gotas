@@ -27,7 +27,12 @@ class Branch extends Model
 
     public function branch_areas()
     {
-        return $this->hasMany('App\Models\Tenant\Branch_area');
+        return $this->hasMany('App\Models\tenant\Branch_area');
+    }
+
+    public function branch_routes()
+    {
+        return $this->hasMany('App\Models\Tenant\Branch_route');
     }
 
     public function getLocationAttribute()
@@ -42,6 +47,22 @@ class Branch extends Model
     {
         return $this->belongsTo('App\Models\Tenant\User');
     }
+
+    public function serviceprice_items()
+    {
+        return $this->hasMany('App\Models\Tenant\Serviceprice_item', 'from_branch_id', 'id');
+    }
+
+
+    public function routeto()
+    {
+        return $this->belongsToMany('App\Models\Tenant\Branch', 'routeto_branch', 'branch_id', 'dest_branch_id')
+            ->withPivot('name', 'distance')
+            ->withTimestamps();
+    }
+
+
+
 
     /*
 	Transform the returned value from the Nova field

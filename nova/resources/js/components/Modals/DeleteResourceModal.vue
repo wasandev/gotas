@@ -26,6 +26,7 @@
                     >
                         {{ __('Cancel') }}
                     </button>
+
                     <button
                         id="confirm-delete-button"
                         ref="confirmButton"

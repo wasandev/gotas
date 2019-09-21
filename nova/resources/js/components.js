@@ -10,6 +10,7 @@ import Bold from '@/components/Icons/Editor/Bold'
 import CancelButton from '@/components/Form/CancelButton'
 import Card from '@/components/Card'
 import Cards from '@/components/Cards'
+import CheckCircle from '@/components/Icons/CheckCircle'
 import CardWrapper from '@/components/CardWrapper'
 import Checkbox from '@/components/Index/Checkbox'
 import CheckboxWithLabel from '@/components/CheckboxWithLabel'
@@ -73,6 +74,7 @@ import TrendMetric from '@/components/Metrics/TrendMetric'
 import ValidationErrors from '@/components/ValidationErrors'
 import ValueMetric from '@/components/Metrics/ValueMetric'
 import View from '@/components/Icons/View'
+import XCircle from '@/components/Icons/XCircle'
 
 import SelectFilter from '@/components/Filters/SelectFilter'
 import BooleanFilter from '@/components/Filters/BooleanFilter'
@@ -120,6 +122,8 @@ Vue.component('help', HelpCard)
 Vue.component('help-text', HelpText)
 Vue.component('icon', Icon)
 Vue.component('icon-add', Add)
+Vue.component('icon-check-circle', CheckCircle)
+Vue.component('icon-x-circle', XCircle)
 Vue.component('icon-delete', Delete)
 Vue.component('icon-download', Download)
 Vue.component('icon-edit', Edit)

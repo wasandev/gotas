@@ -8,6 +8,7 @@
         :format="format"
         :prefix="prefix"
         :suffix="suffix"
+        :suffix-inflection="suffixInflection"
         :selected-range-key="selectedRangeKey"
         :loading="loading"
     />
@@ -56,6 +57,7 @@ export default {
         format: '(0[.]00a)',
         prefix: '',
         suffix: '',
+        suffixInflection: true,
         selectedRangeKey: null,
     }),
 
@@ -87,7 +89,7 @@ export default {
             Minimum(Nova.request().get(this.metricEndpoint, this.metricPayload)).then(
                 ({
                     data: {
-                        value: { labels, trend, value, prefix, suffix, format },
+                        value: { labels, trend, value, prefix, suffix, suffixInflection, format },
                     },
                 }) => {
                     this.value = value
@@ -106,6 +108,7 @@ export default {
                     this.format = format || this.format
                     this.prefix = prefix || this.prefix
                     this.suffix = suffix || this.suffix
+                    this.suffixInflection = suffixInflection
                     this.loading = false
                 }
             )

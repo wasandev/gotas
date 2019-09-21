@@ -4,16 +4,18 @@ namespace App\Nova;
 
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Panel;
-use Wasandev\InputThaiAddress\InputThaiAddress;
-use Wasandev\InputThaiAddress\ThaiAddressMetadata;
+use Wasandev\InputThaiAddress\InputSubDistrict;
+use Wasandev\InputThaiAddress\InputDistrict;
+use Wasandev\InputThaiAddress\InputProvince;
+use Wasandev\InputThaiAddress\InputPostalCode;
 use Wasandev\InputThaiAddress\MapAddress;
 use Laravel\Nova\Fields\BelongsTo;
-
-
+use Laravel\Nova\Fields\Currency;
+use Laravel\Nova\Fields\HasMany;
 
 class Branch extends Resource
 {
@@ -62,23 +64,42 @@ class Branch extends Resource
      */
     public function fields(Request $request)
     {
+
+        // $nestedBranchAreasForm = NestedForm::make('Branch_areas');
+        // $nestedBranchAreasForm = $nestedBranchAreasForm->showOnDetail(true);
+
         return [
+
+
             ID::make()->sortable(),
             Text::make('ชื่อสาขา', 'name')->sortable()
-                ->size('w-1/2'),
+                ->size('w-1/2')
+                ->rules('required'),
             Text::make('รหัส', 'code')
-                ->size('w-1/2'),
+                ->size('w-1/2')
+                ->hideFromIndex(),
             Text::make('โทรศัพท์', 'phoneno')
-                ->size('w-1/2'),
+                ->size('w-1/2')
+                ->rules('required', 'numeric')
+                ->hideFromIndex(),
             Select::make('การเป็นเจ้าของ', 'type')->options([
                 'owner' => 'บริษัทเป็นเจ้าของ',
                 'pathner' => 'ร่วมบริการ'
             ])->displayUsingLabels()
-                ->size('w-1/2'),
+                ->size('w-1/2')
+                ->hideFromIndex(),
 
             new Panel('ที่อยู่', $this->addressFields()),
+            BelongsToMany::make('เส้นทางขนส่งไปสาขา', 'routeto', 'App\Nova\Branch')
+                ->fields(function () {
+                    return [
+                        Text::make('ชื่อเส้นทาง', 'name'),
+                        Currency::make('ระยะทาง(กม.)', 'distance'),
+                    ];
+                }),
 
-
+            hasMany::make('พื้นที่บริการของสาขา', 'branch_areas', 'App\Nova\Branch_area'),
+            HasMany::make('เส้นทางขนส่งของสาขา', 'branch_routes', 'App\Nova\Branch_route'),
 
         ];
     }
@@ -91,15 +112,27 @@ class Branch extends Resource
     {
         return [
 
-            Text::make('ที่อยู่', 'address')
+            Text::make('ที่อยู่', 'address')->hideFromIndex()
+                ->rules('required'),
+            InputSubDistrict::make('ตำบล/แขวง', 'sub_district')
+                ->withValues(['district', 'amphoe', 'province', 'zipcode'])
+                ->fromValue('district')
                 ->hideFromIndex(),
-            InputThaiAddress::make('ตำบล/แขวง', 'sub_district')
-                ->hideFromIndex()
-                ->withValues(['district', 'amphoe', 'province', 'zipcode']),
-            ThaiAddressMetadata::make('อำเภอ/เขต', 'district')->fromValue('amphoe'),
-            ThaiAddressMetadata::make('จังหวัด', 'province')->fromValue('province'),
-            ThaiAddressMetadata::make('รหัสไปรษณีย์', 'postal_code')->fromValue('zipcode')
+            InputDistrict::make('อำเภอ/เขต', 'district')
+                ->withValues(['district', 'amphoe', 'province', 'zipcode'])
+                ->fromValue('amphoe')
+                ->sortable()
+                ->rules('required'),
+            InputProvince::make('จังหวัด', 'province')
+                ->withValues(['district', 'amphoe', 'province', 'zipcode'])
+                ->fromValue('province')
+                ->sortable()
+                ->rules('required'),
+            InputPostalCode::make('รหัสไปรษณีย์', 'postal_code')
+                ->withValues(['district', 'amphoe', 'province', 'zipcode'])
+                ->fromValue('zipcode')
                 ->hideFromIndex(),
+
             MapAddress::make('ตำแหน่งที่ตั้งบน Google Map', 'Location')
                 ->hideFromIndex(),
             BelongsTo::make('ผู้ทำรายการ', 'user', 'App\Nova\User')
@@ -148,16 +181,8 @@ class Branch extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
-    }
-
-    public static function availableForNavigation(Request $request)
-    {
-        $hostname  = app(\Hyn\Tenancy\Environment::class)->hostname();
-
-        if (is_null($hostname)) {
-            return false;
-        }
-        return true;
+        return [
+            new Actions\AddBranchArea,
+        ];
     }
 }

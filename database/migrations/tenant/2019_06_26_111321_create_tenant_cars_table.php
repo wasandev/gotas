@@ -15,7 +15,7 @@ class CreateTenantCarsTable extends Migration
     {
         Schema::create('cars', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('car_regist', 10);
+            $table->string('car_regist', 10)->unique();
             $table->string('car_province', 100);
             $table->enum('ownertype', ['owner', 'partner'])->default('owner');
             $table->integer('vendor_id')->unsigned()->nullable();

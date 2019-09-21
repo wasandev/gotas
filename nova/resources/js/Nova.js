@@ -132,4 +132,22 @@ export default class Nova {
     missingResource(uriKey) {
         return _.find(this.config.resources, r => r.uriKey == uriKey) == undefined
     }
+
+    /**
+     * Show an error message to the user.
+     *
+     * @param {string} message
+     */
+    error(message) {
+        Vue.toasted.show(message, { type: 'error' })
+    }
+
+    /**
+     * Show a success message to the user.
+     *
+     * @param {string} message
+     */
+    success(message) {
+        Vue.toasted.show(message, { type: 'success' })
+    }
 }

@@ -8,6 +8,8 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 use Pktharindu\NovaPermissions\Traits\ValidatesPermissions;
 use App\Models\Tenant\User;
 use App\Policies\Tenant\UserPolicy;
+use \Pktharindu\NovaPermissions\Role;
+use App\Policies\Tenant\RolePolicy;
 use App\Models\Tenant\CompanyProfile;
 use App\Policies\Tenant\CompanyProfilePolicy;
 use App\Models\Tenant\Branch;
@@ -30,6 +32,7 @@ class AuthServiceProvider extends ServiceProvider
         CompanyProfile::class => CompanyProfilePolicy::class,
         Branch::class => BranchPolicy::class,
         User::class => UserPolicy::class,
+        Role::class => RolePolicy::class,
         Employee::class => EmployeePolicy::class,
         Customer::class => CustomerPolicy::class,
     ];

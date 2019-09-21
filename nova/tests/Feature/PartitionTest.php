@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Tests\Feature;
 
-use Laravel\Nova\Tests\IntegrationTest;
 use Laravel\Nova\Metrics\PartitionResult;
+use Laravel\Nova\Tests\IntegrationTest;
 
 class PartitionTest extends IntegrationTest
 {

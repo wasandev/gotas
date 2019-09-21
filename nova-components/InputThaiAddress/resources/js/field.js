@@ -1,12 +1,29 @@
 Nova.booting((Vue, router) => {
 
-    Vue.component('index-input-thai-address', require('./components/InputThaiAddress/IndexField'))
-    Vue.component('detail-input-thai-address', require('./components/InputThaiAddress/DetailField'))
-    Vue.component('form-input-thai-address', require('./components/InputThaiAddress/FormField'))
 
-    Vue.component('index-thai-address-metadata', require('./components/ThaiAddressMetadata/IndexField'))
-    Vue.component('detail-thai-address-metadata', require('./components/ThaiAddressMetadata/DetailField'))
-    Vue.component('form-thai-address-metadata', require('./components/ThaiAddressMetadata/FormField'))
+    //add address filed 4 sub-district,districe,province,postal-code
+
+    //sub-district
+    Vue.component('index-input-sub-district', require('./components/InputSubDistrict/IndexField'))
+    Vue.component('detail-input-sub-district', require('./components/InputSubDistrict/DetailField'))
+    Vue.component('form-input-sub-district', require('./components/InputSubDistrict/FormField'))
+
+    //district
+    Vue.component('index-input-district', require('./components/InputDistrict/IndexField'))
+    Vue.component('detail-input-district', require('./components/InputDistrict/DetailField'))
+    Vue.component('form-input-district', require('./components/InputDistrict/FormField'))
+
+    //province
+    Vue.component('index-input-province', require('./components/InputProvince/IndexField'))
+    Vue.component('detail-input-province', require('./components/InputProvince/DetailField'))
+    Vue.component('form-input-province', require('./components/InputProvince/FormField'))
+
+    //postal-code
+    Vue.component('index-input-postal-code', require('./components/InputPostalCode/IndexField'))
+    Vue.component('detail-input-postal-codee', require('./components/InputPostalCode/DetailField'))
+    Vue.component('form-input-postal-code', require('./components/InputPostalCode/FormField'))
+
+
 
     Vue.component('index-map-address', require('./components/MapAddress/IndexField'));
     Vue.component('detail-map-address', require('./components/MapAddress/DetailField'));

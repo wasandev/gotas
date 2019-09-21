@@ -9,8 +9,10 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Panel;
 use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\BelongsTo;
-use Wasandev\InputThaiAddress\InputThaiAddress;
-use Wasandev\InputThaiAddress\ThaiAddressMetadata;
+use Wasandev\InputThaiAddress\InputSubDistrict;
+use Wasandev\InputThaiAddress\InputDistrict;
+use Wasandev\InputThaiAddress\InputProvince;
+use Wasandev\InputThaiAddress\InputPostalCode;
 use Wasandev\InputThaiAddress\MapAddress;
 use Laravel\Nova\Fields\Textarea;
 
@@ -56,8 +58,11 @@ class CompanyProfile extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('ชื่อบริษัท', 'company_name')->size('w-1/2'),
-            Text::make('เลขประจำตัวผู้เสียภาษี', 'taxid')->size('w-1/2'),
+            Text::make('ชื่อบริษัท', 'company_name')
+                ->size('w-1/2'),
+            Text::make('เลขประจำตัวผู้เสียภาษี', 'taxid')
+                ->size('w-1/2')
+                ->rules('required', 'digits:13', 'numeric'),
 
             new Panel('ที่อยู่', $this->addressFields()),
             new Panel('ข้อมูลการติดต่อ', $this->contactFields()),
@@ -75,10 +80,14 @@ class CompanyProfile extends Resource
     protected function contactFields()
     {
         return [
-            Text::make('โทรศัพท์', 'phoneno')->size('w-1/2'),
-            Text::make('เว็บไซต์', 'weburl')->size('w-1/2')
+            Text::make('โทรศัพท์', 'phoneno')
+                ->size('w-1/2')
+                ->rules('required', 'numeric'),
+            Text::make('เว็บไซต์', 'weburl')
+                ->size('w-1/2')
                 ->hideFromIndex(),
-            Text::make('Facebook', 'facebook')->size('w-1/2')
+            Text::make('Facebook', 'facebook')
+                ->size('w-1/2')
                 ->hideFromIndex(),
             Text::make('Line', 'line')->size('w-1/2')
                 ->hideFromIndex(),
@@ -94,23 +103,27 @@ class CompanyProfile extends Resource
     {
         return [
 
-            Text::make('ที่อยู่', 'address')
+            Text::make('ที่อยู่', 'address')->hideFromIndex()
+                ->rules('required'),
+            InputSubDistrict::make('ตำบล/แขวง', 'sub_district')
+                ->withValues(['district', 'amphoe', 'province', 'zipcode'])
+                ->fromValue('district')
                 ->hideFromIndex(),
-            InputThaiAddress::make('ตำบล/แขวง', 'sub_district')
-                ->hideFromIndex()
-                ->withValues(['district', 'amphoe', 'province', 'zipcode']),
-
-
-            ThaiAddressMetadata::make('อำเภอ/เขต', 'district')
+            InputDistrict::make('อำเภอ/เขต', 'district')
+                ->withValues(['district', 'amphoe', 'province', 'zipcode'])
                 ->fromValue('amphoe')
-                ->hideFromIndex(),
-
-            ThaiAddressMetadata::make('จังหวัด', 'province')
+                ->sortable()
+                ->rules('required'),
+            InputProvince::make('จังหวัด', 'province')
+                ->withValues(['district', 'amphoe', 'province', 'zipcode'])
                 ->fromValue('province')
-                ->hideFromIndex(),
-            ThaiAddressMetadata::make('รหัสไปรษณีย์', 'postal_code')
+                ->sortable()
+                ->rules('required'),
+            InputPostalCode::make('รหัสไปรษณีย์', 'postal_code')
+                ->withValues(['district', 'amphoe', 'province', 'zipcode'])
                 ->fromValue('zipcode')
                 ->hideFromIndex(),
+
 
             MapAddress::make('ตำแหน่งที่ตั้งบน Google Map', 'Location')->hideFromIndex()
 
@@ -175,13 +188,5 @@ class CompanyProfile extends Resource
     public function actions(Request $request)
     {
         return [];
-    }
-    public static function availableForNavigation(Request $request)
-    {
-        $hostname  = app(\Hyn\Tenancy\Environment::class)->hostname();
-        if (is_null($hostname)) {
-            return false;
-        }
-        return true;
     }
 }

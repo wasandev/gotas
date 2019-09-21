@@ -2,14 +2,14 @@
 
 namespace Laravel\Nova\Tests\Controller;
 
-use Laravel\Nova\Nova;
 use Illuminate\Support\Carbon;
 use Laravel\Nova\Metrics\Metric;
+use Laravel\Nova\Nova;
 use Laravel\Nova\Tests\Fixtures\Post;
-use Laravel\Nova\Tests\Fixtures\User;
-use Laravel\Nova\Tests\IntegrationTest;
 use Laravel\Nova\Tests\Fixtures\TotalUsers;
+use Laravel\Nova\Tests\Fixtures\User;
 use Laravel\Nova\Tests\Fixtures\UserGrowth;
+use Laravel\Nova\Tests\IntegrationTest;
 
 class MetricControllerTest extends IntegrationTest
 {
@@ -177,6 +177,26 @@ class MetricControllerTest extends IntegrationTest
         $this->assertEquals(1, $response->original['value']->previous);
     }
 
+    public function test_can_retrieve_today_count_calculations()
+    {
+        factory(User::class, 2)->create();
+
+        $user = User::find(1);
+        $user->created_at = now()->subDays(1);
+        $user->save();
+
+        $user = User::find(2);
+        $user->created_at = now()->subDays(2);
+        $user->save();
+
+        $response = $this->withExceptionHandling()
+                        ->get('/nova-api/users/metrics/user-growth?range=TODAY');
+
+        $response->assertStatus(200);
+        $this->assertEquals(1, $response->original['value']->value);
+        $this->assertEquals(1, $response->original['value']->previous);
+    }
+
     public function test_can_retrieve_mtd_count_calculations()
     {
         factory(User::class, 2)->create();
@@ -243,6 +263,23 @@ class MetricControllerTest extends IntegrationTest
         $response->assertStatus(200);
         $this->assertEquals(100, $response->original['value']->value);
         $this->assertEquals(100, $response->original['value']->previous);
+    }
+
+    public function test_can_retrieve_today_average_calculations()
+    {
+        factory(Post::class, 2)->create(['word_count' => 100]);
+
+        $post = Post::find(2);
+        $post->word_count = 50;
+        $post->created_at = now()->subDays(1);
+        $post->save();
+
+        $response = $this->withExceptionHandling()
+                        ->get('/nova-api/posts/metrics/post-word-count?range=TODAY');
+
+        $response->assertStatus(200);
+        $this->assertEquals(75, $response->original['value']->value);
+        $this->assertEquals(50, $response->original['value']->previous);
     }
 
     public function test_can_retrieve_mtd_average_calculations()

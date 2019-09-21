@@ -26,6 +26,8 @@ class Tranjob extends Model
         'tranjob_date',
         'user_id',
         'employee_id',
+        'senddate', 'discount',
+        'terms_and_conditions', 'reference'
     ];
     protected $casts = [
         'tranjob_date' => 'date',

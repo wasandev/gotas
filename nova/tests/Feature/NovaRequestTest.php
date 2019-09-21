@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Tests\Feature;
 
-use Laravel\Nova\Tests\IntegrationTest;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Tests\IntegrationTest;
 
 class NovaRequestTest extends IntegrationTest
 {

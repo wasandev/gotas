@@ -1,12 +1,23 @@
 <template>
     <panel-item :field="field">
-        <p slot="value" class="text-90">
-            <span
-                class="inline-block rounded-full w-2 h-2 mr-1"
-                :class="{ 'bg-success': field.value, 'bg-danger': !field.value }"
-            />
-            <span>{{ label }}</span>
-        </p>
+        <icon
+            v-if="field.value"
+            slot="value"
+            viewBox="0 0 24 24"
+            width="24"
+            height="24"
+            type="check-circle"
+            class="text-success"
+        />
+        <icon
+            v-else
+            slot="value"
+            viewBox="0 0 24 24"
+            width="24"
+            height="24"
+            type="x-circle"
+            class="text-danger"
+        />
     </panel-item>
 </template>
 

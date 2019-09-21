@@ -3,20 +3,20 @@
 namespace Laravel\Nova;
 
 use Closure;
-use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\MorphTo;
-use Laravel\Nova\Contracts\Cover;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Collection;
-use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Actions\Actionable;
-use Laravel\Nova\Fields\MorphToMany;
+use Laravel\Nova\Actions\ActionResource;
+use Laravel\Nova\Contracts\Cover;
+use Laravel\Nova\Contracts\ListableField;
 use Laravel\Nova\Contracts\Resolvable;
 use Laravel\Nova\Fields\BelongsToMany;
-use Laravel\Nova\Actions\ActionResource;
 use Laravel\Nova\Fields\FieldCollection;
-use Laravel\Nova\Contracts\ListableField;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\MorphMany;
+use Laravel\Nova\Fields\MorphTo;
+use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Illuminate\Database\Eloquent\Relations\Pivot;
 
 trait ResolvesFields
 {
@@ -305,6 +305,19 @@ trait ResolvesFields
     }
 
     /**
+     * Resolve the resource's avatar field.
+     *
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @return \Laravel\Nova\Fields\Field|null
+     */
+    public function resolveAvatarField(NovaRequest $request)
+    {
+        return $this->resolveFields($request)->first(function ($field) {
+            return $field instanceof Cover;
+        });
+    }
+
+    /**
      * Resolve the resource's avatar URL, if applicable.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -312,15 +325,28 @@ trait ResolvesFields
      */
     public function resolveAvatarUrl(NovaRequest $request)
     {
-        $fields = $this->resolveFields($request);
-
-        $field = $fields->first(function ($field) {
-            return $field instanceof Cover;
-        });
+        $field = $this->resolveAvatarField($request);
 
         if ($field) {
             return $field->resolveThumbnailUrl();
         }
+    }
+
+    /**
+     * Determine whether the resource's avatar should be rounded, if applicable.
+     *
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @return bool
+     */
+    public function resolveIfAvatarShouldBeRounded(NovaRequest $request)
+    {
+        $field = $this->resolveAvatarField($request);
+
+        if ($field) {
+            return $field->isRounded();
+        }
+
+        return false;
     }
 
     /**
