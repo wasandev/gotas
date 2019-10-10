@@ -1,6 +1,6 @@
 <template>
     <loading-view :loading="loading">
-        <form v-if="panels" @submit.prevent="updateResource" autocomplete="off">
+        <form v-if="panels" @submit.prevent="updateResource" autocomplete="off" ref="form">
             <form-panel
                 v-for="panel in panelsWithFields"
                 @update-last-retrieved-at-timestamp="updateLastRetrievedAtTimestamp"
@@ -23,6 +23,7 @@
                 <cancel-button />
 
                 <progress-button
+                    type="submit"
                     class="mr-3"
                     dusk="update-and-continue-editing-button"
                     @click.native="updateAndContinueEditing"
@@ -35,6 +36,7 @@
                 <progress-button
                     dusk="update-button"
                     type="submit"
+                    @click.native="submitViaUpdateResource"
                     :disabled="isWorking"
                     :processing="submittedViaUpdateResource"
                 >
@@ -131,18 +133,35 @@ export default {
             this.loading = false
         },
 
+        async updateAndContinueEditing() {
+            this.submittedViaUpdateAndContinueEditing = true
+            await this.updateResource()
+        },
+
+        async submitViaUpdateResource() {
+            this.submittedViaUpdateResource = true
+            await this.updateResource()
+        },
+
         /**
          * Update the resource using the provided data.
          */
         async updateResource() {
-            this.submittedViaUpdateResource = true
+            // Check if checkValidity method exists and fails
+            if (this.$refs.form.checkValidity && !this.$refs.form.checkValidity()) {
+                // Check if reportValidity method exists
+                if (this.$refs.form.reportValidity) {
+                    this.$refs.form.reportValidity()
+                    this.submittedViaUpdateResource = false
+                    this.submittedViaUpdateAndContinueEditing = false
+                    return
+                }
+            }
 
             try {
                 const {
                     data: { redirect },
                 } = await this.updateRequest()
-
-                this.submittedViaUpdateResource = false
 
                 Nova.success(
                     this.__('The :resource was updated!', {
@@ -152,49 +171,17 @@ export default {
 
                 await this.updateLastRetrievedAtTimestamp()
 
-                this.$router.push({ path: redirect })
+                if (this.submittedViaUpdateResource) {
+                    this.$router.push({ path: redirect })
+                    this.submittedViaUpdateResource = false
+                } else {
+                    // Reset the form by refetching the fields
+                    this.getFields()
+                    this.validationErrors = new Errors()
+                    this.submittedViaUpdateAndContinueEditing = false
+                }
             } catch (error) {
                 this.submittedViaUpdateResource = false
-
-                if (error.response.status == 422) {
-                    this.validationErrors = new Errors(error.response.data.errors)
-                    Nova.error(this.__('There was a problem submitting the form.'))
-                }
-
-                if (error.response.status == 409) {
-                    Nova.error(
-                        this.__(
-                            'Another user has updated this resource since this page was loaded. Please refresh the page and try again.'
-                        )
-                    )
-                }
-            }
-        },
-
-        /**
-         * Update the resource and reset the form
-         */
-        async updateAndContinueEditing() {
-            this.submittedViaUpdateAndContinueEditing = true
-
-            try {
-                const response = await this.updateRequest()
-
-                this.submittedViaUpdateAndContinueEditing = false
-
-                Nova.success(
-                    this.__('The :resource was updated!', {
-                        resource: this.resourceInformation.singularLabel.toLowerCase(),
-                    })
-                )
-
-                // Reset the form by refetching the fields
-                this.getFields()
-
-                this.validationErrors = new Errors()
-
-                this.updateLastRetrievedAtTimestamp()
-            } catch (error) {
                 this.submittedViaUpdateAndContinueEditing = false
 
                 if (error.response.status == 422) {

@@ -14,9 +14,16 @@ class CreateTenancyCustomerProductTable extends Migration
     public function up()
     {
         Schema::create('customer_product', function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->bigInteger('customer_id');
             $table->bigInteger('product_id');
             $table->timestamps();
+        });
+        Schema::table('customer_product', function (Blueprint $table) {
+            $table->unique([
+                'customer_id',
+                'product_id',
+            ], 'PrimaryCustomerProducts');
         });
     }
 

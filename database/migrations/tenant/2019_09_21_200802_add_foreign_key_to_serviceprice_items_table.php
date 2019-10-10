@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddForeignKeyToBranchRoutesTable extends Migration
+class AddForeignKeyToServicepriceItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class AddForeignKeyToBranchRoutesTable extends Migration
      */
     public function up()
     {
-        Schema::table('branch_routes', function (Blueprint $table) {
-            $table->foreign('branch_area_id')
+        Schema::table('serviceprice_items', function (Blueprint $table) {
+            $table->foreign('parcel_id')
                 ->references('id')
-                ->on('branch_areas')
+                ->on('parcels')
                 ->onDelete('cascade');
         });
     }
@@ -28,9 +28,8 @@ class AddForeignKeyToBranchRoutesTable extends Migration
      */
     public function down()
     {
-        Schema::table('branch_routes', function (Blueprint $table) {
-
-            $table->dropForeign('branch_routes_branch_area_id_foreign');
+        Schema::table('serviceprice_items', function (Blueprint $table) {
+            $table->dropForeign('serviceprice_items_parcel_id_foreign');
         });
     }
 }

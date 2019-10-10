@@ -18,14 +18,12 @@ class ResourceUpdateController extends Controller
      */
     public function handle(UpdateResourceRequest $request)
     {
-        $request->findResourceOrFail()->authorizeToUpdate($request);
-
-        $resource = $request->resource();
-
-        $resource::validateForUpdate($request);
-
-        $model = DB::transaction(function () use ($request, $resource) {
+        [$model, $resource] = DB::transaction(function () use ($request) {
             $model = $request->findModelQuery()->lockForUpdate()->firstOrFail();
+
+            $resource = $request->newResourceWith($model);
+            $resource->authorizeToUpdate($request);
+            $resource::validateForUpdate($request);
 
             if ($this->modelHasBeenUpdatedSinceRetrieval($request, $model)) {
                 return response('', 409)->throwResponse();
@@ -39,13 +37,13 @@ class ResourceUpdateController extends Controller
 
             collect($callbacks)->each->__invoke();
 
-            return $model;
+            return [$model, $resource];
         });
 
         return response()->json([
             'id' => $model->getKey(),
             'resource' => $model->attributesToArray(),
-            'redirect' => $resource::redirectAfterUpdate($request, $request->newResourceWith($model)),
+            'redirect' => $resource::redirectAfterUpdate($request, $resource),
         ]);
     }
 

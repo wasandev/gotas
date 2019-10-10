@@ -1,6 +1,6 @@
 <template>
     <loading-view :loading="loading">
-        <form v-if="panels" @submit.prevent="createResource" autocomplete="off">
+        <form v-if="panels" @submit.prevent="createResource" autocomplete="off" ref="form">
             <form-panel
                 class="mb-8"
                 v-for="panel in panelsWithFields"
@@ -21,9 +21,10 @@
                 <cancel-button />
 
                 <progress-button
-                    class="mr-3"
                     dusk="create-and-add-another-button"
-                    @click.native="createAndAddAnother"
+                    type="submit"
+                    class="mr-3"
+                    @click.native="submitViaCreateAndAddAnother"
                     :disabled="isWorking"
                     :processing="submittedViaCreateAndAddAnother"
                 >
@@ -33,6 +34,7 @@
                 <progress-button
                     dusk="create-button"
                     type="submit"
+                    @click.native="submitViaCreateResource"
                     :disabled="isWorking"
                     :processing="submittedViaCreateResource"
                 >
@@ -115,18 +117,35 @@ export default {
             this.loading = false
         },
 
+        async submitViaCreateAndAddAnother() {
+            this.submittedViaCreateAndAddAnother = true
+            await this.createResource()
+        },
+
+        async submitViaCreateResource() {
+            this.submittedViaCreateResource = true
+            await this.createResource()
+        },
+
         /**
          * Create a new resource instance using the provided data.
          */
         async createResource() {
-            this.submittedViaCreateResource = true
+            // Check if checkValidity method exists and fails
+            if (this.$refs.form.checkValidity && !this.$refs.form.checkValidity()) {
+                // Check if reportValidity method exists
+                if (this.$refs.form.reportValidity) {
+                    this.$refs.form.reportValidity()
+                    this.submittedViaCreateAndAddAnother = false
+                    this.submittedViaCreateResource = false
+                    return
+                }
+            }
 
             try {
                 const {
                     data: { redirect },
                 } = await this.createRequest()
-
-                this.submittedViaCreateResource = false
 
                 Nova.success(
                     this.__('The :resource was created!', {
@@ -134,8 +153,17 @@ export default {
                     })
                 )
 
-                this.$router.push({ path: redirect })
+                if (this.submittedViaCreateResource) {
+                    this.$router.push({ path: redirect })
+                    this.submittedViaCreateResource = false
+                } else {
+                    // Reset the form by refetching the fields
+                    this.getFields()
+                    this.validationErrors = new Errors()
+                    this.submittedViaCreateAndAddAnother = false
+                }
             } catch (error) {
+                this.submittedViaCreateAndAddAnother = false
                 this.submittedViaCreateResource = false
 
                 if (error.response.status == 422) {

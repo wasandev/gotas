@@ -308,7 +308,7 @@ trait ResolvesFields
      * Resolve the resource's avatar field.
      *
      * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @return \Laravel\Nova\Fields\Field|null
+     * @return \Laravel\Nova\Contracts\Cover|null
      */
     public function resolveAvatarField(NovaRequest $request)
     {
@@ -502,7 +502,7 @@ trait ResolvesFields
      */
     public function pivotNameForField(NovaRequest $request, $field)
     {
-        $field = $this->availableFields($request)->where('attribute', $field)->first();
+        $field = $this->availableFields($request)->findFieldByAttribute($field);
 
         if (! $field || (! $field instanceof BelongsToMany &&
                          ! $field instanceof MorphToMany)) {

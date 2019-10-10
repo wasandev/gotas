@@ -3,27 +3,28 @@
 namespace App\Nova\Actions;
 
 use Illuminate\Bus\Queueable;
-use Laravel\Nova\Actions\Action;
-use Illuminate\Support\Collection;
-use Laravel\Nova\Fields\ActionFields;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Laravel\Nova\Fields\Currency;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Collection;
+use Laravel\Nova\Actions\Action;
+use Laravel\Nova\Fields\ActionFields;
+use Illuminate\Support\Facades\Storage;
+use PDF;
 
-class UpdateServicepriceWeight extends Action
+class PrintQuotation extends Action
 {
-    use InteractsWithQueue, Queueable, SerializesModels;
-    public $onlyOnIndex = true;
+    use InteractsWithQueue, Queueable;
 
     public function uriKey()
     {
-        return 'Update Service Price Weight';
+        return 'Print Quotation';
     }
     public function name()
     {
-        return __('Update Service Price Weight');
+        return __('Print Quotation');
     }
+
+
     /**
      * Perform the action on the given models.
      *
@@ -34,8 +35,10 @@ class UpdateServicepriceWeight extends Action
     public function handle(ActionFields $fields, Collection $models)
     {
         foreach ($models as $model) {
-            $model->weight = $fields->item_weight;
-            $model->save();
+            $quotationController =  new \App\Http\Controllers\Tenant\QuotationController();
+            $path = $quotationController->makePDF($model->id);
+
+            return Action::openInNewTab(Storage::url('media/' . $model->quotation_no . '.pdf'));
         }
     }
 
@@ -46,14 +49,6 @@ class UpdateServicepriceWeight extends Action
      */
     public function fields()
     {
-
-
-        return [
-
-            Currency::make('ปรับน้ำหนักพัสดุเป็น(กก.)', 'item_weight'),
-
-
-
-        ];
+        return [];
     }
 }

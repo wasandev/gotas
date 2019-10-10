@@ -23,6 +23,15 @@ class Province extends Model
 
     public function districts()
     {
-        return $this->hasMany('App\Models\Tenant\District');
+        return $this->hasMany('App\Models\Tenant\District', 'name');
+    }
+    public function branch_area()
+    {
+        return $this->hasMany('App\Models\Tenant\Branch_area', 'province', 'name');
+    }
+
+    public function addresses()
+    {
+        return $this->hasMany('App\Models\Tenant\Address', 'province', 'name');
     }
 }

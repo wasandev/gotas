@@ -66,7 +66,7 @@ return [
         'tenant' => [
             'driver' => 'local',
             'root' => storage_path('app/tenancy/tenants'),
-            'url' => env('APP_URL') . '/storage',
+            'url' => env('APP_URL') . '/media',
         ],
 
     ],

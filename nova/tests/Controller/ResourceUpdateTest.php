@@ -3,6 +3,7 @@
 namespace Laravel\Nova\Tests\Controller;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Actions\ActionEvent;
 use Laravel\Nova\Tests\Fixtures\Post;
@@ -30,7 +31,7 @@ class ResourceUpdateTest extends IntegrationTest
                         ->putJson('/nova-api/users/'.$user->id, [
                             'name' => 'David Hemphill',
                             'email' => 'david@laravel.com',
-                            'password' => 'secret',
+                            'password' => 'password',
                         ]);
 
         $response->assertStatus(200);
@@ -58,7 +59,7 @@ class ResourceUpdateTest extends IntegrationTest
                         ->putJson('/nova-api/users/'.$user->id, [
                             'name' => 'Taylor Otwell',
                             'email' => 'taylor@laravel.com',
-                            'password' => 'secret',
+                            'password' => 'password',
                             'restricted' => 'No',
                         ]);
 
@@ -78,7 +79,7 @@ class ResourceUpdateTest extends IntegrationTest
                         ->putJson('/nova-api/users/'.$user->id, [
                             'name' => 'Taylor Otwell',
                             'email' => 'taylor@laravel.com',
-                            'password' => 'secret',
+                            'password' => 'password',
                             '_retrieved_at' => now()->subHours(1)->getTimestamp(),
                         ]);
 
@@ -98,7 +99,7 @@ class ResourceUpdateTest extends IntegrationTest
                         ->putJson('/nova-api/users/'.$user->id, [
                             'name' => 'Taylor Otwell',
                             'email' => 'taylor@laravel.com',
-                            'password' => 'secret',
+                            'password' => 'password',
                         ]);
 
         unset($_SERVER['nova.user.authorizable']);
@@ -167,7 +168,7 @@ class ResourceUpdateTest extends IntegrationTest
                         ->putJson('/nova-api/users/'.$user->id, [
                             'name' => 'Taylor Otwell',
                             'email' => 'taylor@laravel.com',
-                            'password' => 'secret',
+                            'password' => 'password',
                         ]);
 
         $response->assertStatus(200);
@@ -281,7 +282,7 @@ class ResourceUpdateTest extends IntegrationTest
                 'name' => 'Taylor Otwell',
                 'email' => 'taylor@laravel.com',
                 // 'weight' => 190,
-                'password' => 'secret',
+                'password' => 'password',
             ])
             ->assertOk();
     }
@@ -298,7 +299,7 @@ class ResourceUpdateTest extends IntegrationTest
                 'name' => 'Taylor Otwell',
                 'email' => 'taylor@laravel.com',
                 'weight' => 190,
-                'password' => 'secret',
+                'password' => 'password',
             ])
             ->assertOk();
 
@@ -317,7 +318,7 @@ class ResourceUpdateTest extends IntegrationTest
                 'name' => 'Taylor Otwell',
                 'email' => 'taylor@laravel.com',
                 // 'weight' => 190,
-                'password' => 'secret',
+                'password' => 'password',
             ])
             ->assertOk();
     }
@@ -334,7 +335,7 @@ class ResourceUpdateTest extends IntegrationTest
                 'name' => 'Taylor Otwell',
                 'email' => 'taylor@laravel.com',
                 'weight' => 190,
-                'password' => 'secret',
+                'password' => 'password',
             ])
             ->assertOk();
 
@@ -349,7 +350,7 @@ class ResourceUpdateTest extends IntegrationTest
             ->putJson('/nova-api/users/'.$user->id, [
                 'name' => 'Taylor Otwell',
                 'email' => 'taylor@laravel.com',
-                'password' => 'secret',
+                'password' => 'password',
             ]);
 
         $response->assertJson(['redirect' => '/resources/users/1']);
@@ -363,10 +364,33 @@ class ResourceUpdateTest extends IntegrationTest
             ->putJson('/nova-api/users-with-redirects/'.$user->id, [
                 'name' => 'Taylor Otwell',
                 'email' => 'taylor@laravel.com',
-                'password' => 'secret',
+                'password' => 'password',
             ]);
 
         $response->assertJson(['redirect' => 'https://google.com']);
+    }
+
+    public function test_select_resource_query_count_on_update()
+    {
+        $user = factory(User::class)->create(['weight' => 250]);
+
+        DB::enableQueryLog();
+
+        $this->withExceptionHandling()
+             ->putJson('/nova-api/users/'.$user->id, [
+                 'name' => 'Taylor Otwell',
+                 'email' => 'taylor@laravel.com',
+                 'password' => 'password',
+             ])
+             ->assertOk();
+
+        DB::disableQueryLog();
+
+        $queries = count(array_filter(DB::getQueryLog(), function ($log) {
+            return $log['query'] === 'select * from "users" where "users"."id" = ? limit 1';
+        }));
+
+        $this->assertEquals(1, $queries);
     }
 
     public function tearDown() : void

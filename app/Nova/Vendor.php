@@ -63,6 +63,7 @@ class Vendor extends Resource
             Boolean::make('ใช้งาน', 'status')->size('w-full'),
             Text::make('ชื่อผู้จำหน่าย/ผู้ร่วมบริการ/เจ้าของรถ', 'name')
                 ->sortable()
+                ->rules('required')
                 ->size('w-1/2'),
             Text::make('เลขประจำตัวผู้เสียภาษี', 'taxid')
                 ->hideFromIndex()
@@ -72,6 +73,15 @@ class Vendor extends Resource
                 'person' => 'บุคคลธรรมดา'
             ])->displayUsingLabels()
                 ->hideFromIndex()->size('w-1/2'),
+            Select::make('การชำระเงิน', 'paymenttype')->options([
+                'เงินสด' => 'เงินสด',
+                'วางบิล' => 'วางบิล'
+            ])
+                ->hideFromIndex()
+                ->size('w-1/2')
+                ->withMeta(['value' => 'เงินสด']),
+            Number::make('ระยะเวลาเครดิต', 'creditterm')
+                ->withMeta(['value' => 0]),
             BelongsTo::make('ประเภทธุรกิจ', 'businesstype', 'App\Nova\Businesstype')
                 ->hideFromIndex()->size('w-1/2'),
 

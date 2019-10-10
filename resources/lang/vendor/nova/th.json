@@ -41,7 +41,7 @@
     "No :resource matched the given criteria.": "No :resource matched the given criteria.",
     "Another user has updated this resource since this page was loaded. Please refresh the page and try again.": "Another user has updated this resource since this page was loaded. Please refresh the page and try again.",
     "Are you sure you want to delete this file?": "Are you sure you want to delete this file?",
-    "Are you sure you want to run this action?": "Are you sure you want to run this action?",
+    "Are you sure you want to run this action?": "แน่ใจว่าต้องการทำรายการนี้ ?",
     "Attach": "บันทึก",
     "Attach :resource": "เพิ่ม :resource",
     "Attach & Attach Another": "บันทึก&เพิ่มรายการ",
@@ -52,7 +52,7 @@
     "Choose an option": "เลือกเงื่อนไข",
     "Click to choose": "คลิกเลือก",
     "Reset Filters": "ยกเลิกการกรอง",
-    "Create": "เพิ่ม",
+    "Create": "เพิ่มรายการ",
     "Create :resource": "เพิ่ม :resource",
     "Create & Add Another": "บันทึก&เพิ่มรายการ",
     "Delete File": "ลบไฟล์",
@@ -376,8 +376,15 @@
     "Reload": "Reload",
     "Role": "สิทธิ์การใช้งาน",
     "Add Branch Area": "เพิ่มพื้นที่บริการของสาขา",
-    "Add Service Price Item by Weight": "เพิ่มรายการราคาจัดส่งพัสดุแบบน้ำหนัก",
-    "Add Service Price Item by Size": "เพิ่มรายการราคาจัดส่งพัสดุแบบขนาด",
-    "Add Service Price Item by Size&Weight": "เพิ่มรายการราคาจัดส่งพัสดุแบบขนาดและน้ำหนัก",
-    "Update Service Price": "ปรับราคาค่าขนส่ง"
+    "Add Service Price Item": "เพิ่มรายการราคาจัดส่งพัสดุ",
+    "Update Service Price": "แก้ไขราคาค่าจัดส่งพัสดุ",
+    "Add Product Service Price": "สร้างตารางค่าขนส่งตามสินค้า",
+    "Update Product Service Price": "แก้ไขราคาค่าขนส่งตามสินค้า",
+    "Add Product Customer Price": "สร้างตารางราคาค่าขนส่งสินค้าตามลูกค้า",
+    "Add Customer Product Price": "สร้างตารางราคาค่าขนส่งสินค้าตามลูกค้า",
+    "Update Product Service Unit": "แก้ไขหน่วยนับสินค้าที่เลือก",
+    "Set Customer Product Price Active": "กำหนดใช้งาน/ไม่ใช้งาน",
+    "Print Quotation": "พิมพ์ใบเสนอราคา(PDF)"
+
+
 }

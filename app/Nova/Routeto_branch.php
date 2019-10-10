@@ -11,8 +11,8 @@ use Laravel\Nova\Fields\Text;
 
 class Routeto_branch extends Resource
 {
-    public static $group = '1.งานสำหรับผู้ดูแลระบบ';
-    public static $displayInNavigation = false;
+    public static $group = "5.งานจัดการการขนส่ง";
+    //public static $displayInNavigation = false;
     /**
      * The model the resource corresponds to.
      *
@@ -54,6 +54,7 @@ class Routeto_branch extends Resource
             BelongsTo::make('ปลายทาง', 'dest_branch', 'App\Nova\Branch'),
             Text::make('ชื่อเส้นทาง', 'name'),
             Currency::make('ระยะทาง(กม.)', 'distance'),
+            HasMany::make('ต้นทุนขนส่งตามเส้นทางระหว่างสาขา', 'routeto_branch_costs', 'App\Nova\Routeto_branch_cost')
 
         ];
     }
@@ -77,7 +78,9 @@ class Routeto_branch extends Resource
      */
     public function filters(Request $request)
     {
-        return [];
+        return [
+            new Filters\Branch,
+        ];
     }
 
     /**

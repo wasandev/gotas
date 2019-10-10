@@ -85,13 +85,8 @@ class Product extends Resource
             BelongsTo::make('ผู้ทำรายการ', 'user', 'App\Nova\User')
                 ->onlyOnDetail(),
             HasMany::make('ค่าขนส่งตามสินค้า', 'productservice_price', 'App\Nova\Productservice_price'),
-            // BelongsToMany::make('ลูกค้าที่ใช้สินค้านี้', 'customer', 'App\Nova\Customer')
-            //     ->fields(function () {
-            //         return [
-            //             Text::make('ราคาค่าขนส่ง', 'price'),
-            //         ];
-            //     }),
-
+            // BelongsToMany::make('ลูกค้าที่ใช้สินค้านี้', 'customer', 'App\Nova\Customer'),
+            // HasMany::make('ค่าขนส่งสินค้าตามลูกค้า', 'customer_product_prices', 'App\Nova\Customer_product_price')
 
         ];
     }
@@ -138,7 +133,10 @@ class Product extends Resource
     public function actions(Request $request)
     {
         return [
+            (new Actions\AddProductServicePrice)->showOnTableRow(),
+            //new Actions\AddProductCustomerPrice,
             new DownloadExcel,
+
 
         ];
     }

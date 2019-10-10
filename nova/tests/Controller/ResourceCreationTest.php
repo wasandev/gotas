@@ -28,7 +28,7 @@ class ResourceCreationTest extends IntegrationTest
                         ->postJson('/nova-api/users', [
                             'name' => 'Taylor Otwell',
                             'email' => 'taylor@laravel.com',
-                            'password' => 'secret',
+                            'password' => 'password',
                         ]);
 
         $response->assertStatus(201);
@@ -83,7 +83,7 @@ class ResourceCreationTest extends IntegrationTest
                         ->postJson('/nova-api/users', [
                             'name' => 'Taylor Otwell',
                             'email' => 'taylor@laravel.com',
-                            'password' => 'secret',
+                            'password' => 'password',
                             'restricted' => 'No',
                         ]);
 
@@ -106,7 +106,7 @@ class ResourceCreationTest extends IntegrationTest
                         ->postJson('/nova-api/users', [
                             'name' => 'Taylor Otwell',
                             'email' => 'taylor@laravel.com',
-                            'password' => 'secret',
+                            'password' => 'password',
                         ]);
 
         unset($_SERVER['nova.user.authorizable']);
@@ -343,7 +343,7 @@ class ResourceCreationTest extends IntegrationTest
              ->postJson('/nova-api/users', [
                 'name' => 'Taylor Otwell',
                 'email' => 'taylor@laravel.com',
-                'password' => 'secret',
+                'password' => 'password',
              ]);
 
         $user = User::first();
@@ -372,7 +372,7 @@ class ResourceCreationTest extends IntegrationTest
                         ->postJson('/nova-api/users', [
                             'name' => 'David Hemphill',
                             'email' => 'david@laravel.com',
-                            'password' => 'secret',
+                            'password' => 'password',
                             'meta' => json_encode([
                                 'age' => 34,
                                 'weight' => 170,
@@ -404,7 +404,7 @@ class ResourceCreationTest extends IntegrationTest
             ->postJson('/nova-api/users', [
                 'name' => 'Taylor Otwell',
                 'email' => 'taylor@laravel.com',
-                'password' => 'secret',
+                'password' => 'password',
             ])
             ->assertStatus(201);
     }
@@ -419,7 +419,7 @@ class ResourceCreationTest extends IntegrationTest
                 'name' => 'Taylor Otwell',
                 'email' => 'taylor@laravel.com',
                 'weight' => 190,
-                'password' => 'secret',
+                'password' => 'password',
             ])
             ->assertStatus(201);
 
@@ -435,7 +435,7 @@ class ResourceCreationTest extends IntegrationTest
             ->postJson('/nova-api/users?editing=true&editMode=create', [
                 'name' => 'Taylor Otwell',
                 'email' => 'taylor@laravel.com',
-                'password' => 'secret',
+                'password' => 'password',
             ])
             ->assertStatus(201);
     }
@@ -450,7 +450,7 @@ class ResourceCreationTest extends IntegrationTest
                 'name' => 'Taylor Otwell',
                 'email' => 'taylor@laravel.com',
                 'weight' => 190,
-                'password' => 'secret',
+                'password' => 'password',
             ])
             ->assertStatus(201);
 
@@ -463,7 +463,7 @@ class ResourceCreationTest extends IntegrationTest
             ->postJson('/nova-api/users', [
                 'name' => 'Taylor Otwell',
                 'email' => 'taylor@laravel.com',
-                'password' => 'secret',
+                'password' => 'password',
             ]);
 
         $response->assertJson(['redirect' => '/resources/users/1']);
@@ -475,7 +475,7 @@ class ResourceCreationTest extends IntegrationTest
             ->postJson('/nova-api/users-with-redirects', [
                 'name' => 'Taylor Otwell',
                 'email' => 'taylor@laravel.com',
-                'password' => 'secret',
+                'password' => 'password',
             ]);
 
         $response->assertJson(['redirect' => 'https://yahoo.com']);

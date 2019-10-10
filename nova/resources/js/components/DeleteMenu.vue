@@ -1,7 +1,7 @@
 <template>
     <div>
         <dropdown class="ml-3 bg-30 hover:bg-40 rounded">
-            <dropdown-trigger slot-scope="{ toggle }" :handle-click="toggle" class="px-3">
+            <dropdown-trigger class="px-3">
                 <icon type="delete" class="text-80" />
             </dropdown-trigger>
 
@@ -51,41 +51,36 @@
             </dropdown-menu>
         </dropdown>
 
-        <portal to="modals">
-            <transition name="fade">
-                <delete-resource-modal
-                    v-if="deleteSelectedModalOpen"
-                    @confirm="deleteSelectedResources"
-                    @close="closeDeleteSelectedModal"
-                    :mode="viaManyToMany ? 'detach' : 'delete'"
-                />
-            </transition>
+        <portal
+            to="modals"
+            v-if="deleteSelectedModalOpen || forceDeleteSelectedModalOpen || restoreModalOpen"
+        >
+            <delete-resource-modal
+                v-if="deleteSelectedModalOpen"
+                @confirm="deleteSelectedResources"
+                @close="closeDeleteSelectedModal"
+                :mode="viaManyToMany ? 'detach' : 'delete'"
+            />
 
-            <transition name="fade">
-                <delete-resource-modal
-                    v-if="forceDeleteSelectedModalOpen"
-                    @confirm="forceDeleteSelectedResources"
-                    @close="closeForceDeleteSelectedModal"
-                    mode="delete"
-                >
-                    <div slot-scope="{ uppercaseMode, mode }" class="p-8">
-                        <heading :level="2" class="mb-6">{{ __('Force Delete Resource') }}</heading>
-                        <p class="text-80 leading-normal">
-                            {{
-                                __('Are you sure you want to force delete the selected resources?')
-                            }}
-                        </p>
-                    </div>
-                </delete-resource-modal>
-            </transition>
+            <delete-resource-modal
+                v-if="forceDeleteSelectedModalOpen"
+                @confirm="forceDeleteSelectedResources"
+                @close="closeForceDeleteSelectedModal"
+                mode="delete"
+            >
+                <div slot-scope="{ uppercaseMode, mode }" class="p-8">
+                    <heading :level="2" class="mb-6">{{ __('Force Delete Resource') }}</heading>
+                    <p class="text-80 leading-normal">
+                        {{ __('Are you sure you want to force delete the selected resources?') }}
+                    </p>
+                </div>
+            </delete-resource-modal>
 
-            <transition name="fade">
-                <restore-resource-modal
-                    v-if="restoreModalOpen"
-                    @confirm="restoreSelectedResources"
-                    @close="closeRestoreModal"
-                />
-            </transition>
+            <restore-resource-modal
+                v-if="restoreModalOpen"
+                @confirm="restoreSelectedResources"
+                @close="closeRestoreModal"
+            />
         </portal>
     </div>
 </template>

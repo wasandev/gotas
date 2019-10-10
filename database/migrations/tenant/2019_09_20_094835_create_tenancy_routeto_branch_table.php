@@ -19,6 +19,7 @@ class CreateTenancyRoutetoBranchTable extends Migration
             $table->integer('dest_branch_id')->unsigned();
             $table->string('name', 150)->nullable();
             $table->double('distance', 8, 2)->nullable()->default(0.00);
+            $table->integer('user_id')->unsigned()->nullable();
             $table->timestamps();
         });
         Schema::table('routeto_branch', function (Blueprint $table) {

@@ -21,6 +21,7 @@ class CreateTenancyProductservicePriceTable extends Migration
             $table->string('province')->nullable();
             $table->decimal('price', 10, 4)->default(0);
             $table->integer('unit_id')->unsigned();
+            $table->integer('user_id')->unsigned()->nullable();
             $table->timestamps();
         });
         Schema::table('productservice_price', function (Blueprint $table) {

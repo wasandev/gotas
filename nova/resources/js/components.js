@@ -33,6 +33,7 @@ import Edit from '@/components/Icons/Edit'
 import Error403 from '@/views/Error403'
 import Error404 from '@/views/Error404'
 import Excerpt from '@/components/Excerpt'
+import FadeTransition from '@/components/FadeTransition'
 import FakeCheckbox from '@/components/Index/FakeCheckbox'
 import Filter from '@/components/Icons/Filter'
 import FilterMenu from '@/components/FilterMenu'
@@ -54,7 +55,9 @@ import Link from '@/components/Icons/Editor/Link'
 import Loader from '@/components/Icons/Loader'
 import LoadingCard from '@/components/LoadingCard'
 import LoadingView from '@/components/LoadingView'
+import More from '@/components/Icons/More'
 import Modal from '@/components/Modal'
+import PaginationLoadMore from '@/components/Pagination/PaginationLoadMore'
 import PaginationLinks from '@/components/Pagination/PaginationLinks'
 import PaginationSimple from '@/components/Pagination/PaginationSimple'
 import PanelItem from '@/components/PanelItem'
@@ -64,6 +67,7 @@ import ProgressButton from '@/components/ProgressButton'
 import Refresh from '@/components/Icons/Refresh'
 import ResourceTable from '@/components/ResourceTable'
 import ResourceTableRow from '@/components/Index/ResourceTableRow'
+import InlineActionSelector from '@/components/Index/InlineActionSelector'
 import Restore from '@/components/Icons/Restore'
 import RestoreResourceModal from '@/components/Modals/RestoreResourceModal'
 import ScrollWrap from '@/components/ScrollWrap'
@@ -129,18 +133,21 @@ Vue.component('icon-download', Download)
 Vue.component('icon-edit', Edit)
 Vue.component('icon-filter', Filter)
 Vue.component('icon-force-delete', ForceDelete)
+Vue.component('icon-more', More)
 Vue.component('icon-play', Play)
 Vue.component('icon-refresh', Refresh)
 Vue.component('icon-restore', Restore)
 Vue.component('icon-search', Search)
 Vue.component('icon-view', View)
 Vue.component('icon-menu', Menu)
+Vue.component('inline-action-selector', InlineActionSelector)
 Vue.component('lens', Lens)
 Vue.component('lens-selector', LensSelector)
 Vue.component('loader', Loader)
 Vue.component('loading-card', LoadingCard)
 Vue.component('loading-view', LoadingView)
 Vue.component('modal', Modal)
+Vue.component('pagination-load-more', PaginationLoadMore)
 Vue.component('pagination-links', PaginationLinks)
 Vue.component('pagination-simple', PaginationSimple)
 Vue.component('panel-item', PanelItem)
@@ -164,3 +171,5 @@ Vue.component('boolean-filter', BooleanFilter)
 
 Vue.component('select-control', SelectControl)
 Vue.component('date-time-picker', DateTimePicker)
+
+Vue.component('fade-transition', FadeTransition)

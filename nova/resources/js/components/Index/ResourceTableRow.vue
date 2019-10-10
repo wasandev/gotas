@@ -29,6 +29,15 @@
         </td>
 
         <td class="td-fit text-right pr-6">
+            <!-- Actions Menu -->
+            <inline-action-selector
+                v-if="availableActions.length > 0"
+                class="mr-3"
+                :resource="resource"
+                :resource-name="resourceName"
+                :actions="availableActions"
+            />
+
             <!-- View Resource Link -->
             <span v-if="resource.authorizedToView">
                 <router-link
@@ -117,39 +126,39 @@
                 <icon type="restore" with="20" height="21" />
             </button>
 
-            <portal to="modals">
-                <transition name="fade">
-                    <delete-resource-modal
-                        v-if="deleteModalOpen"
-                        @confirm="confirmDelete"
-                        @close="closeDeleteModal"
-                        :mode="viaManyToMany ? 'detach' : 'delete'"
-                    >
-                        <div slot-scope="{ uppercaseMode, mode }" class="p-8">
-                            <heading :level="2" class="mb-6">{{
-                                __(uppercaseMode + ' Resource')
-                            }}</heading>
-                            <p class="text-80 leading-normal">
-                                {{ __('Are you sure you want to ' + mode + ' this resource?') }}
-                            </p>
-                        </div>
-                    </delete-resource-modal>
-                </transition>
+            <portal
+                to="modals"
+                transition="fade-transition"
+                v-if="deleteModalOpen || restoreModalOpen"
+            >
+                <delete-resource-modal
+                    v-if="deleteModalOpen"
+                    @confirm="confirmDelete"
+                    @close="closeDeleteModal"
+                    :mode="viaManyToMany ? 'detach' : 'delete'"
+                >
+                    <div slot-scope="{ uppercaseMode, mode }" class="p-8">
+                        <heading :level="2" class="mb-6">{{
+                            __(uppercaseMode + ' Resource')
+                        }}</heading>
+                        <p class="text-80 leading-normal">
+                            {{ __('Are you sure you want to ' + mode + ' this resource?') }}
+                        </p>
+                    </div>
+                </delete-resource-modal>
 
-                <transition name="fade">
-                    <restore-resource-modal
-                        v-if="restoreModalOpen"
-                        @confirm="confirmRestore"
-                        @close="closeRestoreModal"
-                    >
-                        <div class="p-8">
-                            <heading :level="2" class="mb-6">{{ __('Restore Resource') }}</heading>
-                            <p class="text-80 leading-normal">
-                                {{ __('Are you sure you want to restore this resource?') }}
-                            </p>
-                        </div>
-                    </restore-resource-modal>
-                </transition>
+                <restore-resource-modal
+                    v-if="restoreModalOpen"
+                    @confirm="confirmRestore"
+                    @close="closeRestoreModal"
+                >
+                    <div class="p-8">
+                        <heading :level="2" class="mb-6">{{ __('Restore Resource') }}</heading>
+                        <p class="text-80 leading-normal">
+                            {{ __('Are you sure you want to restore this resource?') }}
+                        </p>
+                    </div>
+                </restore-resource-modal>
             </portal>
         </td>
     </tr>
@@ -173,6 +182,7 @@ export default {
         'actionsAreAvailable',
         'shouldShowCheckboxes',
         'updateSelectionStatus',
+        'queryString',
     ],
 
     data: () => ({
@@ -212,6 +222,12 @@ export default {
 
         closeRestoreModal() {
             this.restoreModalOpen = false
+        },
+    },
+
+    computed: {
+        availableActions() {
+            return _.filter(this.resource.actions, a => a.showOnTableRow)
         },
     },
 }

@@ -510,7 +510,7 @@ abstract class Field extends FieldElement implements JsonSerializable, Resolvabl
 
         switch (get_class($this)) {
             case BelongsTo::class:
-                return $request->newResource()->resource->{$this->attribute}()->getForeignKeyName();
+                return $this->getRelationForeignKeyName($request->newResource()->resource->{$this->attribute}());
             default:
                 return $this->attribute;
         }

@@ -50,21 +50,38 @@ use App\Observers\Product_imageObserver;
 use App\Models\Tenant\Product_style;
 use App\Observers\Product_styleObserver;
 use App\Models\Tenant\Product;
-use App\Models\Tenant\Productservice_price;
-use App\Models\Tenant\Routeto_branch;
 use App\Observers\ProductObserver;
+
+use App\Models\Tenant\Productservice_price;
+use App\Observers\ProductServicepriceObserver;
+
+use App\Models\Tenant\Routeto_branch;
+use App\Observers\RoutetoBranchObserver;
+
 use App\Models\Tenant\Tiretype;
 use App\Observers\TiretypeObserver;
+
 use App\Models\Tenant\Unit;
 use App\Observers\UnitObserver;
+
 use App\Models\Tenant\Vendor;
+use App\Observers\VendorObserver;
 
 use App\Models\Tenant\Branch_route;
 use App\Observers\BranchRouteObserver;
 
-use App\Observers\ProductServicepriceObserver;
-use App\Observers\RoutetoBranchObserver;
-use App\Observers\VendorObserver;
+use App\Models\Tenant\Parcel;
+use App\Observers\ParcelObserver;
+
+use App\Models\Tenant\Charter_route;
+use App\Observers\CharterRouteObserver;
+
+use App\Models\Tenant\Charter_price;
+use App\Observers\CharterPriceObserver;
+
+use App\Models\Tenant\Quotation;
+use App\Observers\QuotationObserver;
+
 
 
 class AppServiceProvider extends ServiceProvider
@@ -96,8 +113,8 @@ class AppServiceProvider extends ServiceProvider
         Address::observe(AddressObserver::class);
         Branch::observe(BranchObserver::class);
         Branch_area::observe(BranchAreaObserver::class);
-        //Branch_route::observer(BranchRouteObserver::class);
-        //Routeto_branch::observer(RoutetoBranchObserver::class);
+        Branch_route::observe(BranchRouteObserver::class);
+        Routeto_branch::observe(RoutetoBranchObserver::class);
         Businesstype::observe(BusinesstypeObserver::class);
         Car_expense::observe(Car_expenseObserver::class);
         Car::observe(CarObserver::class);
@@ -112,9 +129,13 @@ class AppServiceProvider extends ServiceProvider
         Product_image::observe(Product_imageObserver::class);
         Product_style::observe(Product_styleObserver::class);
         Product::observe(ProductObserver::class);
-        //Productservice_price::observer(ProductServicepriceObserver::class);
+        Productservice_price::observe(ProductServicepriceObserver::class);
         Tiretype::observe(TiretypeObserver::class);
         Unit::observe(UnitObserver::class);
         Vendor::observe(VendorObserver::class);
+        Parcel::observe(ParcelObserver::class);
+        Charter_route::observe(CharterRouteObserver::class);
+        Charter_price::observe(CharterPriceObserver::class);
+        Quotation::observe(QuotationObserver::class);
     }
 }

@@ -25,4 +25,9 @@ class District extends Model
     {
         return $this->hasMany('App\Models\Tenant\SubDistrict');
     }
+
+    public function branch_area()
+    {
+        return $this->hasMany('App\Models\Tenant\Branch_area', 'district', 'name');
+    }
 }

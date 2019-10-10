@@ -44,7 +44,7 @@
                         class="h-9 flex items-center"
                         dusk="select-all-dropdown"
                     >
-                        <dropdown-trigger slot-scope="{ toggle }" :handle-click="toggle">
+                        <dropdown-trigger>
                             <fake-checkbox :checked="selectAllChecked" />
                         </dropdown-trigger>
 
@@ -220,9 +220,14 @@
                     v-if="resourceResponse && resources.length > 0"
                     :next="hasNextPage"
                     :previous="hasPreviousPage"
+                    @load-more="loadMore"
                     @page="selectPage"
                     :pages="totalPages"
                     :page="currentPage"
+                    :per-page="perPage"
+                    :resource-count-label="resourceCountLabel"
+                    :current-resource-count="resources.length"
+                    :all-matching-resource-count="allMatchingResourceCount"
                 >
                     <span
                         v-if="resourceCountLabel"
@@ -308,6 +313,9 @@ export default {
         orderBy: '',
         orderByDirection: '',
         trashed: '',
+
+        // Load More Pagination
+        currentPageLoadMore: null,
     }),
 
     /**
@@ -320,6 +328,8 @@ export default {
         this.initializePerPageFromQueryString()
         this.initializeTrashedFromQueryString()
         this.initializeOrderingFromQueryString()
+
+        this.perPage = this.resourceInformation.perPageOptions[0]
 
         await this.initializeFilters(this.lens)
         this.getResources()
@@ -437,9 +447,7 @@ export default {
                     },
                 })
                 .then(response => {
-                    this.actions = _.filter(response.data.actions, action => {
-                        return !action.onlyOnDetail
-                    })
+                    this.actions = _.filter(response.data.actions, a => a.showOnIndex)
                     this.pivotActions = response.data.pivotActions
                 })
         },
@@ -518,6 +526,34 @@ export default {
         },
 
         /**
+         * Load more resources.
+         */
+        loadMore() {
+            if (this.currentPageLoadMore === null) {
+                this.currentPageLoadMore = this.currentPage
+            }
+
+            this.currentPageLoadMore = this.currentPageLoadMore + 1
+
+            return Minimum(
+                Nova.request().get('/nova-api/' + this.resourceName + '/lens/' + this.lens, {
+                    params: {
+                        ...this.resourceRequestQueryString,
+                        page: this.currentPageLoadMore, // We do this to override whatever page number is in the URL
+                    },
+                }),
+                300
+            ).then(({ data }) => {
+                this.resourceResponse = data
+                this.resources = [...this.resources, ...data.resources]
+
+                this.getAllMatchingResourceCount()
+
+                Nova.$emit('resources-loaded')
+            })
+        },
+
+        /**
          * Select the next page.
          */
         selectPage(page) {
@@ -534,7 +570,7 @@ export default {
 
     computed: {
         /**
-         * Get the endpoint for this resource's metrics.
+         * Get the endpoint for this resource's actions.
          */
         lensActionEndpoint() {
             return `/nova-api/${this.resourceName}/lens/${this.lens}/action`

@@ -9,7 +9,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 class Routeto_branch extends Pivot
 {
     use UsesTenantConnection;
-    //public $incrementing = true;
+    public $incrementing = true;
     protected $table = 'routeto_branch';
 
     protected $fillable = [
@@ -30,5 +30,10 @@ class Routeto_branch extends Pivot
     public function dest_branch()
     {
         return $this->belongsTo('App\Models\Tenant\Branch', 'dest_branch_id');
+    }
+
+    public function routeto_branch_costs()
+    {
+        return $this->hasMany('App\Models\Tenant\Routeto_branch_cost', 'routeto_branch_id');
     }
 }

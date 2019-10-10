@@ -6,7 +6,9 @@ use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Currency;
-use Laravel\Nova\Http\Requests\NovaRequest;
+use SebastianBergmann\CodeCoverage\Filter;
+use Wasandev\InputThaiAddress\InputDistrict;
+use Wasandev\InputThaiAddress\InputProvince;
 
 class Productservice_price extends Resource
 {
@@ -32,7 +34,7 @@ class Productservice_price extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'id', 'district', 'province'
     ];
 
     public static function label()
@@ -53,11 +55,24 @@ class Productservice_price extends Resource
             BelongsTo::make('สินค้า', 'product', 'App\Nova\Product')
                 ->sortable()
                 ->searchable(),
-            BelongsTo::make('สาขาต้นทาง', 'branch', 'App\Nova\Routeto_branch_route')
+            BelongsTo::make('สาขาต้นทาง', 'from_branch', 'App\Nova\Branch')
                 ->sortable(),
+            InputDistrict::make('ไปอำเภอ/เขต', 'district')
+                ->withValues(['amphoe', 'province'])
+                ->fromValue('amphoe')
+                ->sortable()
+                ->rules('required'),
+            InputProvince::make('ไปจังหวัด', 'province')
+                ->withValues(['amphoe', 'province'])
+                ->fromValue('province')
+                ->sortable()
+                ->rules('required'),
+
             BelongsTo::make('หน่วยนับ', 'unit', 'App\Nova\Unit')
                 ->sortable(),
-            Currency::make('ค่าขนส่ง', 'price'),
+            Currency::make('ค่าขนส่ง', 'price')
+                ->sortable()
+                ->rules('required'),
 
         ];
     }
@@ -81,7 +96,13 @@ class Productservice_price extends Resource
      */
     public function filters(Request $request)
     {
-        return [];
+        return [
+            new Filters\FromBranch,
+            new Filters\Province,
+            new Filters\Product,
+            new Filters\Unit,
+
+        ];
     }
 
     /**
@@ -103,6 +124,9 @@ class Productservice_price extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
+        return [
+            new Actions\UpdateProductServicePrice,
+            new Actions\UpdateProductServiceUnit,
+        ];
     }
 }

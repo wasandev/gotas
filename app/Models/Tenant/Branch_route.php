@@ -10,8 +10,7 @@ class Branch_route extends Model
     use UsesTenantConnection;
 
     protected $fillable = [
-        'branch_id', 'branch_area_id',
-        'name', 'distinct', 'user_id'
+        'branch_id', 'name', 'distance', 'user_id'
     ];
 
     public function branch()
@@ -19,8 +18,13 @@ class Branch_route extends Model
         return $this->belongsTo('App\Models\Tenant\Branch');
     }
 
-    public function branch_area()
+    public function branch_route_districts()
     {
-        return $this->belongsTo('App\Models\Tenant\Branch_area');
+        return $this->hasMany('App\Models\Tenant\Branch_route_district');
+    }
+
+    public function branch_route_costs()
+    {
+        return $this->hasMany('App\Models\Tenant\Branch_route_cost');
     }
 }

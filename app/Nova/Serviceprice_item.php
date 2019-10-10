@@ -9,6 +9,8 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\Select;
 use App\Models\Tenant\Serviceprice;
+use Wasandev\InputThaiAddress\InputDistrict;
+use Wasandev\InputThaiAddress\InputProvince;
 
 class Serviceprice_item extends Resource
 {
@@ -26,7 +28,7 @@ class Serviceprice_item extends Resource
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'id';
 
     /**
      * The columns that should be searched.
@@ -34,12 +36,12 @@ class Serviceprice_item extends Resource
      * @var array
      */
     public static $search = [
-        'name', 'weight', 'width', 'length', 'height'
+        'id', 'district', 'province'
     ];
 
     public static function label()
     {
-        return 'รายการราคา';
+        return 'ตารางราคา';
     }
     /**
      * Get the fields displayed by the resource.
@@ -50,62 +52,28 @@ class Serviceprice_item extends Resource
     public function fields(Request $request)
     {
 
-        if ($request->editMode == "create" && !empty($request->viaResource) && !empty($request->viaResourceId)) {
-            $serviceprice = Serviceprice::find($request->viaResourceId);
-            return [
-                ID::make()->sortable(),
 
-                Select::make('ชื่อราคา', 'serviceprice_id')
-                    ->options([$serviceprice->id => $serviceprice->name])
-                    ->displayUsingLabels()
-                    ->withMeta(['value' => $serviceprice->id])
-                    ->hideWhenUpdating()
-                    ->readonly(true),
-
-                Text::make('ชื่อพัสดุ', 'name'),
-                Currency::make('กว้าง(ซม.)', 'width')
-                    ->hideFromIndex(),
-                Currency::make('ยาว(ซม.)', 'length')
-                    ->hideFromIndex(),
-                Currency::make('สูง(ซม.)', 'height')
-                    ->hideFromIndex(),
-                Text::make('ขนาด(กว้าง+ยาว+สูง)', function () {
-                    return $this->width + $this->length + $this->height;
-                }),
-                Currency::make('น้ำหนัก(กก.)', 'weight')
-                    ->rules('required'),
-                BelongsTo::make('สาขาต้นทาง', 'from_branch', 'App\Nova\Branch')
-                    ->rules('required'),
-                BelongsTo::make('สาขาปลายทาง', 'to_branch', 'App\Nova\Branch')
-                    ->rules('required'),
-
-                Currency::make('ค่าขนส่ง', 'price')
-                    ->rules('required'),
-            ];
-        }
         return [
             ID::make()->sortable(),
             BelongsTo::make('ชื่อราคา', 'serviceprice', 'App\Nova\Serviceprice')
                 ->hideFromIndex()
                 ->sortable(),
-            Text::make('ชื่อพัสดุ', 'name')->sortable(),
-            Currency::make('กว้าง(ซม.)', 'width')
-                ->hideFromIndex(),
-            Currency::make('ยาว(ซม.)', 'length')
-                ->hideFromIndex(),
-            Currency::make('สูง(ซม.)', 'height')
-                ->hideFromIndex(),
-            Text::make('ขนาด(กว้าง+ยาว+สูง)', function () {
-                return $this->width + $this->length + $this->height;
-            })->sortable(),
-            Currency::make('น้ำหนัก(กก.)', 'weight')
+            BelongsTo::make('ชื่อพัสดุ', 'parcel', 'App\Nova\Parcel')
+                ->rules('required')
                 ->sortable(),
             BelongsTo::make('สาขาต้นทาง', 'from_branch', 'App\Nova\Branch')
                 ->rules('required')
                 ->sortable(),
-            BelongsTo::make('สาขาปลายทาง', 'to_branch', 'App\Nova\Branch')
-                ->rules('required')
-                ->sortable(),
+            InputDistrict::make('ไปอำเภอ/เขต', 'district')
+                ->withValues(['amphoe', 'province'])
+                ->fromValue('amphoe')
+                ->sortable()
+                ->rules('required'),
+            InputProvince::make('ไปจังหวัด', 'province')
+                ->withValues(['amphoe', 'province'])
+                ->fromValue('province')
+                ->sortable()
+                ->rules('required'),
             Currency::make('ค่าขนส่ง', 'price')
                 ->rules('required')
                 ->sortable(),
@@ -133,7 +101,8 @@ class Serviceprice_item extends Resource
     {
         return [
             new Filters\FromBranch,
-            new Filters\ToBranch,
+            new Filters\Province,
+            new Filters\Parcel,
         ];
     }
 

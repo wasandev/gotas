@@ -91,6 +91,6 @@ return [
     |
     */
 
-    'pagination' => 'links',
+    'pagination' => 'load-more',
 
 ];

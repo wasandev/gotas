@@ -24,17 +24,14 @@ class Branch_area extends Model
         return $this->belongsTo('App\Models\Tenant\Branch');
     }
 
-    // public function province()
-    // {
-    //     return $this->belongsTo('App\Models\Tenant\Province', 'province', 'name');
-    // }
 
-    // public function district()
-    // {
-    //     return $this->belongsTo('App\Models\Tenant\District', 'district', 'name');
-    // }
     public function user()
     {
         return $this->belongsTo('App\Models\Tenant\User');
+    }
+
+    public function charter_routes()
+    {
+        return $this->hasMany('App\Models\Tenant\Charter_route');
     }
 }

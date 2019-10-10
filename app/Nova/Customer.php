@@ -13,6 +13,7 @@ use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Panel;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\Number;
 use Wasandev\InputThaiAddress\InputSubDistrict;
 use Wasandev\InputThaiAddress\InputDistrict;
 use Wasandev\InputThaiAddress\InputProvince;
@@ -26,6 +27,7 @@ class Customer extends Resource
     //public static $displayInNavigation = false;
     public static $group = "4.งานด้านการขาย";
     //public static $subGroup = "ข้อมูลลูกค้า";
+
 
     /**
      * The model the resource corresponds to.
@@ -79,22 +81,29 @@ class Customer extends Resource
                 'person' => 'บุคคลธรรมดา'
             ])->displayUsingLabels()
                 ->hideFromIndex()->size('w-1/2'),
+
+            Select::make('การชำระเงิน', 'paymenttype')->options([
+                'เงินสด' => 'เงินสด',
+                'วางบิล' => 'วางบิล'
+            ])
+                ->hideFromIndex()
+                ->size('w-1/2')
+                ->withMeta(['value' => 'เงินสด']),
+            Number::make('ระยะเวลาเครดิต', 'creditterm')
+                ->withMeta(['value' => 0]),
             BelongsTo::make('ประเภทธุรกิจ', 'businesstype', 'App\Nova\Businesstype')
                 ->hideFromIndex()->size('w-1/2'),
 
 
 
             new Panel('ข้อมูลการติดต่อ', $this->contactFields()),
-            new Panel('ที่อยู่', $this->addressFields()),
+            new Panel('ที่อยู่ในการออกเอกสาร', $this->addressFields()),
             new Panel('อื่นๆ', $this->otherFields()),
 
             HasMany::make('จุดรับ-ส่งสินค้า', 'addresses', 'App\Nova\Address'),
-            BelongsToMany::make('สินค้าที่ใช้ส่งประจำ', 'product', 'App\Nova\Product')
-                ->fields(function () {
-                    return [
-                        Text::make('ราคาค่าขนส่ง', 'price'),
-                    ];
-                }),
+            BelongsToMany::make('สินค้าของลูกค้า', 'product', 'App\Nova\Product'),
+            HasMany::make('ค่าขนส่งสินค้าตามลูกค้า', 'customer_product_prices', 'App\Nova\Customer_product_price')
+
 
 
 
@@ -192,7 +201,9 @@ class Customer extends Resource
      */
     public function filters(Request $request)
     {
-        return [];
+        return [
+            new Filters\BusinessType,
+        ];
     }
 
     /**
@@ -214,6 +225,9 @@ class Customer extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
+
+        return [
+            new Actions\AddCustomerProductPrice,
+        ];
     }
 }

@@ -41,13 +41,13 @@ class AuthenticationTest extends IntegrationTest
 
         $user = factory(User::class)->create([
             'email' => 'taylor@laravel.com',
-            'password' => bcrypt('secret'),
+            'password' => bcrypt('password'),
         ]);
 
         $response = $this->withExceptionHandling()
                         ->post('/nova/login', [
                             'email' => 'taylor@laravel.com',
-                            'password' => 'secret',
+                            'password' => 'password',
                         ]);
 
         $response->assertStatus(302);
@@ -73,7 +73,7 @@ class AuthenticationTest extends IntegrationTest
     //     // Request Password Reset Link...
     //     $user = factory(User::class)->create([
     //         'email' => 'taylor@laravel.com',
-    //         'password' => bcrypt('secret'),
+    //         'password' => bcrypt('password'),
     //     ]);
 
     //     $response = $this->withExceptionHandling()

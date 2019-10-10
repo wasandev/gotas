@@ -138,7 +138,7 @@ class Nova
      */
     public static function version()
     {
-        return '2.3.1';
+        return '2.4.0';
     }
 
     /**
@@ -199,6 +199,7 @@ class Nova
                 'singularLabel' => $resource::singularLabel(),
                 'authorizedToCreate' => $resource::authorizedToCreate($request),
                 'searchable' => $resource::searchable(),
+                'perPageOptions' => $resource::perPageOptions(),
             ], $resource::additionalInformation($request));
         })->values()->all();
     }
@@ -221,7 +222,7 @@ class Nova
      * Get the resources available for the given request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
     public static function globallySearchableResources(Request $request)
     {

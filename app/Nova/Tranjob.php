@@ -43,7 +43,7 @@ class Tranjob extends Resource
 
     public static function label()
     {
-        return 'ใบรับงานขนส่งแบบเหมา';
+        return 'ใบรับงานขนส่งเหมาคัน';
     }
 
 

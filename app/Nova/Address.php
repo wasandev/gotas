@@ -13,6 +13,7 @@ use Wasandev\InputThaiAddress\MapAddress;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Panel;
+use Orlyapps\NovaBelongsToDepend\NovaBelongsToDepend;
 
 class Address extends Resource
 {
@@ -58,6 +59,7 @@ class Address extends Resource
             Text::make('โทรศัพท์', 'phoneno')
                 ->size('w-1/2')
                 ->rules('required', 'numeric'),
+
             new Panel('ที่อยู่', $this->addressFields()),
             BelongsTo::make('ผู้ทำรายการ', 'user', 'App\Nova\User')
                 ->onlyOnDetail(),
@@ -74,6 +76,7 @@ class Address extends Resource
 
             Text::make('ที่อยู่', 'address')->hideFromIndex()
                 ->rules('required'),
+
             InputSubDistrict::make('ตำบล/แขวง', 'sub_district')
                 ->withValues(['district', 'amphoe', 'province', 'zipcode'])
                 ->fromValue('district')

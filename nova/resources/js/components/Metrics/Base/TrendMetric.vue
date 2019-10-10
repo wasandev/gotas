@@ -83,6 +83,9 @@ export default {
             numbro.setLanguage(Nova.config.locale.replace('_', '-'))
         }
 
+        const low = Math.min(...this.chartData)
+        const high = Math.max(...this.chartData)
+
         this.chartist = new Chartist.Line(this.$refs.chart, this.chartData, {
             lineSmooth: Chartist.Interpolation.none(),
             fullWidth: true,
@@ -95,7 +98,9 @@ export default {
                 bottom: 0,
                 left: 0,
             },
-            low: 0,
+            low: low,
+            high: high,
+            areaBase: low,
             axisX: {
                 showGrid: false,
                 showLabel: true,

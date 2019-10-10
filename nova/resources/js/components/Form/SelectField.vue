@@ -10,9 +10,7 @@
                 :options="field.options"
                 :disabled="isReadonly"
             >
-                <option value="" selected :disabled="!field.nullable">{{
-                    __('Choose an option')
-                }}</option>
+                <option value="" selected :disabled="!field.nullable">{{ placeholder }}</option>
             </select-control>
         </template>
     </default-field>
@@ -34,6 +32,15 @@ export default {
          */
         fill(formData) {
             formData.append(this.field.attribute, this.value)
+        },
+    },
+
+    computed: {
+        /**
+         * Return the placeholder text for the field.
+         */
+        placeholder() {
+            return this.field.placeholder || this.__('Choose an option')
         },
     },
 }

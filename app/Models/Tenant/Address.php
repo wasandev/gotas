@@ -36,6 +36,8 @@ class Address extends Model
         return $this->belongsTo('App\Models\Tenant\User');
     }
 
+
+
     /*
 	Provide the Location value to the Nova field
 	*/

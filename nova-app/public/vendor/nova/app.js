@@ -14,87 +14,16 @@ var _lodash = __webpack_require__("./node_modules/lodash/lodash.js");
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
+var _HandlesActions = __webpack_require__("./resources/js/mixins/HandlesActions.js");
+
+var _HandlesActions2 = _interopRequireDefault(_HandlesActions);
+
 var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 exports.default = {
-    mixins: [_laravelNova.InteractsWithResourceInformation],
+    mixins: [_laravelNova.InteractsWithResourceInformation, _HandlesActions2.default],
 
     props: {
         selectedResources: {
@@ -103,36 +32,8 @@ exports.default = {
                 return [];
             }
         },
-        resourceName: String,
-        actions: {},
         pivotActions: {},
-        pivotName: String,
-        endpoint: {
-            type: String,
-            default: null
-        },
-        queryString: {
-            type: Object,
-            default: function _default() {
-                return {
-                    currentSearch: '',
-                    encodedFilters: '',
-                    currentTrashed: '',
-                    viaResource: '',
-                    viaResourceId: '',
-                    viaRelationship: ''
-                };
-            }
-        }
-    },
-
-    data: function data() {
-        return {
-            working: false,
-            errors: new _laravelNova.Errors(),
-            selectedActionKey: '',
-            confirmActionModalOpened: false
-        };
+        pivotName: String
     },
 
     watch: {
@@ -152,222 +53,80 @@ exports.default = {
             this.selectedActionKey = '';
             this.initializeActionFields();
         }
-    },
-
-    methods: {
-        /**
-         * Determine whether the action should redirect or open a confirmation modal
-         */
-        determineActionStrategy: function determineActionStrategy() {
-            if (this.selectedAction.withoutConfirmation) {
-                this.executeAction();
-            } else {
-                this.openConfirmationModal();
-            }
-        },
-
-
-        /**
-         * Confirm with the user that they actually want to run the selected action.
-         */
-        openConfirmationModal: function openConfirmationModal() {
-            this.confirmActionModalOpened = true;
-        },
-
-
-        /**
-         * Close the action confirmation modal.
-         */
-        closeConfirmationModal: function closeConfirmationModal() {
-            this.confirmActionModalOpened = false;
-            this.errors = new _laravelNova.Errors();
-        },
-
-
-        /**
-         * Initialize all of the action fields to empty strings.
-         */
-        initializeActionFields: function initializeActionFields() {
-            (0, _lodash2.default)(this.allActions).each(function (action) {
-                (0, _lodash2.default)(action.fields).each(function (field) {
-                    field.fill = function () {
-                        return '';
-                    };
-                });
-            });
-        },
-
-
-        /**
-         * Execute the selected action.
-         */
-        executeAction: function executeAction() {
-            var _this = this;
-
-            this.working = true;
-
-            if (this.selectedResources.length == 0) {
-                alert(this.__('Please select a resource to perform this action on.'));
-                return;
-            }
-
-            Nova.request({
-                method: 'post',
-                url: this.endpoint || '/nova-api/' + this.resourceName + '/action',
-                params: this.actionRequestQueryString,
-                data: this.actionFormData()
-            }).then(function (response) {
-                _this.confirmActionModalOpened = false;
-                _this.handleActionResponse(response.data);
-                _this.working = false;
-            }).catch(function (error) {
-                _this.working = false;
-
-                if (error.response.status == 422) {
-                    _this.errors = new _laravelNova.Errors(error.response.data.errors);
-                    Nova.error(_this.__('There was a problem submitting the form.'));
-                }
-            });
-        },
-
-
-        /**
-         * Gather the action FormData for the given action.
-         */
-        actionFormData: function actionFormData() {
-            var _this2 = this;
-
-            return _lodash2.default.tap(new FormData(), function (formData) {
-                formData.append('resources', _this2.selectedResources);
-
-                _lodash2.default.each(_this2.selectedAction.fields, function (field) {
-                    field.fill(formData);
-                });
-            });
-        },
-
-
-        /**
-         * Handle the action response. Typically either a message, download or a redirect.
-         */
-        handleActionResponse: function handleActionResponse(response) {
-            if (response.message) {
-                this.$emit('actionExecuted');
-                Nova.success(response.message);
-            } else if (response.deleted) {
-                this.$emit('actionExecuted');
-            } else if (response.danger) {
-                this.$emit('actionExecuted');
-                Nova.error(response.danger);
-            } else if (response.download) {
-                var link = document.createElement('a');
-                link.href = response.download;
-                link.download = response.name;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            } else if (response.redirect) {
-                window.location = response.redirect;
-            } else if (response.push) {
-                this.$router.push(response.push);
-            } else if (response.openInNewTab) {
-                window.open(response.openInNewTab, '_blank');
-            } else {
-                this.$emit('actionExecuted');
-                Nova.success(this.__('The action ran successfully!'));
-            }
-        }
-    },
-
-    computed: {
-        selectedAction: function selectedAction() {
-            var _this3 = this;
-
-            if (this.selectedActionKey) {
-                return _lodash2.default.find(this.allActions, function (a) {
-                    return a.uriKey == _this3.selectedActionKey;
-                });
-            }
-        },
-
-
-        /**
-         * Get the query string for an action request.
-         */
-        actionRequestQueryString: function actionRequestQueryString() {
-            return {
-                action: this.selectedActionKey,
-                pivotAction: this.selectedActionIsPivotAction,
-                search: this.queryString.currentSearch,
-                filters: this.queryString.encodedFilters,
-                trashed: this.queryString.currentTrashed,
-                viaResource: this.queryString.viaResource,
-                viaResourceId: this.queryString.viaResourceId,
-                viaRelationship: this.queryString.viaRelationship
-            };
-        },
-
-
-        /**
-         * Determine if the selected action is a pivot action.
-         */
-        selectedActionIsPivotAction: function selectedActionIsPivotAction() {
-            var _this4 = this;
-
-            return this.hasPivotActions && Boolean(_lodash2.default.find(this.pivotActions.actions, function (a) {
-                return a === _this4.selectedAction;
-            }));
-        },
-
-
-        /**
-         * Get all of the available actions.
-         */
-        allActions: function allActions() {
-            return this.actions.concat(this.pivotActions.actions);
-        },
-
-
-        /**
-         * Get all of the available non-pivot actions for the resource.
-         */
-        availableActions: function availableActions() {
-            var _this5 = this;
-
-            return (0, _lodash2.default)(this.actions).filter(function (action) {
-                if (_this5.selectedResources != 'all') {
-                    return true;
-                }
-
-                return action.availableForEntireResource;
-            }).value();
-        },
-
-
-        /**
-         * Determine whether there are any pivot actions
-         */
-        hasPivotActions: function hasPivotActions() {
-            return this.availablePivotActions.length > 0;
-        },
-
-
-        /**
-         * Get all of the available pivot actions for the resource.
-         */
-        availablePivotActions: function availablePivotActions() {
-            var _this6 = this;
-
-            return (0, _lodash2.default)(this.pivotActions.actions).filter(function (action) {
-                if (_this6.selectedResources != 'all') {
-                    return true;
-                }
-
-                return action.availableForEntireResource;
-            }).value();
-        }
     }
-};
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /***/ }),
 
@@ -1375,11 +1134,6 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
-//
-//
-//
-//
-//
 
 exports.default = {
     props: ['softDeletes', 'resources', 'selectedResources', 'viaManyToMany', 'allMatchingResourceCount', 'allMatchingSelected', 'authorizedToDeleteSelectedResources', 'authorizedToForceDeleteSelectedResources', 'authorizedToDeleteAnyResources', 'authorizedToForceDeleteAnyResources', 'authorizedToRestoreSelectedResources', 'authorizedToRestoreAnyResources'],
@@ -1609,6 +1363,17 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2527,11 +2292,9 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _toConsumableArray2 = __webpack_require__("./node_modules/babel-runtime/helpers/toConsumableArray.js");
+var _popper = __webpack_require__("./node_modules/popper.js/dist/esm/popper.js");
 
-var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
-
-var _vueClickaway = __webpack_require__("./node_modules/vue-clickaway/dist/vue-clickaway.common.js");
+var _popper2 = _interopRequireDefault(_popper);
 
 var _composedPath = __webpack_require__("./resources/js/polyfills/composedPath.js");
 
@@ -2547,44 +2310,96 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 exports.default = {
     props: {
-        classWhitelist: [Array, String]
-    },
+        placement: {
+            type: String,
+            default: 'bottom-end'
+        },
 
-    mixins: [_vueClickaway.mixin],
+        boundary: {
+            type: String,
+            default: 'viewPort'
+        }
+    },
 
     data: function data() {
-        return { visible: false };
+        return { visible: false, popper: null };
     },
 
+    watch: {
+        visible: function visible(showing) {
+            var _this = this;
+
+            if (showing) {
+                this.$nextTick(function () {
+                    _this.popper = new _popper2.default(_this.$el, _this.$refs.menu, {
+                        placement: _this.placement,
+                        modifiers: {
+                            preventOverflow: { boundariesElement: _this.boundary },
+                            offset: '10'
+                        }
+                    });
+                });
+            } else if (this.popper) {
+                setTimeout(function () {
+                    return _this.popper.destroy();
+                }, 200);
+            }
+        }
+    },
+
+    mounted: function mounted() {
+        var _this2 = this;
+
+        document.addEventListener('keydown', function (e) {
+            if (e.keyCode === 27) {
+                _this2.close();
+            }
+        });
+
+        Nova.$on('close-dropdowns', function () {
+            _this2.close();
+        });
+    },
+    destroyed: function destroyed() {
+        Nova.$off('close-dropdowns');
+    },
+
+
     methods: {
+        /**
+         * Toggle the visible state of the dropdown.
+         */
         toggle: function toggle() {
             this.visible = !this.visible;
         },
+
+
+        /**
+         * Close the dropdown menu.
+         */
         close: function close(event) {
-            var classArray = Array.isArray(this.classWhitelist) ? this.classWhitelist : [this.classWhitelist];
-
-            if (_.filter(classArray, function (className) {
-                return pathIncludesClass(event, className);
-            }).length > 0) {
-                return;
-            }
-
             this.visible = false;
         }
     }
 };
-
-
-function pathIncludesClass(event, className) {
-    return (0, _composedPath2.default)(event).filter(function (el) {
-        return el !== document && el !== window;
-    }).reduce(function (acc, e) {
-        return acc.concat([].concat((0, _toConsumableArray3.default)(e.classList)));
-    }, []).includes(className);
-}
 
 /***/ }),
 
@@ -2607,28 +2422,25 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
-//
 
 exports.default = {
     props: {
-        direction: {
-            type: String,
-            default: 'ltr',
-            validator: function validator(value) {
-                return ['ltr', 'rtl'].indexOf(value) != -1;
-            }
-        },
         width: {
             default: 120
         }
     },
+
+    mounted: function mounted() {
+        // If we recieve a click event from an anchor or button element, let's make sure
+        // and close the dropdown's menu so it doesn't stay visible if we toggle a modal.
+        this.$refs.menu.addEventListener('click', function (event) {
+            if (event.target.tagName != 'A' && event.target.tagName != 'BUTTON') return;
+            Nova.$emit('close-dropdowns');
+        });
+    },
+
+
     computed: {
-        menuClasses: function menuClasses() {
-            return [this.direction == 'ltr' ? 'dropdown-menu-left' : 'dropdown-menu-right'];
-        },
-        arrowClasses: function arrowClasses() {
-            return [this.direction == 'ltr' ? 'dropdown-arrow-left' : 'dropdown-arrow-right'];
-        },
         styles: function styles() {
             return {
                 width: this.width + 'px'
@@ -2668,13 +2480,9 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
-//
-//
-//
 
 exports.default = {
     props: {
-        handleClick: Function,
         active: {
             type: Boolean,
             default: false
@@ -2788,12 +2596,6 @@ var _props;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -4136,8 +3938,6 @@ exports.default = {
         }
     }
 }; //
-//
-//
 //
 //
 //
@@ -5891,10 +5691,17 @@ exports.default = {
         fill: function fill(formData) {
             formData.append(this.field.attribute, this.value);
         }
+    },
+
+    computed: {
+        /**
+         * Return the placeholder text for the field.
+         */
+        placeholder: function placeholder() {
+            return this.field.placeholder || this.__('Choose an option');
+        }
     }
 }; //
-//
-//
 //
 //
 //
@@ -6988,6 +6795,18 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 exports.default = {
     props: ['resourceName', 'field']
@@ -7147,6 +6966,7 @@ exports.default = {
 //
 //
 //
+//
 
 /***/ }),
 
@@ -7246,6 +7066,89 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = {
     props: ['field', 'viaResource', 'viaResourceId', 'resourceName']
 };
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],[\"env\"]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"transform-runtime\",\"transform-vue-jsx\",\"syntax-jsx\",\"transform-object-rest-spread\"],\"env\":{\"test\":{\"presets\":[[\"env\",{\"targets\":{\"node\":\"current\"}}]]}}}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/Index/InlineActionSelector.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _HandlesActions = __webpack_require__("./resources/js/mixins/HandlesActions.js");
+
+var _HandlesActions2 = _interopRequireDefault(_HandlesActions);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    mixins: [_HandlesActions2.default],
+
+    props: {
+        resource: {},
+        actions: {}
+    },
+
+    methods: {
+        selectAndExecuteAction: function selectAndExecuteAction(action) {
+            this.selectedActionKey = action.uriKey;
+            this.determineActionStrategy();
+        }
+    },
+
+    computed: {
+        selectedResources: function selectedResources() {
+            return [this.resource.id.value];
+        }
+    }
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /***/ }),
 
@@ -7518,9 +7421,18 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 exports.default = {
-    props: ['testId', 'deleteResource', 'restoreResource', 'resource', 'resourcesSelected', 'resourceName', 'relationshipType', 'viaRelationship', 'viaResource', 'viaResourceId', 'viaManyToMany', 'checked', 'actionsAreAvailable', 'shouldShowCheckboxes', 'updateSelectionStatus'],
+    props: ['testId', 'deleteResource', 'restoreResource', 'resource', 'resourcesSelected', 'resourceName', 'relationshipType', 'viaRelationship', 'viaResource', 'viaResourceId', 'viaManyToMany', 'checked', 'actionsAreAvailable', 'shouldShowCheckboxes', 'updateSelectionStatus', 'queryString'],
 
     data: function data() {
         return {
@@ -7555,6 +7467,14 @@ exports.default = {
         },
         closeRestoreModal: function closeRestoreModal() {
             this.restoreModalOpen = false;
+        }
+    },
+
+    computed: {
+        availableActions: function availableActions() {
+            return _.filter(this.resource.actions, function (a) {
+                return a.showOnTableRow;
+            });
         }
     }
 };
@@ -7725,9 +7645,21 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
+//
+//
+//
 
 exports.default = {
-    props: ['resourceName', 'field']
+    props: ['resourceName', 'field'],
+
+    computed: {
+        /**
+         * Determine if the field has a value other than null.
+         */
+        hasValue: function hasValue() {
+            return this.field.value !== null;
+        }
+    }
 };
 
 /***/ }),
@@ -8101,6 +8033,10 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _toConsumableArray2 = __webpack_require__("./node_modules/babel-runtime/helpers/toConsumableArray.js");
+
+var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
+
 var _values = __webpack_require__("./node_modules/babel-runtime/core-js/object/values.js");
 
 var _values2 = _interopRequireDefault(_values);
@@ -8217,6 +8153,9 @@ exports.default = {
             _numbro2.default.setLanguage(Nova.config.locale.replace('_', '-'));
         }
 
+        var low = Math.min.apply(Math, (0, _toConsumableArray3.default)(this.chartData));
+        var high = Math.max.apply(Math, (0, _toConsumableArray3.default)(this.chartData));
+
         this.chartist = new _chartist2.default.Line(this.$refs.chart, this.chartData, {
             lineSmooth: _chartist2.default.Interpolation.none(),
             fullWidth: true,
@@ -8229,7 +8168,9 @@ exports.default = {
                 bottom: 0,
                 left: 0
             },
-            low: 0,
+            low: low,
+            high: high,
+            areaBase: low,
             axisX: {
                 showGrid: false,
                 showLabel: true,
@@ -9075,7 +9016,6 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
-//
 
 exports.default = {
     props: {
@@ -9555,6 +9495,88 @@ exports.default = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],[\"env\"]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"transform-runtime\",\"transform-vue-jsx\",\"syntax-jsx\",\"transform-object-rest-spread\"],\"env\":{\"test\":{\"presets\":[[\"env\",{\"targets\":{\"node\":\"current\"}}]]}}}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/Pagination/PaginationLoadMore.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+    props: {
+        currentResourceCount: {
+            type: Number,
+            required: true
+        },
+        allMatchingResourceCount: {
+            type: Number,
+            required: true
+        },
+        resourceCountLabel: {
+            type: String,
+            required: true
+        },
+        perPage: {
+            type: [Number, String],
+            required: true
+        },
+        page: {
+            type: Number,
+            required: true
+        },
+        pages: {
+            type: Number,
+            default: 0
+        },
+        next: {
+            type: Boolean,
+            default: false
+        },
+        previous: {
+            type: Boolean,
+            default: false
+        }
+    },
+
+    methods: {
+        loadMore: function loadMore() {
+            this.$emit('load-more');
+        }
+    },
+
+    computed: {
+        buttonLabel: function buttonLabel() {
+            return this.__('Load :perPage More', { perPage: this.perPage });
+        },
+        allResourcesLoaded: function allResourcesLoaded() {
+            return this.currentResourceCount == this.allMatchingResourceCount;
+        }
+    }
+};
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],[\"env\"]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"transform-runtime\",\"transform-vue-jsx\",\"syntax-jsx\",\"transform-object-rest-spread\"],\"env\":{\"test\":{\"presets\":[[\"env\",{\"targets\":{\"node\":\"current\"}}]]}}}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/Pagination/PaginationSimple.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9892,9 +9914,6 @@ exports.default = {
         }
     }
 }; //
-//
-//
-//
 //
 //
 //
@@ -11064,61 +11083,130 @@ exports.default = {
 
             return getFields;
         }(),
+        submitViaCreateAndAddAnother: function () {
+            var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3() {
+                return _regenerator2.default.wrap(function _callee3$(_context3) {
+                    while (1) {
+                        switch (_context3.prev = _context3.next) {
+                            case 0:
+                                this.submittedViaCreateAndAddAnother = true;
+                                _context3.next = 3;
+                                return this.createResource();
+
+                            case 3:
+                            case 'end':
+                                return _context3.stop();
+                        }
+                    }
+                }, _callee3, this);
+            }));
+
+            function submitViaCreateAndAddAnother() {
+                return _ref5.apply(this, arguments);
+            }
+
+            return submitViaCreateAndAddAnother;
+        }(),
+        submitViaCreateResource: function () {
+            var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
+                return _regenerator2.default.wrap(function _callee4$(_context4) {
+                    while (1) {
+                        switch (_context4.prev = _context4.next) {
+                            case 0:
+                                this.submittedViaCreateResource = true;
+                                _context4.next = 3;
+                                return this.createResource();
+
+                            case 3:
+                            case 'end':
+                                return _context4.stop();
+                        }
+                    }
+                }, _callee4, this);
+            }));
+
+            function submitViaCreateResource() {
+                return _ref6.apply(this, arguments);
+            }
+
+            return submitViaCreateResource;
+        }(),
 
 
         /**
          * Create a new resource instance using the provided data.
          */
         createResource: function () {
-            var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3() {
-                var _ref6, redirect;
+            var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5() {
+                var _ref8, redirect;
 
-                return _regenerator2.default.wrap(function _callee3$(_context3) {
+                return _regenerator2.default.wrap(function _callee5$(_context5) {
                     while (1) {
-                        switch (_context3.prev = _context3.next) {
+                        switch (_context5.prev = _context5.next) {
                             case 0:
-                                this.submittedViaCreateResource = true;
+                                if (!(this.$refs.form.checkValidity && !this.$refs.form.checkValidity())) {
+                                    _context5.next = 6;
+                                    break;
+                                }
 
-                                _context3.prev = 1;
-                                _context3.next = 4;
+                                if (!this.$refs.form.reportValidity) {
+                                    _context5.next = 6;
+                                    break;
+                                }
+
+                                this.$refs.form.reportValidity();
+                                this.submittedViaCreateAndAddAnother = false;
+                                this.submittedViaCreateResource = false;
+                                return _context5.abrupt('return');
+
+                            case 6:
+                                _context5.prev = 6;
+                                _context5.next = 9;
                                 return this.createRequest();
 
-                            case 4:
-                                _ref6 = _context3.sent;
-                                redirect = _ref6.data.redirect;
+                            case 9:
+                                _ref8 = _context5.sent;
+                                redirect = _ref8.data.redirect;
 
-
-                                this.submittedViaCreateResource = false;
 
                                 Nova.success(this.__('The :resource was created!', {
                                     resource: this.resourceInformation.singularLabel.toLowerCase()
                                 }));
 
-                                this.$router.push({ path: redirect });
-                                _context3.next = 15;
+                                if (this.submittedViaCreateResource) {
+                                    this.$router.push({ path: redirect });
+                                    this.submittedViaCreateResource = false;
+                                } else {
+                                    // Reset the form by refetching the fields
+                                    this.getFields();
+                                    this.validationErrors = new _laravelNova.Errors();
+                                    this.submittedViaCreateAndAddAnother = false;
+                                }
+                                _context5.next = 20;
                                 break;
 
-                            case 11:
-                                _context3.prev = 11;
-                                _context3.t0 = _context3['catch'](1);
+                            case 15:
+                                _context5.prev = 15;
+                                _context5.t0 = _context5['catch'](6);
 
+                                this.submittedViaCreateAndAddAnother = false;
                                 this.submittedViaCreateResource = false;
 
-                                if (_context3.t0.response.status == 422) {
-                                    this.validationErrors = new _laravelNova.Errors(_context3.t0.response.data.errors);
+                                if (_context5.t0.response.status == 422) {
+                                    this.validationErrors = new _laravelNova.Errors(_context5.t0.response.data.errors);
                                     Nova.error(this.__('There was a problem submitting the form.'));
                                 }
 
-                            case 15:
+                            case 20:
                             case 'end':
-                                return _context3.stop();
+                                return _context5.stop();
                         }
                     }
-                }, _callee3, this, [[1, 11]]);
+                }, _callee5, this, [[6, 15]]);
             }));
 
             function createResource() {
-                return _ref5.apply(this, arguments);
+                return _ref7.apply(this, arguments);
             }
 
             return createResource;
@@ -11129,20 +11217,20 @@ exports.default = {
          * Create a new resource and reset the form
          */
         createAndAddAnother: function () {
-            var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
+            var _ref9 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6() {
                 var response;
-                return _regenerator2.default.wrap(function _callee4$(_context4) {
+                return _regenerator2.default.wrap(function _callee6$(_context6) {
                     while (1) {
-                        switch (_context4.prev = _context4.next) {
+                        switch (_context6.prev = _context6.next) {
                             case 0:
                                 this.submittedViaCreateAndAddAnother = true;
 
-                                _context4.prev = 1;
-                                _context4.next = 4;
+                                _context6.prev = 1;
+                                _context6.next = 4;
                                 return this.createRequest();
 
                             case 4:
-                                response = _context4.sent;
+                                response = _context6.sent;
 
 
                                 this.submittedViaCreateAndAddAnother = false;
@@ -11155,30 +11243,30 @@ exports.default = {
                                 this.getFields();
 
                                 this.validationErrors = new _laravelNova.Errors();
-                                _context4.next = 15;
+                                _context6.next = 15;
                                 break;
 
                             case 11:
-                                _context4.prev = 11;
-                                _context4.t0 = _context4['catch'](1);
+                                _context6.prev = 11;
+                                _context6.t0 = _context6['catch'](1);
 
                                 this.submittedViaCreateAndAddAnother = false;
 
-                                if (_context4.t0.response.status == 422) {
-                                    this.validationErrors = new _laravelNova.Errors(_context4.t0.response.data.errors);
+                                if (_context6.t0.response.status == 422) {
+                                    this.validationErrors = new _laravelNova.Errors(_context6.t0.response.data.errors);
                                     Nova.error(this.__('There was a problem submitting this form.'));
                                 }
 
                             case 15:
                             case 'end':
-                                return _context4.stop();
+                                return _context6.stop();
                         }
                     }
-                }, _callee4, this, [[1, 11]]);
+                }, _callee6, this, [[1, 11]]);
             }));
 
             function createAndAddAnother() {
-                return _ref7.apply(this, arguments);
+                return _ref9.apply(this, arguments);
             }
 
             return createAndAddAnother;
@@ -11249,6 +11337,8 @@ exports.default = {
         }
     }
 }; //
+//
+//
 //
 //
 //
@@ -11523,8 +11613,8 @@ exports.default = {
                     resourceId: this.resourceId
                 }
             }).then(function (response) {
-                _this2.actions = _.filter(response.data.actions, function (action) {
-                    return !action.onlyOnIndex;
+                _this2.actions = _.filter(response.data.actions, function (a) {
+                    return a.showOnDetail;
                 });
             });
         },
@@ -11981,13 +12071,6 @@ exports.default = {
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 /***/ }),
 
@@ -12000,6 +12083,14 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _toConsumableArray2 = __webpack_require__("./node_modules/babel-runtime/helpers/toConsumableArray.js");
+
+var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
+
+var _extends2 = __webpack_require__("./node_modules/babel-runtime/helpers/extends.js");
+
+var _extends3 = _interopRequireDefault(_extends2);
 
 var _defineProperty2 = __webpack_require__("./node_modules/babel-runtime/helpers/defineProperty.js");
 
@@ -12017,6 +12108,7 @@ var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.j
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//
 //
 //
 //
@@ -12354,7 +12446,10 @@ exports.default = {
 
             orderBy: '',
             orderByDirection: '',
-            trashed: ''
+            trashed: '',
+
+            // Load More Pagination
+            currentPageLoadMore: null
         };
     },
 
@@ -12389,18 +12484,20 @@ exports.default = {
                             this.initializeTrashedFromQueryString();
                             this.initializeOrderingFromQueryString();
 
-                            _context.next = 9;
+                            this.perPage = this.resourceInformation.perPageOptions[0];
+
+                            _context.next = 10;
                             return this.initializeFilters();
 
-                        case 9:
-                            _context.next = 11;
+                        case 10:
+                            _context.next = 12;
                             return this.getResources();
 
-                        case 11:
-                            _context.next = 13;
+                        case 12:
+                            _context.next = 14;
                             return this.getAuthorizationToRelate();
 
-                        case 13:
+                        case 14:
 
                             this.getLenses();
                             this.getActions();
@@ -12426,7 +12523,7 @@ exports.default = {
                                 }, 15 * 1000);
                             }
 
-                        case 18:
+                        case 19:
                         case 'end':
                             return _context.stop();
                     }
@@ -12599,8 +12696,8 @@ exports.default = {
                     relationshipType: this.relationshipType
                 }
             }).then(function (response) {
-                _this5.actions = _.filter(response.data.actions, function (action) {
-                    return !action.onlyOnDetail;
+                _this5.actions = _.filter(response.data.actions, function (a) {
+                    return a.showOnIndex;
                 });
                 _this5.pivotActions = response.data.pivotActions;
             });
@@ -12711,6 +12808,35 @@ exports.default = {
 
 
         /**
+         * Load more resources.
+         */
+        loadMore: function loadMore() {
+            var _this8 = this;
+
+            if (this.currentPageLoadMore === null) {
+                this.currentPageLoadMore = this.currentPage;
+            }
+
+            this.currentPageLoadMore = this.currentPageLoadMore + 1;
+
+            return (0, _laravelNova.Minimum)(Nova.request().get('/nova-api/' + this.resourceName, {
+                params: (0, _extends3.default)({}, this.resourceRequestQueryString, {
+                    page: this.currentPageLoadMore // We do this to override whatever page number is in the URL
+                })
+            }), 300).then(function (_ref3) {
+                var data = _ref3.data;
+
+                _this8.resourceResponse = data;
+                _this8.resources = [].concat((0, _toConsumableArray3.default)(_this8.resources), (0, _toConsumableArray3.default)(data.resources));
+
+                _this8.getAllMatchingResourceCount();
+
+                Nova.$emit('resources-loaded');
+            });
+        },
+
+
+        /**
          * Select the next page.
          */
         selectPage: function selectPage(page) {
@@ -12722,7 +12848,7 @@ exports.default = {
          * Sync the per page values from the query string.
          */
         initializePerPageFromQueryString: function initializePerPageFromQueryString() {
-            this.perPage = this.$route.query[this.perPageParameter] || _.first(this.perPageOptions) || this.perPage;
+            this.perPage = this.$route.query[this.perPageParameter] || _.first(this.perPageOptions);
         }
     },
 
@@ -13140,6 +13266,14 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _toConsumableArray2 = __webpack_require__("./node_modules/babel-runtime/helpers/toConsumableArray.js");
+
+var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
+
+var _extends2 = __webpack_require__("./node_modules/babel-runtime/helpers/extends.js");
+
+var _extends3 = _interopRequireDefault(_extends2);
+
 var _defineProperty2 = __webpack_require__("./node_modules/babel-runtime/helpers/defineProperty.js");
 
 var _defineProperty3 = _interopRequireDefault(_defineProperty2);
@@ -13156,6 +13290,11 @@ var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.j
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//
+//
+//
+//
+//
 //
 //
 //
@@ -13446,7 +13585,10 @@ exports.default = {
 
             orderBy: '',
             orderByDirection: '',
-            trashed: ''
+            trashed: '',
+
+            // Load More Pagination
+            currentPageLoadMore: null
         };
     },
 
@@ -13475,10 +13617,12 @@ exports.default = {
                             this.initializeTrashedFromQueryString();
                             this.initializeOrderingFromQueryString();
 
-                            _context.next = 8;
+                            this.perPage = this.resourceInformation.perPageOptions[0];
+
+                            _context.next = 9;
                             return this.initializeFilters(this.lens);
 
-                        case 8:
+                        case 9:
                             this.getResources();
                             // this.getAuthorizationToRelate()
                             this.getActions();
@@ -13491,7 +13635,7 @@ exports.default = {
                                 _this.getResources();
                             });
 
-                        case 12:
+                        case 13:
                         case 'end':
                             return _context.stop();
                     }
@@ -13596,8 +13740,8 @@ exports.default = {
                     relationshipType: this.relationshipType
                 }
             }).then(function (response) {
-                _this3.actions = _.filter(response.data.actions, function (action) {
-                    return !action.onlyOnDetail;
+                _this3.actions = _.filter(response.data.actions, function (a) {
+                    return a.showOnIndex;
                 });
                 _this3.pivotActions = response.data.pivotActions;
             });
@@ -13685,6 +13829,35 @@ exports.default = {
 
 
         /**
+         * Load more resources.
+         */
+        loadMore: function loadMore() {
+            var _this5 = this;
+
+            if (this.currentPageLoadMore === null) {
+                this.currentPageLoadMore = this.currentPage;
+            }
+
+            this.currentPageLoadMore = this.currentPageLoadMore + 1;
+
+            return (0, _laravelNova.Minimum)(Nova.request().get('/nova-api/' + this.resourceName + '/lens/' + this.lens, {
+                params: (0, _extends3.default)({}, this.resourceRequestQueryString, {
+                    page: this.currentPageLoadMore // We do this to override whatever page number is in the URL
+                })
+            }), 300).then(function (_ref3) {
+                var data = _ref3.data;
+
+                _this5.resourceResponse = data;
+                _this5.resources = [].concat((0, _toConsumableArray3.default)(_this5.resources), (0, _toConsumableArray3.default)(data.resources));
+
+                _this5.getAllMatchingResourceCount();
+
+                Nova.$emit('resources-loaded');
+            });
+        },
+
+
+        /**
          * Select the next page.
          */
         selectPage: function selectPage(page) {
@@ -13702,7 +13875,7 @@ exports.default = {
 
     computed: {
         /**
-         * Get the endpoint for this resource's metrics.
+         * Get the endpoint for this resource's actions.
          */
         lensActionEndpoint: function lensActionEndpoint() {
             return '/nova-api/' + this.resourceName + '/lens/' + this.lens + '/action';
@@ -14242,139 +14415,142 @@ exports.default = {
 
             return getFields;
         }(),
+        updateAndContinueEditing: function () {
+            var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3() {
+                return _regenerator2.default.wrap(function _callee3$(_context3) {
+                    while (1) {
+                        switch (_context3.prev = _context3.next) {
+                            case 0:
+                                this.submittedViaUpdateAndContinueEditing = true;
+                                _context3.next = 3;
+                                return this.updateResource();
+
+                            case 3:
+                            case 'end':
+                                return _context3.stop();
+                        }
+                    }
+                }, _callee3, this);
+            }));
+
+            function updateAndContinueEditing() {
+                return _ref5.apply(this, arguments);
+            }
+
+            return updateAndContinueEditing;
+        }(),
+        submitViaUpdateResource: function () {
+            var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
+                return _regenerator2.default.wrap(function _callee4$(_context4) {
+                    while (1) {
+                        switch (_context4.prev = _context4.next) {
+                            case 0:
+                                this.submittedViaUpdateResource = true;
+                                _context4.next = 3;
+                                return this.updateResource();
+
+                            case 3:
+                            case 'end':
+                                return _context4.stop();
+                        }
+                    }
+                }, _callee4, this);
+            }));
+
+            function submitViaUpdateResource() {
+                return _ref6.apply(this, arguments);
+            }
+
+            return submitViaUpdateResource;
+        }(),
 
 
         /**
          * Update the resource using the provided data.
          */
         updateResource: function () {
-            var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3() {
-                var _ref6, redirect;
+            var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5() {
+                var _ref8, redirect;
 
-                return _regenerator2.default.wrap(function _callee3$(_context3) {
+                return _regenerator2.default.wrap(function _callee5$(_context5) {
                     while (1) {
-                        switch (_context3.prev = _context3.next) {
+                        switch (_context5.prev = _context5.next) {
                             case 0:
-                                this.submittedViaUpdateResource = true;
+                                if (!(this.$refs.form.checkValidity && !this.$refs.form.checkValidity())) {
+                                    _context5.next = 6;
+                                    break;
+                                }
 
-                                _context3.prev = 1;
-                                _context3.next = 4;
+                                if (!this.$refs.form.reportValidity) {
+                                    _context5.next = 6;
+                                    break;
+                                }
+
+                                this.$refs.form.reportValidity();
+                                this.submittedViaUpdateResource = false;
+                                this.submittedViaUpdateAndContinueEditing = false;
+                                return _context5.abrupt('return');
+
+                            case 6:
+                                _context5.prev = 6;
+                                _context5.next = 9;
                                 return this.updateRequest();
 
-                            case 4:
-                                _ref6 = _context3.sent;
-                                redirect = _ref6.data.redirect;
+                            case 9:
+                                _ref8 = _context5.sent;
+                                redirect = _ref8.data.redirect;
 
-
-                                this.submittedViaUpdateResource = false;
 
                                 Nova.success(this.__('The :resource was updated!', {
                                     resource: this.resourceInformation.singularLabel.toLowerCase()
                                 }));
 
-                                _context3.next = 10;
+                                _context5.next = 14;
                                 return this.updateLastRetrievedAtTimestamp();
 
-                            case 10:
+                            case 14:
 
-                                this.$router.push({ path: redirect });
-                                _context3.next = 18;
+                                if (this.submittedViaUpdateResource) {
+                                    this.$router.push({ path: redirect });
+                                    this.submittedViaUpdateResource = false;
+                                } else {
+                                    // Reset the form by refetching the fields
+                                    this.getFields();
+                                    this.validationErrors = new _laravelNova.Errors();
+                                    this.submittedViaUpdateAndContinueEditing = false;
+                                }
+                                _context5.next = 23;
                                 break;
 
-                            case 13:
-                                _context3.prev = 13;
-                                _context3.t0 = _context3['catch'](1);
+                            case 17:
+                                _context5.prev = 17;
+                                _context5.t0 = _context5['catch'](6);
 
                                 this.submittedViaUpdateResource = false;
+                                this.submittedViaUpdateAndContinueEditing = false;
 
-                                if (_context3.t0.response.status == 422) {
-                                    this.validationErrors = new _laravelNova.Errors(_context3.t0.response.data.errors);
+                                if (_context5.t0.response.status == 422) {
+                                    this.validationErrors = new _laravelNova.Errors(_context5.t0.response.data.errors);
                                     Nova.error(this.__('There was a problem submitting the form.'));
                                 }
 
-                                if (_context3.t0.response.status == 409) {
+                                if (_context5.t0.response.status == 409) {
                                     Nova.error(this.__('Another user has updated this resource since this page was loaded. Please refresh the page and try again.'));
                                 }
 
-                            case 18:
+                            case 23:
                             case 'end':
-                                return _context3.stop();
+                                return _context5.stop();
                         }
                     }
-                }, _callee3, this, [[1, 13]]);
+                }, _callee5, this, [[6, 17]]);
             }));
 
             function updateResource() {
-                return _ref5.apply(this, arguments);
-            }
-
-            return updateResource;
-        }(),
-
-
-        /**
-         * Update the resource and reset the form
-         */
-        updateAndContinueEditing: function () {
-            var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
-                var response;
-                return _regenerator2.default.wrap(function _callee4$(_context4) {
-                    while (1) {
-                        switch (_context4.prev = _context4.next) {
-                            case 0:
-                                this.submittedViaUpdateAndContinueEditing = true;
-
-                                _context4.prev = 1;
-                                _context4.next = 4;
-                                return this.updateRequest();
-
-                            case 4:
-                                response = _context4.sent;
-
-
-                                this.submittedViaUpdateAndContinueEditing = false;
-
-                                Nova.success(this.__('The :resource was updated!', {
-                                    resource: this.resourceInformation.singularLabel.toLowerCase()
-                                }));
-
-                                // Reset the form by refetching the fields
-                                this.getFields();
-
-                                this.validationErrors = new _laravelNova.Errors();
-
-                                this.updateLastRetrievedAtTimestamp();
-                                _context4.next = 17;
-                                break;
-
-                            case 12:
-                                _context4.prev = 12;
-                                _context4.t0 = _context4['catch'](1);
-
-                                this.submittedViaUpdateAndContinueEditing = false;
-
-                                if (_context4.t0.response.status == 422) {
-                                    this.validationErrors = new _laravelNova.Errors(_context4.t0.response.data.errors);
-                                    Nova.error(this.__('There was a problem submitting the form.'));
-                                }
-
-                                if (_context4.t0.response.status == 409) {
-                                    Nova.error(this.__('Another user has updated this resource since this page was loaded. Please refresh the page and try again.'));
-                                }
-
-                            case 17:
-                            case 'end':
-                                return _context4.stop();
-                        }
-                    }
-                }, _callee4, this, [[1, 12]]);
-            }));
-
-            function updateAndContinueEditing() {
                 return _ref7.apply(this, arguments);
             }
 
-            return updateAndContinueEditing;
+            return updateResource;
         }(),
 
 
@@ -14450,6 +14626,8 @@ exports.default = {
         }
     }
 }; //
+//
+//
 //
 //
 //
@@ -36340,12 +36518,13 @@ var render = function() {
         : _vm._e(),
       _vm._v(" "),
       _c(
-        "transition",
-        { attrs: { name: "fade" } },
+        "portal",
+        { attrs: { to: "modals", transition: "fade-transition" } },
         [
           _vm.confirmActionModalOpened
             ? _c(_vm.selectedAction.component, {
                 tag: "component",
+                staticClass: "text-left",
                 attrs: {
                   working: _vm.working,
                   "selected-resources": _vm.selectedResources,
@@ -36721,6 +36900,7 @@ var render = function() {
       ? _c(
           "form",
           {
+            ref: "form",
             attrs: { autocomplete: "off" },
             on: {
               submit: function($event) {
@@ -36760,12 +36940,13 @@ var render = function() {
                     staticClass: "mr-3",
                     attrs: {
                       dusk: "create-and-add-another-button",
+                      type: "submit",
                       disabled: _vm.isWorking,
                       processing: _vm.submittedViaCreateAndAddAnother
                     },
                     nativeOn: {
                       click: function($event) {
-                        return _vm.createAndAddAnother($event)
+                        return _vm.submitViaCreateAndAddAnother($event)
                       }
                     }
                   },
@@ -36786,6 +36967,11 @@ var render = function() {
                       type: "submit",
                       disabled: _vm.isWorking,
                       processing: _vm.submittedViaCreateResource
+                    },
+                    nativeOn: {
+                      click: function($event) {
+                        return _vm.submitViaCreateResource($event)
+                      }
                     }
                   },
                   [
@@ -38067,9 +38253,11 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { class: "text-" + _vm.field.textAlign }, [
-    _c("span", { staticClass: "whitespace-no-wrap" }, [
-      _vm._v(_vm._s(_vm.localizedDateTime))
-    ])
+    _vm.field.value
+      ? _c("span", { staticClass: "whitespace-no-wrap" }, [
+          _vm._v(_vm._s(_vm.localizedDateTime))
+        ])
+      : _c("span", { staticClass: "whitespace-no-wrap" }, [_vm._v("—")])
   ])
 }
 var staticRenderFns = []
@@ -38399,21 +38587,14 @@ var render = function() {
                   "portal",
                   { attrs: { to: "modals" } },
                   [
-                    _c(
-                      "transition",
-                      { attrs: { name: "fade" } },
-                      [
-                        _vm.removeModalOpen
-                          ? _c("confirm-upload-removal-modal", {
-                              on: {
-                                confirm: _vm.removeFile,
-                                close: _vm.closeRemoveModal
-                              }
-                            })
-                          : _vm._e()
-                      ],
-                      1
-                    )
+                    _vm.removeModalOpen
+                      ? _c("confirm-upload-removal-modal", {
+                          on: {
+                            confirm: _vm.removeFile,
+                            close: _vm.closeRemoveModal
+                          }
+                        })
+                      : _vm._e()
                   ],
                   1
                 )
@@ -38530,7 +38711,7 @@ var render = function() {
                     disabled: !_vm.field.nullable
                   }
                 },
-                [_vm._v(_vm._s(_vm.__("Choose an option")))]
+                [_vm._v(_vm._s(_vm.placeholder))]
               )
             ]
           )
@@ -38885,13 +39066,22 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { class: "text-" + _vm.field.textAlign }, [
-    _vm.field.asHtml
-      ? _c("div", { domProps: { innerHTML: _vm._s(_vm.field.value) } })
-      : _c("span", { staticClass: "whitespace-no-wrap" }, [
-          _vm._v(_vm._s(_vm.field.value))
-        ])
-  ])
+  return _c(
+    "div",
+    { class: "text-" + _vm.field.textAlign },
+    [
+      _vm.hasValue
+        ? [
+            _vm.field.asHtml
+              ? _c("div", { domProps: { innerHTML: _vm._s(_vm.field.value) } })
+              : _c("span", { staticClass: "whitespace-no-wrap" }, [
+                  _vm._v(_vm._s(_vm.field.value))
+                ])
+          ]
+        : _c("p", [_vm._v("—")])
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -38970,29 +39160,14 @@ var render = function() {
     [
       _c(
         "dropdown",
-        {
-          staticClass: "ml-3 bg-30 hover:bg-40 rounded",
-          scopedSlots: _vm._u([
-            {
-              key: "default",
-              fn: function(ref) {
-                var toggle = ref.toggle
-                return _c(
-                  "dropdown-trigger",
-                  { staticClass: "px-3", attrs: { "handle-click": toggle } },
-                  [
-                    _c("icon", {
-                      staticClass: "text-80",
-                      attrs: { type: "delete" }
-                    })
-                  ],
-                  1
-                )
-              }
-            }
-          ])
-        },
+        { staticClass: "ml-3 bg-30 hover:bg-40 rounded" },
         [
+          _c(
+            "dropdown-trigger",
+            { staticClass: "px-3" },
+            [_c("icon", { staticClass: "text-80", attrs: { type: "delete" } })],
+            1
+          ),
           _vm._v(" "),
           _c(
             "dropdown-menu",
@@ -39084,13 +39259,12 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c(
-        "portal",
-        { attrs: { to: "modals" } },
-        [
-          _c(
-            "transition",
-            { attrs: { name: "fade" } },
+      _vm.deleteSelectedModalOpen ||
+      _vm.forceDeleteSelectedModalOpen ||
+      _vm.restoreModalOpen
+        ? _c(
+            "portal",
+            { attrs: { to: "modals" } },
             [
               _vm.deleteSelectedModalOpen
                 ? _c("delete-resource-modal", {
@@ -39100,15 +39274,8 @@ var render = function() {
                       close: _vm.closeDeleteSelectedModal
                     }
                   })
-                : _vm._e()
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "transition",
-            { attrs: { name: "fade" } },
-            [
+                : _vm._e(),
+              _vm._v(" "),
               _vm.forceDeleteSelectedModalOpen
                 ? _c("delete-resource-modal", {
                     attrs: { mode: "delete" },
@@ -39142,13 +39309,13 @@ var render = function() {
                                   { staticClass: "text-80 leading-normal" },
                                   [
                                     _vm._v(
-                                      "\n                        " +
+                                      "\n                    " +
                                         _vm._s(
                                           _vm.__(
                                             "Are you sure you want to force delete the selected resources?"
                                           )
                                         ) +
-                                        "\n                    "
+                                        "\n                "
                                     )
                                   ]
                                 )
@@ -39160,18 +39327,11 @@ var render = function() {
                       ],
                       null,
                       false,
-                      4050635862
+                      1510079574
                     )
                   })
-                : _vm._e()
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "transition",
-            { attrs: { name: "fade" } },
-            [
+                : _vm._e(),
+              _vm._v(" "),
               _vm.restoreModalOpen
                 ? _c("restore-resource-modal", {
                     on: {
@@ -39183,9 +39343,7 @@ var render = function() {
             ],
             1
           )
-        ],
-        1
-      )
+        : _vm._e()
     ],
     1
   )
@@ -39429,7 +39587,8 @@ var render = function() {
           ? _c(
               "select",
               {
-                staticClass: "ml-auto min-w-24 h-6 text-xs no-appearance bg-40",
+                staticClass:
+                  "select-box-sm ml-auto min-w-24 h-6 text-xs appearance-none bg-40 pl-2 pr-6 active:outline-none active:shadow-outline focus:outline-none focus:shadow-outline",
                 on: { change: _vm.handleChange }
               },
               _vm._l(_vm.ranges, function(option) {
@@ -40226,7 +40385,8 @@ var render = function() {
           ? _c(
               "select",
               {
-                staticClass: "ml-auto min-w-24 h-6 text-xs no-appearance bg-40",
+                staticClass:
+                  "select-box-sm ml-auto min-w-24 h-6 text-xs appearance-none bg-40 pl-2 pr-6 active:outline-none active:shadow-outline focus:outline-none focus:shadow-outline",
                 on: { change: _vm.handleChange }
               },
               _vm._l(_vm.ranges, function(option) {
@@ -40439,6 +40599,30 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-32fa80c8\",\"hasScoped\":false,\"buble\":{\"transforms\":{\"stripWithFunctional\":true}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/FadeTransition.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function(_h, _vm) {
+  var _c = _vm._c
+  return _c(
+    "transition",
+    { attrs: { name: "fade", mode: "out-in" } },
+    [_vm._t("default")],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-32fa80c8", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-33da5f7c\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Form/CancelButton.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -40523,6 +40707,30 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-34359573", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-36e11778\",\"hasScoped\":false,\"buble\":{\"transforms\":{\"stripWithFunctional\":true}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Icons/XCircle.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function(_h, _vm) {
+  var _c = _vm._c
+  return _c("path", {
+    attrs: {
+      d:
+        "M4.93 19.07A10 10 0 1 1 19.07 4.93 10 10 0 0 1 4.93 19.07zm1.41-1.41A8 8 0 1 0 17.66 6.34 8 8 0 0 0 6.34 17.66zM13.41 12l1.42 1.41a1 1 0 1 1-1.42 1.42L12 13.4l-1.41 1.42a1 1 0 1 1-1.42-1.42L10.6 12l-1.42-1.41a1 1 0 1 1 1.42-1.42L12 10.6l1.41-1.42a1 1 0 1 1 1.42 1.42L13.4 12z"
+    }
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-36e11778", module.exports)
   }
 }
 
@@ -40996,6 +41204,106 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-3e361632", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3e92dd96\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Index/InlineActionSelector.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "span",
+    [
+      _vm.actions.length > 0
+        ? _c(
+            "dropdown",
+            { staticClass: "text-left inline-block bg-30 hover:bg-40 rounded" },
+            [
+              _c(
+                "dropdown-trigger",
+                { staticClass: "text-sm px-3 py-1 h-!8" },
+                [
+                  _vm._v(
+                    "\n            " + _vm._s(_vm.__("Actions")) + "\n        "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "dropdown-menu",
+                {
+                  attrs: { slot: "menu", direction: "rtl", width: "150" },
+                  slot: "menu"
+                },
+                _vm._l(_vm.actions, function(action) {
+                  return _c(
+                    "button",
+                    {
+                      key: action.uriKey,
+                      staticClass:
+                        "block px-3 text-90 text-left text-sm w-full leading-normal dim my-2 active:outline-none active:shadow-outline focus:outline-none focus:shadow-outline",
+                      on: {
+                        click: function() {
+                          _vm.selectAndExecuteAction(action)
+                        }
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\n                " +
+                          _vm._s(action.name) +
+                          "\n            "
+                      )
+                    ]
+                  )
+                }),
+                0
+              )
+            ],
+            1
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "portal",
+        { attrs: { to: "modals" } },
+        [
+          _vm.confirmActionModalOpened
+            ? _c(_vm.selectedAction.component, {
+                tag: "component",
+                staticClass: "text-left",
+                attrs: {
+                  working: _vm.working,
+                  "selected-resources": _vm.selectedResources,
+                  "resource-name": _vm.resourceName,
+                  action: _vm.selectedAction,
+                  errors: _vm.errors
+                },
+                on: {
+                  confirm: _vm.executeAction,
+                  close: _vm.closeConfirmationModal
+                }
+              })
+            : _vm._e()
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-3e92dd96", module.exports)
   }
 }
 
@@ -41691,7 +41999,8 @@ var render = function() {
                       expression: "search"
                     }
                   ],
-                  staticClass: "appearance-none form-search w-search pl-search",
+                  staticClass:
+                    "appearance-none form-search w-search pl-search shadow",
                   attrs: {
                     "data-testid": "search-input",
                     dusk: "search",
@@ -41776,34 +42085,21 @@ var render = function() {
                         _c(
                           "dropdown",
                           {
-                            attrs: { dusk: "select-all-dropdown" },
-                            scopedSlots: _vm._u(
-                              [
-                                {
-                                  key: "default",
-                                  fn: function(ref) {
-                                    var toggle = ref.toggle
-                                    return _c(
-                                      "dropdown-trigger",
-                                      { attrs: { "handle-click": toggle } },
-                                      [
-                                        _c("fake-checkbox", {
-                                          attrs: {
-                                            checked: _vm.selectAllChecked
-                                          }
-                                        })
-                                      ],
-                                      1
-                                    )
-                                  }
-                                }
-                              ],
-                              null,
-                              false,
-                              794423292
-                            )
+                            attrs: {
+                              dusk: "select-all-dropdown",
+                              placement: "bottom-start"
+                            }
                           },
                           [
+                            _c(
+                              "dropdown-trigger",
+                              [
+                                _c("fake-checkbox", {
+                                  attrs: { checked: _vm.selectAllChecked }
+                                })
+                              ],
+                              1
+                            ),
                             _vm._v(" "),
                             _c(
                               "dropdown-menu",
@@ -41930,48 +42226,26 @@ var render = function() {
                   _vm.lenses.length > 0
                     ? _c(
                         "dropdown",
-                        {
-                          staticClass: "bg-30 hover:bg-40 mr-3 rounded",
-                          scopedSlots: _vm._u(
-                            [
-                              {
-                                key: "default",
-                                fn: function(ref) {
-                                  var toggle = ref.toggle
-                                  return _c(
-                                    "dropdown-trigger",
-                                    {
-                                      staticClass: "px-3",
-                                      attrs: { "handle-click": toggle }
-                                    },
-                                    [
-                                      _c(
-                                        "h3",
-                                        {
-                                          staticClass:
-                                            "flex items-center font-normal text-base text-90 h-9",
-                                          attrs: { slot: "default" },
-                                          slot: "default"
-                                        },
-                                        [
-                                          _vm._v(
-                                            "\n                            " +
-                                              _vm._s(_vm.__("Lens")) +
-                                              "\n                        "
-                                          )
-                                        ]
-                                      )
-                                    ]
-                                  )
-                                }
-                              }
-                            ],
-                            null,
-                            false,
-                            2725943172
-                          )
-                        },
+                        { staticClass: "bg-30 hover:bg-40 mr-3 rounded" },
                         [
+                          _c("dropdown-trigger", { staticClass: "px-3" }, [
+                            _c(
+                              "h3",
+                              {
+                                staticClass:
+                                  "flex items-center font-normal text-base text-90 h-9",
+                                attrs: { slot: "default" },
+                                slot: "default"
+                              },
+                              [
+                                _vm._v(
+                                  "\n                            " +
+                                    _vm._s(_vm.__("Lens")) +
+                                    "\n                        "
+                                )
+                              ]
+                            )
+                          ]),
                           _vm._v(" "),
                           _c(
                             "dropdown-menu",
@@ -42180,9 +42454,14 @@ var render = function() {
                         next: _vm.hasNextPage,
                         previous: _vm.hasPreviousPage,
                         pages: _vm.totalPages,
-                        page: _vm.currentPage
+                        page: _vm.currentPage,
+                        "per-page": _vm.perPage,
+                        "resource-count-label": _vm.resourceCountLabel,
+                        "current-resource-count": _vm.resources.length,
+                        "all-matching-resource-count":
+                          _vm.allMatchingResourceCount
                       },
-                      on: { page: _vm.selectPage }
+                      on: { "load-more": _vm.loadMore, page: _vm.selectPage }
                     },
                     [
                       _vm.resourceCountLabel
@@ -42417,8 +42696,7 @@ var render = function() {
       attrs: {
         "data-testid": "confirm-action-modal",
         tabindex: "-1",
-        role: "dialog",
-        "class-whitelist": "flatpickr-calendar"
+        role: "dialog"
       },
       on: { "modal-close": _vm.handleClose }
     },
@@ -43322,6 +43600,60 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-55396c6f\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Pagination/PaginationLoadMore.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "bg-20 p-3 text-center rounded-b flex justify-between" },
+    [
+      _c("p", { staticClass: "leading-normal text-sm text-80" }, [
+        _vm._v(_vm._s(_vm.resourceCountLabel))
+      ]),
+      _vm._v(" "),
+      _vm.allResourcesLoaded
+        ? _c("p", { staticClass: "leading-normal text-sm text-80" }, [
+            _vm._v(
+              "\n        " + _vm._s(_vm.__("All resources loaded.")) + "\n    "
+            )
+          ])
+        : _c(
+            "button",
+            {
+              staticClass: "btn btn btn-link px-4 text-primary dim",
+              on: { click: _vm.loadMore }
+            },
+            [_vm._v("\n        " + _vm._s(_vm.buttonLabel) + "\n    ")]
+          ),
+      _vm._v(" "),
+      _c("p", { staticClass: "leading-normal text-sm text-80" }, [
+        _vm._v(
+          "\n        " +
+            _vm._s(
+              _vm.__(":amount Total", { amount: _vm.allMatchingResourceCount })
+            ) +
+            "\n    "
+        )
+      ])
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-55396c6f", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-59a3b596\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/GlobalSearch.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -43614,62 +43946,37 @@ var render = function() {
   return _vm.filters.length > 0 || _vm.softDeletes || !_vm.viaResource
     ? _c(
         "dropdown",
-        {
-          attrs: {
-            dusk: "filter-selector",
-            "class-whitelist": "flatpickr-calendar"
-          },
-          scopedSlots: _vm._u(
-            [
-              {
-                key: "default",
-                fn: function(ref) {
-                  var toggle = ref.toggle
-                  return _c(
-                    "dropdown-trigger",
-                    {
-                      staticClass: "bg-30 px-3 border-2 border-30 rounded",
-                      class: {
-                        "bg-primary border-primary": _vm.filtersAreApplied
-                      },
-                      attrs: {
-                        "handle-click": toggle,
-                        active: _vm.filtersAreApplied
-                      }
-                    },
-                    [
-                      _c("icon", {
-                        class: _vm.filtersAreApplied ? "text-white" : "text-80",
-                        attrs: { type: "filter" }
-                      }),
-                      _vm._v(" "),
-                      _vm.filtersAreApplied
-                        ? _c(
-                            "span",
-                            {
-                              staticClass: "ml-2 font-bold text-white text-80"
-                            },
-                            [
-                              _vm._v(
-                                "\n            " +
-                                  _vm._s(_vm.activeFilterCount) +
-                                  "\n        "
-                              )
-                            ]
-                          )
-                        : _vm._e()
-                    ],
-                    1
-                  )
-                }
-              }
-            ],
-            null,
-            false,
-            276006449
-          )
-        },
+        { attrs: { dusk: "filter-selector" } },
         [
+          _c(
+            "dropdown-trigger",
+            {
+              staticClass: "bg-30 px-3 border-2 border-30 rounded",
+              class: { "bg-primary border-primary": _vm.filtersAreApplied },
+              attrs: { active: _vm.filtersAreApplied }
+            },
+            [
+              _c("icon", {
+                class: _vm.filtersAreApplied ? "text-white" : "text-80",
+                attrs: { type: "filter" }
+              }),
+              _vm._v(" "),
+              _vm.filtersAreApplied
+                ? _c(
+                    "span",
+                    { staticClass: "ml-2 font-bold text-white text-80" },
+                    [
+                      _vm._v(
+                        "\n            " +
+                          _vm._s(_vm.activeFilterCount) +
+                          "\n        "
+                      )
+                    ]
+                  )
+                : _vm._e()
+            ],
+            1
+          ),
           _vm._v(" "),
           _c(
             "dropdown-menu",
@@ -44065,32 +44372,18 @@ var render = function() {
                             width: "250",
                             "active-class": "",
                             dusk: "select-all-dropdown"
-                          },
-                          scopedSlots: _vm._u(
-                            [
-                              {
-                                key: "default",
-                                fn: function(ref) {
-                                  var toggle = ref.toggle
-                                  return _c(
-                                    "dropdown-trigger",
-                                    { attrs: { "handle-click": toggle } },
-                                    [
-                                      _c("fake-checkbox", {
-                                        attrs: { checked: _vm.selectAllChecked }
-                                      })
-                                    ],
-                                    1
-                                  )
-                                }
-                              }
-                            ],
-                            null,
-                            false,
-                            794423292
-                          )
+                          }
                         },
                         [
+                          _c(
+                            "dropdown-trigger",
+                            [
+                              _c("fake-checkbox", {
+                                attrs: { checked: _vm.selectAllChecked }
+                              })
+                            ],
+                            1
+                          ),
                           _vm._v(" "),
                           _c(
                             "dropdown-menu",
@@ -44394,9 +44687,14 @@ var render = function() {
                         next: _vm.hasNextPage,
                         previous: _vm.hasPreviousPage,
                         pages: _vm.totalPages,
-                        page: _vm.currentPage
+                        page: _vm.currentPage,
+                        "per-page": _vm.perPage,
+                        "resource-count-label": _vm.resourceCountLabel,
+                        "current-resource-count": _vm.resources.length,
+                        "all-matching-resource-count":
+                          _vm.allMatchingResourceCount
                       },
-                      on: { page: _vm.selectPage }
+                      on: { "load-more": _vm.loadMore, page: _vm.selectPage }
                     },
                     [
                       _vm.resourceCountLabel
@@ -44499,23 +44797,36 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("panel-item", { attrs: { field: _vm.field } }, [
-    _c(
-      "p",
-      { staticClass: "text-90", attrs: { slot: "value" }, slot: "value" },
-      [
-        _c("span", {
-          staticClass: "inline-block rounded-full w-2 h-2 mr-1",
-          class: {
-            "bg-success": _vm.field.value,
-            "bg-danger": !_vm.field.value
-          }
-        }),
-        _vm._v(" "),
-        _c("span", [_vm._v(_vm._s(_vm.label))])
-      ]
-    )
-  ])
+  return _c(
+    "panel-item",
+    { attrs: { field: _vm.field } },
+    [
+      _vm.field.value
+        ? _c("icon", {
+            staticClass: "text-success",
+            attrs: {
+              slot: "value",
+              viewBox: "0 0 24 24",
+              width: "24",
+              height: "24",
+              type: "check-circle"
+            },
+            slot: "value"
+          })
+        : _c("icon", {
+            staticClass: "text-danger",
+            attrs: {
+              slot: "value",
+              viewBox: "0 0 24 24",
+              width: "24",
+              height: "24",
+              type: "x-circle"
+            },
+            slot: "value"
+          })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -45859,13 +46170,12 @@ var render = function() {
                                 )
                               : _vm._e(),
                             _vm._v(" "),
-                            _c(
-                              "portal",
-                              { attrs: { to: "modals" } },
-                              [
-                                _c(
-                                  "transition",
-                                  { attrs: { name: "fade" } },
+                            _vm.deleteModalOpen ||
+                            _vm.restoreModalOpen ||
+                            _vm.forceDeleteModalOpen
+                              ? _c(
+                                  "portal",
+                                  { attrs: { to: "modals" } },
                                   [
                                     _vm.deleteModalOpen
                                       ? _c("delete-resource-modal", {
@@ -45875,22 +46185,8 @@ var render = function() {
                                             close: _vm.closeDeleteModal
                                           }
                                         })
-                                      : _vm._e()
-                                  ],
-                                  1
-                                )
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "portal",
-                              { attrs: { to: "modals" } },
-                              [
-                                _c(
-                                  "transition",
-                                  { attrs: { name: "fade" } },
-                                  [
+                                      : _vm._e(),
+                                    _vm._v(" "),
                                     _vm.restoreModalOpen
                                       ? _c("restore-resource-modal", {
                                           on: {
@@ -45898,22 +46194,8 @@ var render = function() {
                                             close: _vm.closeRestoreModal
                                           }
                                         })
-                                      : _vm._e()
-                                  ],
-                                  1
-                                )
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "portal",
-                              { attrs: { to: "modals" } },
-                              [
-                                _c(
-                                  "transition",
-                                  { attrs: { name: "fade" } },
-                                  [
+                                      : _vm._e(),
+                                    _vm._v(" "),
                                     _vm.forceDeleteModalOpen
                                       ? _c("delete-resource-modal", {
                                           attrs: { mode: "force delete" },
@@ -45926,9 +46208,7 @@ var render = function() {
                                   ],
                                   1
                                 )
-                              ],
-                              1
-                            ),
+                              : _vm._e(),
                             _vm._v(" "),
                             _vm.resource.authorizedToUpdate
                               ? _c(
@@ -46350,6 +46630,17 @@ var render = function() {
         "td",
         { staticClass: "td-fit text-right pr-6" },
         [
+          _vm.availableActions.length > 0
+            ? _c("inline-action-selector", {
+                staticClass: "mr-3",
+                attrs: {
+                  resource: _vm.resource,
+                  "resource-name": _vm.resourceName,
+                  actions: _vm.availableActions
+                }
+              })
+            : _vm._e(),
+          _vm._v(" "),
           _vm.resource.authorizedToView
             ? _c(
                 "span",
@@ -46504,13 +46795,10 @@ var render = function() {
               )
             : _vm._e(),
           _vm._v(" "),
-          _c(
-            "portal",
-            { attrs: { to: "modals" } },
-            [
-              _c(
-                "transition",
-                { attrs: { name: "fade" } },
+          _vm.deleteModalOpen || _vm.restoreModalOpen
+            ? _c(
+                "portal",
+                { attrs: { to: "modals", transition: "fade-transition" } },
                 [
                   _vm.deleteModalOpen
                     ? _c("delete-resource-modal", {
@@ -46552,7 +46840,7 @@ var render = function() {
                                       { staticClass: "text-80 leading-normal" },
                                       [
                                         _vm._v(
-                                          "\n                            " +
+                                          "\n                        " +
                                             _vm._s(
                                               _vm.__(
                                                 "Are you sure you want to " +
@@ -46560,7 +46848,7 @@ var render = function() {
                                                   " this resource?"
                                               )
                                             ) +
-                                            "\n                        "
+                                            "\n                    "
                                         )
                                       ]
                                     )
@@ -46572,18 +46860,11 @@ var render = function() {
                           ],
                           null,
                           false,
-                          3540457262
+                          1688942382
                         )
                       })
-                    : _vm._e()
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "transition",
-                { attrs: { name: "fade" } },
-                [
+                    : _vm._e(),
+                  _vm._v(" "),
                   _vm.restoreModalOpen
                     ? _c(
                         "restore-resource-modal",
@@ -46609,13 +46890,13 @@ var render = function() {
                                 { staticClass: "text-80 leading-normal" },
                                 [
                                   _vm._v(
-                                    "\n                            " +
+                                    "\n                        " +
                                       _vm._s(
                                         _vm.__(
                                           "Are you sure you want to restore this resource?"
                                         )
                                       ) +
-                                      "\n                        "
+                                      "\n                    "
                                   )
                                 ]
                               )
@@ -46628,9 +46909,7 @@ var render = function() {
                 ],
                 1
               )
-            ],
-            1
-          )
+            : _vm._e()
         ],
         1
       )
@@ -46645,6 +46924,30 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-897bb47c", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-94c9e7f0\",\"hasScoped\":false,\"buble\":{\"transforms\":{\"stripWithFunctional\":true}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Icons/CheckCircle.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function(_h, _vm) {
+  var _c = _vm._c
+  return _c("path", {
+    attrs: {
+      d:
+        "M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm-2.3-8.7l1.3 1.29 3.3-3.3a1 1 0 0 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-2-2a1 1 0 0 1 1.4-1.42z"
+    }
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-94c9e7f0", module.exports)
   }
 }
 
@@ -47061,11 +47364,10 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "a",
+    "div",
     {
       staticClass:
-        "dropdown-trigger h-dropdown-trigger flex items-center cursor-pointer select-none",
-      on: { click: _vm.handleClick }
+        "dropdown-trigger h-dropdown-trigger flex items-center cursor-pointer select-none"
     },
     [
       _vm._t("default"),
@@ -47308,6 +47610,31 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-ae26f616\",\"hasScoped\":false,\"buble\":{\"transforms\":{\"stripWithFunctional\":true}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Icons/More.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function(_h, _vm) {
+  var _c = _vm._c
+  return _c("path", {
+    staticClass: "heroicon-ui",
+    attrs: {
+      d:
+        "M4 15a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0-2a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm8 2a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0-2a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm8 2a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0-2a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"
+    }
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-ae26f616", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-b29eb166\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Form/TrixField.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -47424,6 +47751,7 @@ var render = function() {
       ? _c(
           "form",
           {
+            ref: "form",
             attrs: { autocomplete: "off" },
             on: {
               submit: function($event) {
@@ -47467,6 +47795,7 @@ var render = function() {
                   {
                     staticClass: "mr-3",
                     attrs: {
+                      type: "submit",
                       dusk: "update-and-continue-editing-button",
                       disabled: _vm.isWorking,
                       processing: _vm.submittedViaUpdateAndContinueEditing
@@ -47494,6 +47823,11 @@ var render = function() {
                       type: "submit",
                       disabled: _vm.isWorking,
                       processing: _vm.submittedViaUpdateResource
+                    },
+                    nativeOn: {
+                      click: function($event) {
+                        return _vm.submitViaUpdateResource($event)
+                      }
                     }
                   },
                   [
@@ -48150,15 +48484,32 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { class: "text-" + _vm.field.textAlign }, [
-    _c("span", {
-      staticClass: "boolean-field",
-      class: {
-        "boolean-field-true": _vm.field.value,
-        "boolean-field-false": !_vm.field.value
-      }
-    })
-  ])
+  return _c(
+    "div",
+    { class: "text-" + _vm.field.textAlign },
+    [
+      _vm.field.value
+        ? _c("icon", {
+            staticClass: "text-success",
+            attrs: {
+              viewBox: "0 0 24 24",
+              width: "24",
+              height: "24",
+              type: "check-circle"
+            }
+          })
+        : _c("icon", {
+            staticClass: "text-danger",
+            attrs: {
+              viewBox: "0 0 24 24",
+              width: "24",
+              height: "24",
+              type: "x-circle"
+            }
+          })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -48447,15 +48798,13 @@ var render = function() {
                               )
                             ]
                           )
-                        : _c("span", [
-                            _vm._v(" " + _vm._s(field.indexName) + " ")
-                          ])
+                        : _c("span", [_vm._v(_vm._s(field.indexName))])
                     ],
                     1
                   )
                 }),
                 _vm._v(" "),
-                _c("th", [_vm._v("\n                 ")])
+                _c("th", [_vm._v(" ")])
               ],
               2
             )
@@ -48600,27 +48949,48 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
+    "button",
     {
-      directives: [
-        {
-          name: "on-clickaway",
-          rawName: "v-on-clickaway",
-          value: _vm.close,
-          expression: "close"
-        }
-      ],
-      staticClass: "dropdown relative"
+      staticClass:
+        "rounded active:outline-none active:shadow-outline focus:outline-none focus:shadow-outline",
+      attrs: { type: "button" },
+      on: { click: _vm.toggle }
     },
     [
       _vm._t("default", null, { toggle: _vm.toggle }),
       _vm._v(" "),
-      _c(
-        "transition",
-        { attrs: { name: "fade" } },
-        [_vm.visible ? _vm._t("menu") : _vm._e()],
-        2
-      )
+      _vm.visible
+        ? _c("portal", { attrs: { to: "dropdowns" } }, [
+            _c("div", [
+              _c("div", {
+                staticStyle: {
+                  position: "fixed",
+                  top: "0",
+                  right: "0",
+                  left: "0",
+                  bottom: "0",
+                  "z-index": "99998"
+                },
+                on: { click: _vm.toggle }
+              }),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  ref: "menu",
+                  staticStyle: { position: "absolute", "z-index": "99999" },
+                  on: {
+                    click: function($event) {
+                      $event.stopPropagation()
+                    }
+                  }
+                },
+                [_vm._t("menu")],
+                2
+              )
+            ])
+          ])
+        : _vm._e()
     ],
     2
   )
@@ -48647,21 +49017,13 @@ var render = function() {
   return _c(
     "div",
     {
-      staticClass: "dropdown-menu absolute z-50 select-none",
-      class: _vm.menuClasses
+      ref: "menu",
+      staticClass:
+        "select-none overflow-hidden bg-white border border-60 shadow rounded-lg",
+      style: _vm.styles
     },
-    [
-      _c(
-        "div",
-        {
-          staticClass:
-            "z-40 overflow-hidden bg-white border border-60 shadow rounded-lg",
-          style: _vm.styles
-        },
-        [_vm._t("default")],
-        2
-      )
-    ]
+    [_vm._t("default")],
+    2
   )
 }
 var staticRenderFns = []
@@ -53333,7 +53695,7 @@ var _axios = __webpack_require__("./resources/js/util/axios.js");
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _portalVue = __webpack_require__("./node_modules/portal-vue/dist/portal-vue.js");
+var _portalVue = __webpack_require__("./node_modules/portal-vue/dist/portal-vue.common.js");
 
 var _portalVue2 = _interopRequireDefault(_portalVue);
 
@@ -53671,6 +54033,10 @@ var _Cards = __webpack_require__("./resources/js/components/Cards.vue");
 
 var _Cards2 = _interopRequireDefault(_Cards);
 
+var _CheckCircle = __webpack_require__("./resources/js/components/Icons/CheckCircle.vue");
+
+var _CheckCircle2 = _interopRequireDefault(_CheckCircle);
+
 var _CardWrapper = __webpack_require__("./resources/js/components/CardWrapper.vue");
 
 var _CardWrapper2 = _interopRequireDefault(_CardWrapper);
@@ -53759,6 +54125,10 @@ var _Excerpt = __webpack_require__("./resources/js/components/Excerpt.vue");
 
 var _Excerpt2 = _interopRequireDefault(_Excerpt);
 
+var _FadeTransition = __webpack_require__("./resources/js/components/FadeTransition.vue");
+
+var _FadeTransition2 = _interopRequireDefault(_FadeTransition);
+
 var _FakeCheckbox = __webpack_require__("./resources/js/components/Index/FakeCheckbox.vue");
 
 var _FakeCheckbox2 = _interopRequireDefault(_FakeCheckbox);
@@ -53843,9 +54213,17 @@ var _LoadingView = __webpack_require__("./resources/js/components/LoadingView.vu
 
 var _LoadingView2 = _interopRequireDefault(_LoadingView);
 
+var _More = __webpack_require__("./resources/js/components/Icons/More.vue");
+
+var _More2 = _interopRequireDefault(_More);
+
 var _Modal = __webpack_require__("./resources/js/components/Modal.vue");
 
 var _Modal2 = _interopRequireDefault(_Modal);
+
+var _PaginationLoadMore = __webpack_require__("./resources/js/components/Pagination/PaginationLoadMore.vue");
+
+var _PaginationLoadMore2 = _interopRequireDefault(_PaginationLoadMore);
 
 var _PaginationLinks = __webpack_require__("./resources/js/components/Pagination/PaginationLinks.vue");
 
@@ -53882,6 +54260,10 @@ var _ResourceTable2 = _interopRequireDefault(_ResourceTable);
 var _ResourceTableRow = __webpack_require__("./resources/js/components/Index/ResourceTableRow.vue");
 
 var _ResourceTableRow2 = _interopRequireDefault(_ResourceTableRow);
+
+var _InlineActionSelector = __webpack_require__("./resources/js/components/Index/InlineActionSelector.vue");
+
+var _InlineActionSelector2 = _interopRequireDefault(_InlineActionSelector);
 
 var _Restore = __webpack_require__("./resources/js/components/Icons/Restore.vue");
 
@@ -53922,6 +54304,10 @@ var _ValueMetric4 = _interopRequireDefault(_ValueMetric3);
 var _View = __webpack_require__("./resources/js/components/Icons/View.vue");
 
 var _View2 = _interopRequireDefault(_View);
+
+var _XCircle = __webpack_require__("./resources/js/components/Icons/XCircle.vue");
+
+var _XCircle2 = _interopRequireDefault(_XCircle);
 
 var _SelectFilter = __webpack_require__("./resources/js/components/Filters/SelectFilter.vue");
 
@@ -53986,23 +54372,28 @@ _vue2.default.component('help', _HelpCard2.default);
 _vue2.default.component('help-text', _HelpText2.default);
 _vue2.default.component('icon', _Icon2.default);
 _vue2.default.component('icon-add', _Add2.default);
+_vue2.default.component('icon-check-circle', _CheckCircle2.default);
+_vue2.default.component('icon-x-circle', _XCircle2.default);
 _vue2.default.component('icon-delete', _Delete2.default);
 _vue2.default.component('icon-download', _Download2.default);
 _vue2.default.component('icon-edit', _Edit2.default);
 _vue2.default.component('icon-filter', _Filter2.default);
 _vue2.default.component('icon-force-delete', _ForceDelete2.default);
+_vue2.default.component('icon-more', _More2.default);
 _vue2.default.component('icon-play', _Play2.default);
 _vue2.default.component('icon-refresh', _Refresh2.default);
 _vue2.default.component('icon-restore', _Restore2.default);
 _vue2.default.component('icon-search', _Search2.default);
 _vue2.default.component('icon-view', _View2.default);
 _vue2.default.component('icon-menu', _Menu2.default);
+_vue2.default.component('inline-action-selector', _InlineActionSelector2.default);
 _vue2.default.component('lens', _Lens2.default);
 _vue2.default.component('lens-selector', _LensSelector2.default);
 _vue2.default.component('loader', _Loader2.default);
 _vue2.default.component('loading-card', _LoadingCard2.default);
 _vue2.default.component('loading-view', _LoadingView2.default);
 _vue2.default.component('modal', _Modal2.default);
+_vue2.default.component('pagination-load-more', _PaginationLoadMore2.default);
 _vue2.default.component('pagination-links', _PaginationLinks2.default);
 _vue2.default.component('pagination-simple', _PaginationSimple2.default);
 _vue2.default.component('panel-item', _PanelItem2.default);
@@ -54026,6 +54417,8 @@ _vue2.default.component('boolean-filter', _BooleanFilter2.default);
 
 _vue2.default.component('select-control', _SelectControl2.default);
 _vue2.default.component('date-time-picker', _DateTimePicker2.default);
+
+_vue2.default.component('fade-transition', _FadeTransition2.default);
 
 /***/ }),
 
@@ -56209,6 +56602,54 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/js/components/FadeTransition.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = null
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-32fa80c8\",\"hasScoped\":false,\"buble\":{\"transforms\":{\"stripWithFunctional\":true}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/FadeTransition.vue")
+/* template functional */
+var __vue_template_functional__ = true
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/FadeTransition.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-32fa80c8", Component.options)
+  } else {
+    hotAPI.rerender("data-v-32fa80c8", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
 /***/ "./resources/js/components/FilterMenu.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -57858,6 +58299,54 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/js/components/Icons/CheckCircle.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = null
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-94c9e7f0\",\"hasScoped\":false,\"buble\":{\"transforms\":{\"stripWithFunctional\":true}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Icons/CheckCircle.vue")
+/* template functional */
+var __vue_template_functional__ = true
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Icons/CheckCircle.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-94c9e7f0", Component.options)
+  } else {
+    hotAPI.rerender("data-v-94c9e7f0", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Icons/Delete.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -58482,6 +58971,54 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/js/components/Icons/More.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = null
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-ae26f616\",\"hasScoped\":false,\"buble\":{\"transforms\":{\"stripWithFunctional\":true}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Icons/More.vue")
+/* template functional */
+var __vue_template_functional__ = true
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Icons/More.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-ae26f616", Component.options)
+  } else {
+    hotAPI.rerender("data-v-ae26f616", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Icons/Play.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -58711,6 +59248,54 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-057f4776", Component.options)
   } else {
     hotAPI.rerender("data-v-057f4776", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Icons/XCircle.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = null
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-36e11778\",\"hasScoped\":false,\"buble\":{\"transforms\":{\"stripWithFunctional\":true}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Icons/XCircle.vue")
+/* template functional */
+var __vue_template_functional__ = true
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Icons/XCircle.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-36e11778", Component.options)
+  } else {
+    hotAPI.rerender("data-v-36e11778", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -59195,6 +59780,54 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-e7ebc500", Component.options)
   } else {
     hotAPI.reload("data-v-e7ebc500", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Index/InlineActionSelector.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],[\"env\"]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"transform-runtime\",\"transform-vue-jsx\",\"syntax-jsx\",\"transform-object-rest-spread\"],\"env\":{\"test\":{\"presets\":[[\"env\",{\"targets\":{\"node\":\"current\"}}]]}}}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/Index/InlineActionSelector.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3e92dd96\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Index/InlineActionSelector.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Index/InlineActionSelector.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3e92dd96", Component.options)
+  } else {
+    hotAPI.reload("data-v-3e92dd96", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -60314,6 +60947,54 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/js/components/Pagination/PaginationLoadMore.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}],[\"env\"]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}],\"transform-runtime\",\"transform-vue-jsx\",\"syntax-jsx\",\"transform-object-rest-spread\"],\"env\":{\"test\":{\"presets\":[[\"env\",{\"targets\":{\"node\":\"current\"}}]]}}}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/components/Pagination/PaginationLoadMore.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-55396c6f\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/components/Pagination/PaginationLoadMore.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Pagination/PaginationLoadMore.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-55396c6f", Component.options)
+  } else {
+    hotAPI.reload("data-v-55396c6f", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Pagination/PaginationSimple.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -60821,6 +61502,259 @@ _vue2.default.component('detail-morph-to-field', __webpack_require__("./resource
 _vue2.default.component('detail-morph-to-action-target-field', __webpack_require__("./resources/js/components/Detail/MorphToActionTargetField.vue"));
 
 _vue2.default.component('form-morph-to-field', __webpack_require__("./resources/js/components/Form/MorphToField.vue"));
+
+/***/ }),
+
+/***/ "./resources/js/mixins/HandlesActions.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _laravelNova = __webpack_require__("./node_modules/laravel-nova/dist/index.js");
+
+exports.default = {
+    props: {
+        resourceName: String,
+        actions: {},
+        pivotActions: {
+            default: function _default() {
+                return [];
+            }
+        },
+        endpoint: {
+            type: String,
+            default: null
+        },
+        queryString: {
+            type: Object,
+            default: function _default() {
+                return {
+                    currentSearch: '',
+                    encodedFilters: '',
+                    currentTrashed: '',
+                    viaResource: '',
+                    viaResourceId: '',
+                    viaRelationship: ''
+                };
+            }
+        }
+    },
+
+    data: function data() {
+        return {
+            working: false,
+            selectedActionKey: '',
+            errors: new _laravelNova.Errors(),
+            confirmActionModalOpened: false
+        };
+    },
+
+    methods: {
+        /**
+         * Determine whether the action should redirect or open a confirmation modal
+         */
+        determineActionStrategy: function determineActionStrategy() {
+            if (this.selectedAction.withoutConfirmation) {
+                this.executeAction();
+            } else {
+                this.openConfirmationModal();
+            }
+        },
+
+
+        /**
+         * Confirm with the user that they actually want to run the selected action.
+         */
+        openConfirmationModal: function openConfirmationModal() {
+            this.confirmActionModalOpened = true;
+        },
+
+
+        /**
+         * Close the action confirmation modal.
+         */
+        closeConfirmationModal: function closeConfirmationModal() {
+            this.confirmActionModalOpened = false;
+            this.errors = new _laravelNova.Errors();
+        },
+
+
+        /**
+         * Initialize all of the action fields to empty strings.
+         */
+        initializeActionFields: function initializeActionFields() {
+            _(this.allActions).each(function (action) {
+                _(action.fields).each(function (field) {
+                    field.fill = function () {
+                        return '';
+                    };
+                });
+            });
+        },
+
+
+        /**
+         * Execute the selected action.
+         */
+        executeAction: function executeAction() {
+            var _this = this;
+
+            this.working = true;
+
+            if (this.selectedResources.length == 0) {
+                alert(this.__('Please select a resource to perform this action on.'));
+                return;
+            }
+
+            Nova.request({
+                method: 'post',
+                url: this.endpoint || '/nova-api/' + this.resourceName + '/action',
+                params: this.actionRequestQueryString,
+                data: this.actionFormData()
+            }).then(function (response) {
+                _this.confirmActionModalOpened = false;
+                _this.handleActionResponse(response.data);
+                _this.working = false;
+            }).catch(function (error) {
+                _this.working = false;
+
+                if (error.response.status == 422) {
+                    _this.errors = new _laravelNova.Errors(error.response.data.errors);
+                    Nova.error(_this.__('There was a problem executing the action.'));
+                }
+            });
+        },
+
+
+        /**
+         * Gather the action FormData for the given action.
+         */
+        actionFormData: function actionFormData() {
+            var _this2 = this;
+
+            return _.tap(new FormData(), function (formData) {
+                formData.append('resources', _this2.selectedResources);
+
+                _.each(_this2.selectedAction.fields, function (field) {
+                    field.fill(formData);
+                });
+            });
+        },
+
+
+        /**
+         * Handle the action response. Typically either a message, download or a redirect.
+         */
+        handleActionResponse: function handleActionResponse(data) {
+            if (data.message) {
+                this.$emit('actionExecuted');
+                Nova.success(data.message);
+            } else if (data.deleted) {
+                this.$emit('actionExecuted');
+            } else if (data.danger) {
+                this.$emit('actionExecuted');
+                Nova.error(data.danger);
+            } else if (data.download) {
+                var link = document.createElement('a');
+                link.href = data.download;
+                link.download = data.name;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } else if (data.redirect) {
+                window.location = data.redirect;
+            } else if (data.push) {
+                this.$router.push(data.push);
+            } else if (data.openInNewTab) {
+                window.open(data.openInNewTab, '_blank');
+            } else {
+                this.$emit('actionExecuted');
+                Nova.success(this.__('The action ran successfully!'));
+            }
+        }
+    },
+
+    computed: {
+        /**
+         * Get the query string for an action request.
+         */
+        actionRequestQueryString: function actionRequestQueryString() {
+            return {
+                action: this.selectedActionKey,
+                pivotAction: this.selectedActionIsPivotAction,
+                search: this.queryString.currentSearch,
+                filters: this.queryString.encodedFilters,
+                trashed: this.queryString.currentTrashed,
+                viaResource: this.queryString.viaResource,
+                viaResourceId: this.queryString.viaResourceId,
+                viaRelationship: this.queryString.viaRelationship
+            };
+        },
+
+
+        /**
+         * Get all of the available actions.
+         */
+        allActions: function allActions() {
+            return this.actions.concat(this.pivotActions.actions);
+        },
+
+
+        /**
+         * Return the selected action being executed.
+         */
+        selectedAction: function selectedAction() {
+            var _this3 = this;
+
+            if (this.selectedActionKey) {
+                return _.find(this.allActions, function (a) {
+                    return a.uriKey == _this3.selectedActionKey;
+                });
+            }
+        },
+
+
+        /**
+         * Determine if the selected action is a pivot action.
+         */
+        selectedActionIsPivotAction: function selectedActionIsPivotAction() {
+            var _this4 = this;
+
+            return this.hasPivotActions && Boolean(_.find(this.pivotActions.actions, function (a) {
+                return a === _this4.selectedAction;
+            }));
+        },
+
+
+        /**
+         * Get all of the available pivot actions for the resource.
+         */
+        availablePivotActions: function availablePivotActions() {
+            var _this5 = this;
+
+            return _(this.pivotActions.actions).filter(function (action) {
+                if (_this5.selectedResources != 'all') {
+                    return true;
+                }
+
+                return action.availableForEntireResource;
+            }).value();
+        },
+
+
+        /**
+         * Determine whether there are any pivot actions
+         */
+        hasPivotActions: function hasPivotActions() {
+            return this.availablePivotActions.length > 0;
+        }
+    }
+};
 
 /***/ }),
 

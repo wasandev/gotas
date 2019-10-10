@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-
+use App\Models\Charter_jobs;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Cards\Help;
 use Illuminate\Support\Facades\Gate;
@@ -18,6 +18,7 @@ use App\Nova\CompanyProfile;
 use App\Nova\Branch;
 use App\Nova\Branch_area;
 use App\Nova\Branch_route;
+use App\Nova\Branch_route_district;
 use App\Nova\Product;
 use App\Nova\Product_image;
 use App\Nova\Category;
@@ -38,20 +39,27 @@ use App\Nova\Employee;
 use App\Nova\Driving_license_type;
 use App\Nova\Department;
 use App\Nova\Position;
-use App\Nova\Tranjob;
-use App\Nova\Tranjob_detail;
 use App\Nova\Province;
 use App\Nova\District;
 use App\Nova\SubDistrict;
 use App\Nova\Company_expense;
 use App\Nova\Car_expense;
 use App\Nova\Role;
+use App\Nova\Parcel;
 use App\Nova\Serviceprice;
 use App\Nova\Serviceprice_item;
-use App\Nova\Serviceprice_item_size;
-use App\Nova\Serviceprice_item_weight;
 use App\Nova\Routeto_branch;
 use App\Nova\Productservice_price;
+use App\Nova\Customer_product;
+use App\Nova\Customer_product_price;
+use App\Nova\Charter_route;
+use App\Nova\Charter_route_cost;
+use App\Nova\Charter_price;
+use App\Nova\Branch_route_cost;
+use App\Nova\Routeto_branch_cost;
+use App\Nova\Quotation;
+//use App\Nova\Charter_job;
+//use App\Nova\Charter_job_item;
 
 //System resource
 
@@ -158,11 +166,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         //Nova::resourcesIn(app_path('Nova'));
 
         Nova::resources([
+            User::class,
+            Role::class,
             CompanyProfile::class,
             Branch::class,
-            Routeto_branch::class,
             Branch_area::class,
-            Branch_route::class,
             Province::class,
             District::class,
             SubDistrict::class,
@@ -170,35 +178,43 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             Department::class,
             Position::class,
             Driving_license_type::class,
+            Customer::class,
             Category::class,
             Product_style::class,
             Unit::class,
             Product::class,
-            Productservice_price::class,
+            Parcel::class,
             Product_image::class,
+            Productservice_price::class,
+            Customer_product_price::class,
             Serviceprice::class,
             Serviceprice_item::class,
-            Serviceprice_item_size::class,
-            Serviceprice_item_weight::class,
 
+            Routeto_branch::class,
+            Branch_route::class,
+            Branch_route_district::class,
+            Routeto_branch_cost::class,
+            Branch_route_cost::class,
+
+            Charter_route::class,
+            Charter_route_cost::class,
+            Charter_price::class,
+            Quotation::class,
+            //Charter_job::class,
+            //Charter_job_item::class,
             Cartype::class,
             Carstyle::class,
             Tiretype::class,
-            User::class,
-            Role::class,
             Employee::class,
             Car::class,
-            Customer::class,
             Address::class,
             Vendor::class,
             Post::class,
             Comment::class,
-            Tranjob::class,
-            Tranjob_detail::class,
+
             Car_expense::class,
             Company_expense::class,
-            //Sustem Resource
-            Systemuser::class,
+
 
         ]);
     }

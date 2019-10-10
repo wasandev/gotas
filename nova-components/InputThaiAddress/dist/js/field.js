@@ -10756,7 +10756,7 @@ Nova.booting(function (Vue, router) {
 
     //postal-code
     Vue.component('index-input-postal-code', __webpack_require__(35));
-    Vue.component('detail-input-postal-codee', __webpack_require__(38));
+    Vue.component('detail-input-postal-code', __webpack_require__(38));
     Vue.component('form-input-postal-code', __webpack_require__(41));
 
     Vue.component('index-map-address', __webpack_require__(44));
@@ -11401,7 +11401,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 /* harmony default export */ __webpack_exports__["default"] = (_name$components$mixi = {
-  name: "app",
+  name: "district",
   components: {
     ThailandAutoComplete: __WEBPACK_IMPORTED_MODULE_1_vue_thailand_address_autocomplete___default.a
   },
@@ -11764,7 +11764,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 /* harmony default export */ __webpack_exports__["default"] = (_name$components$mixi = {
-  name: "app",
+  name: "province",
   components: {
     ThailandAutoComplete: __WEBPACK_IMPORTED_MODULE_1_vue_thailand_address_autocomplete___default.a
   },

@@ -173,7 +173,7 @@ abstract class Value extends RangedMetric
     {
         if ($range == 'TODAY') {
             return [
-                now()->yesterday(),
+                now()->today(),
                 now(),
             ];
         }

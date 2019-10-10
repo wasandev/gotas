@@ -371,23 +371,6 @@ textarea.form-input:read-only,
 /* Dropdown
 ---------------------------------------------------------------------------- */
 
-.dropdown {
-}
-
-.dropdown-menu-left {
-  top: 2.5rem;
-  left: 0rem;
-}
-
-.dropdown-menu-right {
-  top: 2.5rem;
-  right: 0rem;
-}
-
-.dropdown-right {
-  right: 20px;
-}
-
 .dropdown-alt .dropdown-trigger {
   @apply flex items-center h-9 px-3 bg-40 rounded;
 }
@@ -398,9 +381,6 @@ textarea.form-input:read-only,
 
 /* Sidebar
 ---------------------------------------------------------------------------- */
-
-.sidebar-link {
-}
 
 .router-link-active {
   @apply font-extrabold !important;

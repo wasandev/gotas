@@ -90,16 +90,15 @@ class Branch extends Resource
                 ->hideFromIndex(),
 
             new Panel('ที่อยู่', $this->addressFields()),
-            BelongsToMany::make('เส้นทางขนส่งไปสาขา', 'routeto', 'App\Nova\Branch')
+            HasMany::make('พื้นที่บริการของสาขา', 'branch_areas', 'App\Nova\Branch_area'),
+            HasMany::make('เส้นทางขนส่งภายในสาขา', 'branch_routes', 'App\Nova\Branch_route'),
+            BelongsToMany::make('เส้นทางขนส่งระหว่างสาขา', 'routeto', 'App\Nova\Branch')
                 ->fields(function () {
                     return [
                         Text::make('ชื่อเส้นทาง', 'name'),
                         Currency::make('ระยะทาง(กม.)', 'distance'),
                     ];
                 }),
-
-            hasMany::make('พื้นที่บริการของสาขา', 'branch_areas', 'App\Nova\Branch_area'),
-            HasMany::make('เส้นทางขนส่งของสาขา', 'branch_routes', 'App\Nova\Branch_route'),
 
         ];
     }

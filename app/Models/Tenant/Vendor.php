@@ -14,6 +14,8 @@ class Vendor extends Model
         'type',
         'user_id',
         'taxid',
+        'paymenttype',
+        'creditterm',
         'name',
         'address',
         'sub_district',

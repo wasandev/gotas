@@ -7,14 +7,14 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Wasandev\InputThaiAddress\InputDistrict;
 use Wasandev\InputThaiAddress\InputProvince;
-use Wasandev\InputThaiAddress\InputPostalCode;
-
+use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Fields\HasMany;
 
 
 
 class Branch_area extends Resource
 {
-    public static $displayInNavigation = false;
+    //public static $displayInNavigation = false;
     public static $group = '1.งานสำหรับผู้ดูแลระบบ';
     /**
      * The model the resource corresponds to.
@@ -22,7 +22,7 @@ class Branch_area extends Resource
      * @var string
      */
     public static $model = 'App\Models\Tenant\Branch_area';
-
+    public static $with = ['branch'];
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
@@ -55,17 +55,17 @@ class Branch_area extends Resource
             BelongsTo::make('สาขา', 'branch', 'App\Nova\Branch')->sortable(),
 
             InputDistrict::make('อำเภอ/เขต', 'district')
-                ->withValues(['district', 'amphoe', 'province', 'zipcode'])
+                ->withValues(['amphoe', 'province'])
                 ->fromValue('amphoe')
                 ->sortable()
                 ->rules('required'),
             InputProvince::make('จังหวัด', 'province')
-                ->withValues(['district', 'amphoe', 'province', 'zipcode'])
+                ->withValues(['amphoe', 'province'])
                 ->fromValue('province')
                 ->sortable()
                 ->rules('required'),
 
-
+            HasMany::make('เส้นทางขนส่งเหมาคัน', 'charter_routes', 'App\Nova\Charter_route'),
 
 
         ];
@@ -92,6 +92,7 @@ class Branch_area extends Resource
     {
         return [
             new Filters\Branch,
+            new Filters\Province,
         ];
     }
 
@@ -114,6 +115,8 @@ class Branch_area extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
+        return [
+            //new Actions\AddBranchAreaByBranch,
+        ];
     }
 }

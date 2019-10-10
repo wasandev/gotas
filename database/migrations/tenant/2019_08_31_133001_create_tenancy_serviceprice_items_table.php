@@ -16,27 +16,26 @@ class CreateTenancyServicepriceItemsTable extends Migration
         Schema::create('serviceprice_items', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('serviceprice_id')->unsigned();
-            $table->string('name', 150);
-            $table->decimal('width', 10, 4)->default(0.00);
-            $table->decimal('length', 10, 4)->default(0.00);
-            $table->decimal('height', 10, 4)->default(0.00);
-            $table->decimal('weight', 10, 4)->default(0.00);
+            $table->bigInteger('parcel_id')->unsigned();
             $table->integer('from_branch_id')->unsigned();
-            $table->integer('to_branch_id')->unsigned();
+            $table->string('district')->nullable();
+            $table->string('province')->nullable();
             $table->decimal('price', 10, 4)->default(0.00);
             $table->integer('user_id')->unsigned()->nullable();
             $table->timestamps();
         });
         Schema::table('serviceprice_items', function (Blueprint $table) {
             $table->unique([
-                'name',
-                'width',
-                'length',
-                'height',
-                'weight',
+                'parcel_id',
                 'from_branch_id',
-                'to_branch_id',
+                'district',
+                'province',
+                'price',
             ], 'PrimaryServicepriceItem');
+            $table->foreign('from_branch_id')
+                ->references('id')
+                ->on('branches')
+                ->onDelete('cascade');
             $table->foreign('serviceprice_id')
                 ->references('id')
                 ->on('serviceprices')

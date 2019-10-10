@@ -4,7 +4,6 @@
         tabindex="-1"
         role="dialog"
         @modal-close="handleClose"
-        class-whitelist="flatpickr-calendar"
     >
         <form
             autocomplete="off"

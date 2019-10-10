@@ -9,7 +9,11 @@ use App\Models\Tenant\CompanyProfile;
 class TenantController extends Controller
 {
 
+    public function __construct()
+    {
 
+        $this->middleware(['auth', 'verified']);
+    }
 
     public function index()
     {

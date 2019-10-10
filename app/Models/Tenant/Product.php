@@ -49,12 +49,17 @@ class Product extends Model
 
     public function customer()
     {
-        return $this->belongsToMany('App\Models\Tenant\Customer')->withPivot('price')
+        return $this->belongsToMany('App\Models\Tenant\Customer')
             ->withTimestamps();
     }
 
     public function productservice_price()
     {
         return $this->hasMany('App\Models\Tenant\Productservice_price', 'product_id');
+    }
+
+    public function customer_product_prices()
+    {
+        return $this->hasMany('App\Models\Tenant\Customer_product_price');
     }
 }

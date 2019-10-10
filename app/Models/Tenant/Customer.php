@@ -16,6 +16,8 @@ class Customer extends Model
         'type',
         'user_id',
         'taxid',
+        'paymenttype',
+        'creditterm',
         'name',
         'address',
         'sub_district',
@@ -33,7 +35,7 @@ class Customer extends Model
         'line',
         'location_lat',
         'location_lng',
-        'bussinesstype_id',
+        'businesstype_id',
         'user_id'
     ];
 
@@ -54,9 +56,15 @@ class Customer extends Model
 
     public function product()
     {
-        return $this->belongsToMany('App\Models\Tenant\Product')->withPivot('price')
+        return $this->belongsToMany('App\Models\Tenant\Product')
             ->withTimestamps();
     }
+
+    public function customer_product_prices()
+    {
+        return $this->hasMany('App\Models\Tenant\Customer_product_price');
+    }
+
     /*
 	Provide the Location value to the Nova field
 	*/

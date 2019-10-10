@@ -20,7 +20,7 @@ import { FormField, HandlesValidationErrors } from "laravel-nova";
 
 import ThailandAutoComplete from "vue-thailand-address-autocomplete";
 export default {
-  name: "app",
+  name: "province",
   components: {
     ThailandAutoComplete
   },

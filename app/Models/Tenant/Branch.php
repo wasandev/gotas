@@ -35,6 +35,7 @@ class Branch extends Model
         return $this->hasMany('App\Models\Tenant\Branch_route');
     }
 
+
     public function getLocationAttribute()
     {
         return (object) [

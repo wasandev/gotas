@@ -86,7 +86,7 @@ class UserResource extends Resource
 
             Text::make('Password')
                                 ->onlyOnForms()
-                                ->rules('required', 'string', 'min:6'),
+                                ->rules('required', 'string', 'min:8'),
 
             Text::make('Restricted')->canSee(function () {
                 return false;

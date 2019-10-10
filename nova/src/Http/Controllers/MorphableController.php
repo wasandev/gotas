@@ -3,6 +3,7 @@
 namespace Laravel\Nova\Http\Controllers;
 
 use Illuminate\Routing\Controller;
+use Laravel\Nova\Contracts\RelatableField;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
 
@@ -20,7 +21,8 @@ class MorphableController extends Controller
 
         $field = $request->newResource()
                         ->availableFields($request)
-                        ->firstWhere('attribute', $request->field);
+                        ->whereInstanceOf(RelatableField::class)
+                        ->findFieldByAttribute($request->field);
 
         $withTrashed = $this->shouldIncludeTrashed(
             $request, $relatedResource

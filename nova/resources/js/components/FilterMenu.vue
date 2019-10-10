@@ -1,12 +1,6 @@
 <template>
-    <dropdown
-        v-if="filters.length > 0 || softDeletes || !viaResource"
-        dusk="filter-selector"
-        class-whitelist="flatpickr-calendar"
-    >
+    <dropdown v-if="filters.length > 0 || softDeletes || !viaResource" dusk="filter-selector">
         <dropdown-trigger
-            slot-scope="{ toggle }"
-            :handle-click="toggle"
             class="bg-30 px-3 border-2 border-30 rounded"
             :class="{ 'bg-primary border-primary': filtersAreApplied }"
             :active="filtersAreApplied"

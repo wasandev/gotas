@@ -36,13 +36,11 @@
                 </p>
 
                 <portal to="modals">
-                    <transition name="fade">
-                        <confirm-upload-removal-modal
-                            v-if="removeModalOpen"
-                            @confirm="removeFile"
-                            @close="closeRemoveModal"
-                        />
-                    </transition>
+                    <confirm-upload-removal-modal
+                        v-if="removeModalOpen"
+                        @confirm="removeFile"
+                        @close="closeRemoveModal"
+                    />
                 </portal>
             </div>
 

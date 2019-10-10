@@ -20,7 +20,7 @@ Nova.booting((Vue, router) => {
 
     //postal-code
     Vue.component('index-input-postal-code', require('./components/InputPostalCode/IndexField'))
-    Vue.component('detail-input-postal-codee', require('./components/InputPostalCode/DetailField'))
+    Vue.component('detail-input-postal-code', require('./components/InputPostalCode/DetailField'))
     Vue.component('form-input-postal-code', require('./components/InputPostalCode/FormField'))
 
 

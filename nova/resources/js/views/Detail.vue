@@ -105,36 +105,29 @@
                             <icon type="force-delete" class="text-80" />
                         </button>
 
-                        <portal to="modals">
-                            <transition name="fade">
-                                <delete-resource-modal
-                                    v-if="deleteModalOpen"
-                                    @confirm="confirmDelete"
-                                    @close="closeDeleteModal"
-                                    mode="delete"
-                                />
-                            </transition>
-                        </portal>
+                        <portal
+                            to="modals"
+                            v-if="deleteModalOpen || restoreModalOpen || forceDeleteModalOpen"
+                        >
+                            <delete-resource-modal
+                                v-if="deleteModalOpen"
+                                @confirm="confirmDelete"
+                                @close="closeDeleteModal"
+                                mode="delete"
+                            />
 
-                        <portal to="modals">
-                            <transition name="fade">
-                                <restore-resource-modal
-                                    v-if="restoreModalOpen"
-                                    @confirm="confirmRestore"
-                                    @close="closeRestoreModal"
-                                />
-                            </transition>
-                        </portal>
+                            <restore-resource-modal
+                                v-if="restoreModalOpen"
+                                @confirm="confirmRestore"
+                                @close="closeRestoreModal"
+                            />
 
-                        <portal to="modals">
-                            <transition name="fade">
-                                <delete-resource-modal
-                                    v-if="forceDeleteModalOpen"
-                                    @confirm="confirmForceDelete"
-                                    @close="closeForceDeleteModal"
-                                    mode="force delete"
-                                />
-                            </transition>
+                            <delete-resource-modal
+                                v-if="forceDeleteModalOpen"
+                                @confirm="confirmForceDelete"
+                                @close="closeForceDeleteModal"
+                                mode="force delete"
+                            />
                         </portal>
 
                         <router-link
@@ -297,9 +290,7 @@ export default {
                     },
                 })
                 .then(response => {
-                    this.actions = _.filter(response.data.actions, action => {
-                        return !action.onlyOnIndex
-                    })
+                    this.actions = _.filter(response.data.actions, a => a.showOnDetail)
                 })
         },
 

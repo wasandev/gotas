@@ -43,7 +43,7 @@ class Serviceprice extends Resource
     ];
     public static function label()
     {
-        return 'ราคาค่าจัดส่งพัสดุ';
+        return 'ค่าขนส่งพัสดุ';
     }
 
     /**
@@ -55,18 +55,12 @@ class Serviceprice extends Resource
     public function fields(Request $request)
     {
 
-        if ($this->pricetypes == 'size') {
-            $priceitem =  'App\Nova\Serviceprice_item_size';
-        } elseif ($this->pricetypes == 'weight') {
-            $priceitem =  'App\Nova\Serviceprice_item_weight';
-        } else {
-            $priceitem = 'App\Nova\Serviceprice_item';
-        }
+
 
         return [
             ID::make()->sortable(),
             Boolean::make('ใช้งาน', 'status'),
-            //->hideWhenCreating(),
+
             Text::make('ชื่อราคา', 'name'),
             Select::make('เงื่อนไขการคิดราคา', 'pricetypes')
                 ->options([
@@ -81,7 +75,7 @@ class Serviceprice extends Resource
                 ->hideFromIndex(),
             Date::make('วันที่สิ้นสุดการใช้งาน', 'end_date')
                 ->hideFromIndex(),
-            HasMany::make('รายการราคา', 'serviceprice_items', $priceitem),
+            HasMany::make('รายการราคา', 'serviceprice_items', 'App\Nova\Serviceprice_item'),
 
         ];
     }
@@ -127,27 +121,10 @@ class Serviceprice extends Resource
      */
     public function actions(Request $request)
     {
-        if (!empty($request->resourceId)) {
-            $pricetypes = \App\Models\Tenant\Serviceprice::find($request->resourceId)->pricetypes;
 
-            if ($pricetypes == 'size') {
-                return [
-                    new Actions\AddServicepriceItemSize,
-                ];
-            } elseif ($pricetypes == 'weight') {
-                return [
-                    new Actions\AddServicepriceItemWeight,
-                ];
-            } else {
-                return [
-                    new Actions\AddServicepriceItem,
-                ];
-            }
-        }
         return [
             new Actions\AddServicepriceItem,
-            new Actions\AddServicepriceItemWeight,
-            new Actions\AddServicepriceItemSize,
+
         ];
     }
 }

@@ -15,6 +15,7 @@ use Wasandev\InputThaiAddress\InputProvince;
 use Wasandev\InputThaiAddress\InputPostalCode;
 use Wasandev\InputThaiAddress\MapAddress;
 use Laravel\Nova\Fields\Textarea;
+use Illuminate\Support\Facades\Storage;
 
 class CompanyProfile extends Resource
 {
@@ -138,9 +139,18 @@ class CompanyProfile extends Resource
     protected function otherFields()
     {
         return [
-            Image::make('โลโก้', 'logofile'),
+            Image::make('โลโก้ (ขนาดไม่เกิน 100 * 100 px)', 'logofile')
+                ->disk('tenant')
+                ->path('media')
+                ->maxWidth(100)
+                ->prunable(),
+
             Image::make('ภาพหน้าร้าน', 'imagefile')
-                ->hideFromIndex(),
+                ->hideFromIndex()
+                ->disk('tenant')
+                ->path('media')
+                ->prunable(),
+
             Textarea::make('รายละเอียดอื่นๆ', 'description')->hideFromIndex(),
             BelongsTo::make('ผู้ทำรายการ', 'user', 'App\Nova\User')
                 ->onlyOnDetail(),

@@ -311,6 +311,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     public function serializeForIndex(NovaRequest $request, $fields = null)
     {
         return array_merge($this->serializeWithId($fields ?: $this->indexFields($request)), [
+            'actions' => $this->availableActions($request),
             'authorizedToView' => $this->authorizedToView($request),
             'authorizedToCreate' => $this->authorizedToCreate($request),
             'authorizedToUpdate' => $this->authorizedToUpdateForSerialization($request),

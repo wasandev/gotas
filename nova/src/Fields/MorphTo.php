@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Laravel\Nova\Contracts\RelatableField;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Http\Requests\ResourceIndexRequest;
 use Laravel\Nova\Nova;
@@ -13,7 +14,7 @@ use Laravel\Nova\Resource;
 use Laravel\Nova\Rules\Relatable;
 use Laravel\Nova\TrashedStatus;
 
-class MorphTo extends Field
+class MorphTo extends Field implements RelatableField
 {
     use ResolvesReverseRelation;
 
