@@ -18,6 +18,8 @@ use App\Models\Tenant\Employee;
 use App\Policies\Tenant\EmployeePolicy;
 use App\Models\Tenant\Customer;
 use App\Policies\Tenant\CustomerPolicy;
+use App\Models\Tenant\Charter_job_status;
+use App\Policies\Tenant\CharterJobStatusPolicy;
 
 
 class AuthServiceProvider extends ServiceProvider
@@ -35,6 +37,7 @@ class AuthServiceProvider extends ServiceProvider
         Role::class => RolePolicy::class,
         Employee::class => EmployeePolicy::class,
         Customer::class => CustomerPolicy::class,
+        Charter_job_status::class => CharterJobStatusPolicy::class,
     ];
 
     /**

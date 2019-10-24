@@ -9,6 +9,7 @@ use Wasandev\InputThaiAddress\InputDistrict;
 use Wasandev\InputThaiAddress\InputProvince;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\HasMany;
+use Jfeid\NovaGoogleMaps\NovaGoogleMaps;
 
 
 
@@ -66,7 +67,8 @@ class Branch_area extends Resource
                 ->rules('required'),
 
             HasMany::make('เส้นทางขนส่งเหมาคัน', 'charter_routes', 'App\Nova\Charter_route'),
-
+            NovaGoogleMaps::make('ตำแหน่งที่ตั้งบน Google Map', 'location')->setValue($this->location_lat, $this->location_lng)
+                ->hideFromIndex(),
 
         ];
     }

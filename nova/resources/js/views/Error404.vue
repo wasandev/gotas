@@ -1,5 +1,7 @@
 <template>
-    <div class="fixed pin bg-40 z-50 flex items-center justify-center min-w-site p-6">
+    <div
+        class="fixed pin bg-40 z-50 flex items-center justify-center min-w-site p-6"
+    >
         <div class="flex items-center w-error">
             <div class="flex-no-shrink illustration">
                 <svg
@@ -8,8 +10,15 @@
                     height="560"
                     viewBox="0 0 520 560"
                 >
-                    <g fill="none" fill-rule="evenodd" transform="translate(3 73)">
-                        <g stroke-width="2" transform="rotate(-30 140.579 22.242)">
+                    <g
+                        fill="none"
+                        fill-rule="evenodd"
+                        transform="translate(3 73)"
+                    >
+                        <g
+                            stroke-width="2"
+                            transform="rotate(-30 140.579 22.242)"
+                        >
                             <path
                                 fill="#FFF"
                                 stroke="#0D2B3E"
@@ -45,7 +54,13 @@
                                 rx="10.15"
                                 ry="21.5"
                             />
-                            <ellipse cx="79.56" cy="30" stroke="#4A90E2" rx="17.85" ry="18" />
+                            <ellipse
+                                cx="79.56"
+                                cy="30"
+                                stroke="#4A90E2"
+                                rx="17.85"
+                                ry="18"
+                            />
                             <ellipse
                                 cx="79.56"
                                 cy="30"
@@ -60,8 +75,19 @@
                             d="M425 74.5A16.5 16.5 0 0 0 441.5 91h44a16.5 16.5 0 0 1 0 33h-143a16.5 16.5 0 0 1 0-33 16.5 16.5 0 0 0 0-33h-66a16.5 16.5 0 0 1 0-33h165a16.5 16.5 0 0 1 0 33A16.5 16.5 0 0 0 425 74.5z"
                         />
                         <g transform="translate(424 130)">
-                            <circle cx="45" cy="45" r="45" stroke="#4A90E2" stroke-width="2" />
-                            <circle cx="45.83" cy="45.83" r="39.17" fill="#FFF" />
+                            <circle
+                                cx="45"
+                                cy="45"
+                                r="45"
+                                stroke="#4A90E2"
+                                stroke-width="2"
+                            />
+                            <circle
+                                cx="45.83"
+                                cy="45.83"
+                                r="39.17"
+                                fill="#FFF"
+                            />
                             <circle
                                 cx="47.5"
                                 cy="15.83"
@@ -75,7 +101,13 @@
                                 stroke-width="2"
                                 d="M48.33 25c4.6 0 8.34-3.73 8.34-8.33"
                             />
-                            <circle cx="70" cy="40" r="6.67" stroke="#4A90E2" stroke-width="2" />
+                            <circle
+                                cx="70"
+                                cy="40"
+                                r="6.67"
+                                stroke="#4A90E2"
+                                stroke-width="2"
+                            />
                             <circle
                                 cx="19.17"
                                 cy="42.5"
@@ -102,14 +134,27 @@
                                 stroke-width="2"
                                 d="M45 66.67c0 4.6 3.73 8.33 8.33 8.33"
                             />
-                            <circle cx="19.17" cy="65.83" r="2.5" fill="#4A90E2" />
-                            <circle cx="32.5" cy="10.83" r="2.5" fill="#4A90E2" />
+                            <circle
+                                cx="19.17"
+                                cy="65.83"
+                                r="2.5"
+                                fill="#4A90E2"
+                            />
+                            <circle
+                                cx="32.5"
+                                cy="10.83"
+                                r="2.5"
+                                fill="#4A90E2"
+                            />
                         </g>
                         <path
                             fill="#DDE4EB"
                             d="M309.1 302.8a19.4 19.4 0 0 0-19.4-19.4H177.14a19.4 19.4 0 0 0 0 38.8h11.65a19.4 19.4 0 1 1 0 38.8H63.63a19.4 19.4 0 0 1-19.4-19.4v-.48a18.92 18.92 0 0 1 18.92-18.92 18.92 18.92 0 0 0 18.91-18.92v-.48a19.4 19.4 0 0 0-19.4-19.4H38.4a19.4 19.4 0 0 1 0-38.8h87.33a19.4 19.4 0 0 0 0-38.8h-11.65a19.4 19.4 0 1 1 0-38.8h200.84a19.4 19.4 0 0 1 0 38.8h-36.87a19.4 19.4 0 0 0 0 38.8H390.6a19.4 19.4 0 0 1 0 38.8h-11.65a19.4 19.4 0 0 0-19.4 19.4v.48a18.92 18.92 0 0 0 18.92 18.92 18.92 18.92 0 0 1 18.92 18.92v.48a19.4 19.4 0 0 1-19.4 19.4h-99.94a19.4 19.4 0 0 1 0-38.8h11.65a19.4 19.4 0 0 0 19.4-19.4z"
                         />
-                        <g stroke-width="2" transform="rotate(-30 693.38531629 74.76561894)">
+                        <g
+                            stroke-width="2"
+                            transform="rotate(-30 693.38531629 74.76561894)"
+                        >
                             <rect
                                 width="72.05"
                                 height="22.36"
@@ -287,10 +332,14 @@
 
             <div>
                 <h1 class="text-error-title font-normal mb-1">404</h1>
-                <p class="text-error-subtitle mb-6">{{ __('Whoops') }}&hellip;</p>
+                <p class="text-error-subtitle mb-6">
+                    {{ __('Whoops') }}&hellip;
+                </p>
                 <p class="text-error-message mb-8 leading-normal">
                     {{
-                        __("We're lost in space. The page you were trying to view does not exist.")
+                        __(
+                            "We're lost in space. The page you were trying to view does not exist."
+                        )
                     }}
                 </p>
                 <router-link

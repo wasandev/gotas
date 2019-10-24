@@ -14,10 +14,8 @@ class SqlSrvTrendDateExpression extends TrendDateExpression
         $column = $this->wrap($this->column);
         $offset = $this->offset();
 
-        if ($offset > 0) {
+        if ($offset >= 0) {
             $interval = $offset;
-        } elseif ($offset === 0) {
-            $interval = '';
         } else {
             $interval = '-'.($offset * -1);
         }

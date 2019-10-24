@@ -64,14 +64,15 @@ export default {
                     {
                         onUploadProgress: function(progressEvent) {
                             attachment.setUploadProgress(
-                                Math.round((progressEvent.loaded * 100) / progressEvent.total)
+                                Math.round(
+                                    (progressEvent.loaded * 100) /
+                                        progressEvent.total
+                                )
                             )
                         },
                     }
                 )
                 .then(({ data: { url } }) => {
-                    console.log(url)
-
                     return attachment.setAttributes({
                         url: url,
                         href: url,
@@ -84,9 +85,14 @@ export default {
          */
         handleFileRemove({ attachment: { attachment } }) {
             Nova.request()
-                .delete(`/nova-api/${this.resourceName}/trix-attachment/${this.field.attribute}`, {
-                    params: { attachmentUrl: attachment.attributes.values.url },
-                })
+                .delete(
+                    `/nova-api/${this.resourceName}/trix-attachment/${this.field.attribute}`,
+                    {
+                        params: {
+                            attachmentUrl: attachment.attributes.values.url,
+                        },
+                    }
+                )
                 .then(response => {})
                 .catch(error => {})
         },
@@ -126,7 +132,10 @@ export default {
 
 function uuidv4() {
     return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-        (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16)
+        (
+            c ^
+            (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
+        ).toString(16)
     )
 }
 </script>

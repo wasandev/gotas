@@ -12,11 +12,19 @@
                         dusk="delete-selected-button"
                         class="text-left w-full leading-normal dim my-2"
                         @click="confirmDeleteSelectedResources"
-                        v-if="authorizedToDeleteSelectedResources || allMatchingSelected"
+                        v-if="
+                            authorizedToDeleteSelectedResources ||
+                                allMatchingSelected
+                        "
                     >
-                        {{ __(viaManyToMany ? 'Detach Selected' : 'Delete Selected') }} ({{
-                            selectedResourcesCount
-                        }})
+                        {{
+                            __(
+                                viaManyToMany
+                                    ? 'Detach Selected'
+                                    : 'Delete Selected'
+                            )
+                        }}
+                        ({{ selectedResourcesCount }})
                     </button>
 
                     <!-- Restore Resources -->
@@ -27,11 +35,15 @@
                         v-if="
                             softDeletes &&
                                 !viaManyToMany &&
-                                (softDeletedResourcesSelected || allMatchingSelected) &&
-                                (authorizedToRestoreSelectedResources || allMatchingSelected)
+                                (softDeletedResourcesSelected ||
+                                    allMatchingSelected) &&
+                                (authorizedToRestoreSelectedResources ||
+                                    allMatchingSelected)
                         "
                     >
-                        {{ __('Restore Selected') }} ({{ selectedResourcesCount }})
+                        {{ __('Restore Selected') }} ({{
+                            selectedResourcesCount
+                        }})
                     </button>
 
                     <!-- Force Delete Resources -->
@@ -42,10 +54,13 @@
                         v-if="
                             softDeletes &&
                                 !viaManyToMany &&
-                                (authorizedToForceDeleteSelectedResources || allMatchingSelected)
+                                (authorizedToForceDeleteSelectedResources ||
+                                    allMatchingSelected)
                         "
                     >
-                        {{ __('Force Delete Selected') }} ({{ selectedResourcesCount }})
+                        {{ __('Force Delete Selected') }} ({{
+                            selectedResourcesCount
+                        }})
                     </button>
                 </div>
             </dropdown-menu>
@@ -53,7 +68,11 @@
 
         <portal
             to="modals"
-            v-if="deleteSelectedModalOpen || forceDeleteSelectedModalOpen || restoreModalOpen"
+            v-if="
+                deleteSelectedModalOpen ||
+                    forceDeleteSelectedModalOpen ||
+                    restoreModalOpen
+            "
         >
             <delete-resource-modal
                 v-if="deleteSelectedModalOpen"
@@ -69,9 +88,15 @@
                 mode="delete"
             >
                 <div slot-scope="{ uppercaseMode, mode }" class="p-8">
-                    <heading :level="2" class="mb-6">{{ __('Force Delete Resource') }}</heading>
+                    <heading :level="2" class="mb-6">{{
+                        __('Force Delete Resource')
+                    }}</heading>
                     <p class="text-80 leading-normal">
-                        {{ __('Are you sure you want to force delete the selected resources?') }}
+                        {{
+                            __(
+                                'Are you sure you want to force delete the selected resources?'
+                            )
+                        }}
                     </p>
                 </div>
             </delete-resource-modal>
@@ -152,21 +177,33 @@ export default {
          * Delete the selected resources.
          */
         deleteSelectedResources() {
-            this.$emit(this.allMatchingSelected ? 'deleteAllMatching' : 'deleteSelected')
+            this.$emit(
+                this.allMatchingSelected
+                    ? 'deleteAllMatching'
+                    : 'deleteSelected'
+            )
         },
 
         /**
          * Force delete the selected resources.
          */
         forceDeleteSelectedResources() {
-            this.$emit(this.allMatchingSelected ? 'forceDeleteAllMatching' : 'forceDeleteSelected')
+            this.$emit(
+                this.allMatchingSelected
+                    ? 'forceDeleteAllMatching'
+                    : 'forceDeleteSelected'
+            )
         },
 
         /**
          * Restore the selected resources.
          */
         restoreSelectedResources() {
-            this.$emit(this.allMatchingSelected ? 'restoreAllMatching' : 'restoreSelected')
+            this.$emit(
+                this.allMatchingSelected
+                    ? 'restoreAllMatching'
+                    : 'restoreSelected'
+            )
         },
 
         /**
@@ -197,7 +234,9 @@ export default {
          * Determine if any soft deleted resources are selected.
          */
         softDeletedResourcesSelected() {
-            return Boolean(_.find(this.selectedResources, resource => resource.softDeleted))
+            return Boolean(
+                _.find(this.selectedResources, resource => resource.softDeleted)
+            )
         },
     },
 }

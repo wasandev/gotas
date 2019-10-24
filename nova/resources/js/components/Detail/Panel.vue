@@ -6,7 +6,9 @@
 
         <card class="mb-6 py-3 px-6">
             <component
-                :class="{ 'remove-bottom-border': index == panel.fields.length - 1 }"
+                :class="{
+                    'remove-bottom-border': index == panel.fields.length - 1,
+                }"
                 :key="index"
                 v-for="(field, index) in fields"
                 :is="resolveComponentName(field)"
@@ -21,7 +23,10 @@
                 v-if="shouldShowShowAllFieldsButton"
                 class="bg-20 -mt-px -mx-6 -mb-6 border-t border-40 p-3 text-center rounded-b text-center"
             >
-                <button class="block w-full dim text-sm text-80 font-bold" @click="showAllFields">
+                <button
+                    class="block w-full dim text-sm text-80 font-bold"
+                    @click="showAllFields"
+                >
                     {{ __('Show All Fields') }}
                 </button>
             </div>
@@ -40,7 +45,9 @@ export default {
          * Resolve the component name.
          */
         resolveComponentName(field) {
-            return field.prefixComponent ? 'detail-' + field.component : field.component
+            return field.prefixComponent
+                ? 'detail-' + field.component
+                : field.component
         },
 
         /**

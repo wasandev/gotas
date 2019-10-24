@@ -2,6 +2,8 @@
     <BaseTrendMetric
         @selected="handleRangeSelected"
         :title="card.name"
+        :help-text="card.helpText"
+        :help-width="card.helpWidth"
         :value="value"
         :chart-data="data"
         :ranges="card.ranges"
@@ -71,6 +73,10 @@ export default {
         if (this.hasRanges) {
             this.selectedRangeKey = this.card.ranges[0].value
         }
+
+        if (this.card.refreshWhenActionRuns) {
+            Nova.$on('action-executed', () => this.fetch())
+        }
     },
 
     mounted() {
@@ -86,10 +92,20 @@ export default {
         fetch() {
             this.loading = true
 
-            Minimum(Nova.request().get(this.metricEndpoint, this.metricPayload)).then(
+            Minimum(
+                Nova.request().get(this.metricEndpoint, this.metricPayload)
+            ).then(
                 ({
                     data: {
-                        value: { labels, trend, value, prefix, suffix, suffixInflection, format },
+                        value: {
+                            labels,
+                            trend,
+                            value,
+                            prefix,
+                            suffix,
+                            suffixInflection,
+                            format,
+                        },
                     },
                 }) => {
                     this.value = value

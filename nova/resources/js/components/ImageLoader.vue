@@ -4,12 +4,13 @@
         :loading="loading"
         class="card relative border border-lg border-50 overflow-hidden px-0 py-0"
         :class="cardClasses"
+        :style="cardStyles"
     >
-        <div v-if="loading" style="height: 100px" />
-
         <div class="missing p-8" v-if="missing">
             <p class="text-center leading-normal">
-                <a :href="src" class="text-primary dim" target="_blank">{{ __('This image') }}</a>
+                <a :href="src" class="text-primary dim" target="_blank">{{
+                    __('This image')
+                }}</a>
                 {{ __('could not be found.') }}
             </p>
         </div>
@@ -45,6 +46,12 @@ export default {
                 'max-w-xs': !this.maxWidth || this.loading || this.missing,
                 'rounded-full': this.rounded,
             }
+        },
+
+        cardStyles() {
+            return this.loading
+                ? { height: this.maxWidth + 'px', width: this.maxWidth + 'px' }
+                : null
         },
     },
 

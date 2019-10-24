@@ -16,7 +16,7 @@ use Wasandev\InputThaiAddress\InputSubDistrict;
 use Wasandev\InputThaiAddress\InputDistrict;
 use Wasandev\InputThaiAddress\InputProvince;
 use Wasandev\InputThaiAddress\InputPostalCode;
-use Wasandev\InputThaiAddress\MapAddress;
+use Jfeid\NovaGoogleMaps\NovaGoogleMaps;
 
 class Employee extends Resource
 {
@@ -189,7 +189,7 @@ class Employee extends Resource
                 ->hideFromIndex(),
 
 
-            MapAddress::make('ตำแหน่งที่ตั้งบน Google Map', 'Location')
+            NovaGoogleMaps::make('ตำแหน่งที่ตั้งบน Google Map', 'location')->setValue($this->location_lat, $this->location_lng)
                 ->hideFromIndex(),
             BelongsTo::make('ผู้ทำรายการ', 'user', 'App\Nova\User')
                 ->onlyOnDetail(),

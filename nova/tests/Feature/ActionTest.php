@@ -158,6 +158,42 @@ class ActionTest extends IntegrationTest
         $this->assertHiddenFromTableRow($action);
     }
 
+    public function test_actions_can_have_custom_confirmation_button_text()
+    {
+        $action = new class extends Action {
+        };
+
+        $this->assertSubset(['confirmButtonText' => 'Run Action'], $action->jsonSerialize());
+
+        $action->confirmButtonText('Yes!');
+
+        $this->assertSubset(['confirmButtonText' => 'Yes!'], $action->jsonSerialize());
+    }
+
+    public function test_actions_can_have_custom_cancel_button_text()
+    {
+        $action = new class extends Action {
+        };
+
+        $this->assertSubset(['cancelButtonText' => 'Cancel'], $action->jsonSerialize());
+
+        $action->cancelButtonText('Nah!');
+
+        $this->assertSubset(['cancelButtonText' => 'Nah!'], $action->jsonSerialize());
+    }
+
+    public function test_actions_with_no_fields_can_have_custom_confirmation_text()
+    {
+        $action = new class extends Action {
+        };
+
+        $this->assertSubset(['confirmText' => 'Are you sure you want to run this action?'], $action->jsonSerialize());
+
+        $action->confirmText('Are you sure!');
+
+        $this->assertSubset(['confirmText' => 'Are you sure!'], $action->jsonSerialize());
+    }
+
     protected function assertShownOnIndex(Action $action)
     {
         $this->assertTrue($action->shownOnIndex());

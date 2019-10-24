@@ -73,14 +73,17 @@ export default class Nova {
                 })
 
                 _this.$on('token-expired', () => {
-                    this.$toasted.show(this.__('Sorry, your session has expired.'), {
-                        action: {
-                            onClick: () => location.reload(),
-                            text: this.__('Reload'),
-                        },
-                        duration: null,
-                        type: 'error',
-                    })
+                    this.$toasted.show(
+                        this.__('Sorry, your session has expired.'),
+                        {
+                            action: {
+                                onClick: () => location.reload(),
+                                text: this.__('Reload'),
+                            },
+                            duration: null,
+                            type: 'error',
+                        }
+                    )
                 })
             },
         })
@@ -130,7 +133,9 @@ export default class Nova {
      * Determine if Nova is missing the requested resource with the given uri key
      */
     missingResource(uriKey) {
-        return _.find(this.config.resources, r => r.uriKey == uriKey) == undefined
+        return (
+            _.find(this.config.resources, r => r.uriKey == uriKey) == undefined
+        )
     }
 
     /**

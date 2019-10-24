@@ -12,10 +12,10 @@ use Wasandev\InputThaiAddress\InputSubDistrict;
 use Wasandev\InputThaiAddress\InputDistrict;
 use Wasandev\InputThaiAddress\InputProvince;
 use Wasandev\InputThaiAddress\InputPostalCode;
-use Wasandev\InputThaiAddress\MapAddress;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\HasMany;
+use Jfeid\NovaGoogleMaps\NovaGoogleMaps;
 
 class Branch extends Resource
 {
@@ -100,6 +100,7 @@ class Branch extends Resource
                     ];
                 }),
 
+
         ];
     }
     /**
@@ -132,7 +133,7 @@ class Branch extends Resource
                 ->fromValue('zipcode')
                 ->hideFromIndex(),
 
-            MapAddress::make('ตำแหน่งที่ตั้งบน Google Map', 'Location')
+            NovaGoogleMaps::make('ตำแหน่งที่ตั้งบน Google Map', 'location')->setValue($this->location_lat, $this->location_lng)
                 ->hideFromIndex(),
             BelongsTo::make('ผู้ทำรายการ', 'user', 'App\Nova\User')
                 ->onlyOnDetail(),

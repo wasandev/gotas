@@ -44,6 +44,7 @@ import GlobalSearch from '@/components/GlobalSearch'
 import Heading from '@/components/Heading'
 import HelpCard from '@/components/Cards/HelpCard'
 import HelpText from '@/components/Form/HelpText'
+import HelpIcon from '@/components/Icons/Help'
 import Icon from '@/components/Icons/Icon'
 import Image from '@/components/Icons/Editor/Image'
 import Index from './views/Index'
@@ -75,6 +76,8 @@ import Search from '@/components/Icons/Search'
 import SearchInput from '@/components/SearchInput'
 import SortableIcon from '@/components/Index/SortableIcon'
 import TrendMetric from '@/components/Metrics/TrendMetric'
+import Tooltip from '@/components/Tooltip'
+import TooltipContent from '@/components/TooltipContent'
 import ValidationErrors from '@/components/ValidationErrors'
 import ValueMetric from '@/components/Metrics/ValueMetric'
 import View from '@/components/Icons/View'
@@ -133,6 +136,7 @@ Vue.component('icon-download', Download)
 Vue.component('icon-edit', Edit)
 Vue.component('icon-filter', Filter)
 Vue.component('icon-force-delete', ForceDelete)
+Vue.component('icon-help', HelpIcon)
 Vue.component('icon-more', More)
 Vue.component('icon-play', Play)
 Vue.component('icon-refresh', Refresh)
@@ -158,6 +162,8 @@ Vue.component('resource-index', Index)
 Vue.component('resource-table', ResourceTable)
 Vue.component('resource-table-row', ResourceTableRow)
 Vue.component('restore-resource-modal', RestoreResourceModal)
+Vue.component('tooltip', Tooltip)
+Vue.component('tooltip-content', TooltipContent)
 Vue.component('scroll-wrap', ScrollWrap)
 Vue.component('search-input', SearchInput)
 Vue.component('sortable-icon', SortableIcon)

@@ -1,6 +1,8 @@
 <template>
     <div :class="`text-${field.textAlign}`">
-        <span v-if="field.value" class="whitespace-no-wrap">{{ localizedDateTime }}</span>
+        <span v-if="field.value" class="whitespace-no-wrap">{{
+            localizedDateTime
+        }}</span>
         <span v-else class="whitespace-no-wrap">&mdash;</span>
     </div>
 </template>

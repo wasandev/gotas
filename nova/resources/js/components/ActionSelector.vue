@@ -11,9 +11,14 @@
                 v-model="selectedActionKey"
                 class="form-control form-select mr-2"
             >
-                <option value="" disabled selected>{{ __('Select Action') }}</option>
+                <option value="" disabled selected>{{
+                    __('Select Action')
+                }}</option>
 
-                <optgroup v-if="actions.length > 0" :label="resourceInformation.singularLabel">
+                <optgroup
+                    v-if="actions.length > 0"
+                    :label="resourceInformation.singularLabel"
+                >
                     <option
                         v-for="action in actions"
                         :value="action.uriKey"

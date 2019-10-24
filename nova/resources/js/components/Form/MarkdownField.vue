@@ -14,16 +14,23 @@
                     class="flex items-center content-center justify-between border-b border-60"
                     :class="{ 'bg-30': isReadonly }"
                 >
-                    <ul class="w-full flex items-center content-center list-reset">
+                    <ul
+                        class="w-full flex items-center content-center list-reset"
+                    >
                         <button
-                            :class="{ 'text-primary font-bold': this.mode == 'write' }"
+                            :class="{
+                                'text-primary font-bold': this.mode == 'write',
+                            }"
                             @click.prevent="write"
                             class="ml-1 text-90 px-3 py-2"
                         >
                             {{ __('Write') }}
                         </button>
                         <button
-                            :class="{ 'text-primary font-bold': this.mode == 'preview' }"
+                            :class="{
+                                'text-primary font-bold':
+                                    this.mode == 'preview',
+                            }"
                             @click.prevent="preview"
                             class="text-90 px-3 py-2"
                         >
@@ -51,7 +58,10 @@
                     class="flex markdown-content relative p-4"
                     :class="{ 'readonly bg-30': isReadonly }"
                 >
-                    <textarea ref="theTextarea" :class="{ 'bg-30': isReadonly }" />
+                    <textarea
+                        ref="theTextarea"
+                        :class="{ 'bg-30': isReadonly }"
+                    />
                 </div>
 
                 <div
@@ -120,15 +130,30 @@ export default {
         codemirror: null,
         mode: 'write',
         tools: [
-            { name: 'bold', action: 'bold', className: 'fa fa-bold', icon: 'editor-bold' },
+            {
+                name: 'bold',
+                action: 'bold',
+                className: 'fa fa-bold',
+                icon: 'editor-bold',
+            },
             {
                 name: 'italicize',
                 action: 'italicize',
                 className: 'fa fa-italic',
                 icon: 'editor-italic',
             },
-            { name: 'link', action: 'link', className: 'fa fa-link', icon: 'editor-link' },
-            { name: 'image', action: 'image', className: 'fa fa-image', icon: 'editor-image' },
+            {
+                name: 'link',
+                action: 'link',
+                className: 'fa fa-link',
+                icon: 'editor-link',
+            },
+            {
+                name: 'image',
+                action: 'image',
+                className: 'fa fa-image',
+                icon: 'editor-image',
+            },
             {
                 name: 'fullScreen',
                 action: 'toggleFullScreen',
@@ -157,9 +182,13 @@ export default {
         _.each(keyMaps, (action, map) => {
             const realMap = map.replace(
                 'Cmd-',
-                CodeMirror.keyMap['default'] == CodeMirror.keyMap.macDefault ? 'Cmd-' : 'Ctrl-'
+                CodeMirror.keyMap['default'] == CodeMirror.keyMap.macDefault
+                    ? 'Cmd-'
+                    : 'Ctrl-'
             )
-            this.codemirror.options.extraKeys[realMap] = actions[keyMaps[map]].bind(this)
+            this.codemirror.options.extraKeys[realMap] = actions[
+                keyMaps[map]
+            ].bind(this)
         })
 
         this.doc.on('change', (cm, changeObj) => {
@@ -219,7 +248,10 @@ export default {
             if (this.doc.somethingSelected()) {
                 const selects = this.doc.listSelections()
                 selects.forEach(selection => {
-                    const pos = [selection.head.line, selection.anchor.line].sort()
+                    const pos = [
+                        selection.head.line,
+                        selection.anchor.line,
+                    ].sort()
 
                     for (let i = pos[0]; i <= pos[1]; i++) {
                         this.doc.replaceRange(insertion, { line: i, ch: 0 })

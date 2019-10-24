@@ -21,8 +21,15 @@
                             searchBy="display"
                             class="mb-3"
                         >
-                            <div slot="default" v-if="selectedResource" class="flex items-center">
-                                <div v-if="selectedResource.avatar" class="mr-3">
+                            <div
+                                slot="default"
+                                v-if="selectedResource"
+                                class="flex items-center"
+                            >
+                                <div
+                                    v-if="selectedResource.avatar"
+                                    class="mr-3"
+                                >
                                     <img
                                         :src="selectedResource.avatar"
                                         class="w-8 h-8 rounded-full block"
@@ -38,7 +45,10 @@
                                 class="flex items-center"
                             >
                                 <div v-if="option.avatar" class="mr-3">
-                                    <img :src="option.avatar" class="w-8 h-8 rounded-full block" />
+                                    <img
+                                        :src="option.avatar"
+                                        class="w-8 h-8 rounded-full block"
+                                    />
                                 </div>
 
                                 {{ option.display }}
@@ -49,7 +59,11 @@
                             v-else
                             dusk="attachable-select"
                             class="form-control form-select mb-3 w-full"
-                            :class="{ 'border-danger': validationErrors.has(field.attribute) }"
+                            :class="{
+                                'border-danger': validationErrors.has(
+                                    field.attribute
+                                ),
+                            }"
                             :data-testid="`${field.resourceName}-select`"
                             @change="selectResourceFromSelectControl"
                             :options="availableResources"
@@ -57,14 +71,19 @@
                             :selected="selectedResourceId"
                         >
                             <option value="" disabled selected>{{
-                                __('Choose :resource', { resource: relatedResourceLabel })
+                                __('Choose :resource', {
+                                    resource: relatedResourceLabel,
+                                })
                             }}</option>
                         </select-control>
 
                         <!-- Trashed State -->
                         <div v-if="softDeletes">
                             <checkbox-with-label
-                                :dusk="field.resourceName + '-with-trashed-checkbox'"
+                                :dusk="
+                                    field.resourceName +
+                                        '-with-trashed-checkbox'
+                                "
                                 :checked="withTrashed"
                                 @change="toggleWithTrashed"
                             >
@@ -108,7 +127,11 @@
                     :disabled="isWorking"
                     :processing="submittedViaAttachResource"
                 >
-                    {{ __('Attach :resource', { resource: relatedResourceLabel }) }}
+                    {{
+                        __('Attach :resource', {
+                            resource: relatedResourceLabel,
+                        })
+                    }}
                 </progress-button>
             </div>
         </form>
@@ -160,7 +183,8 @@ export default {
     }),
 
     created() {
-        if (Nova.missingResource(this.resourceName)) return this.$router.push({ name: '404' })
+        if (Nova.missingResource(this.resourceName))
+            return this.$router.push({ name: '404' })
     },
 
     /**
@@ -190,7 +214,12 @@ export default {
             this.field = null
 
             Nova.request()
-                .get('/nova-api/' + this.resourceName + '/field/' + this.viaRelationship)
+                .get(
+                    '/nova-api/' +
+                        this.resourceName +
+                        '/field/' +
+                        this.viaRelationship
+                )
                 .then(({ data }) => {
                     this.field = data
                     this.field.searchable
@@ -287,8 +316,12 @@ export default {
                 this.submittedViaAttachResource = false
 
                 if (error.response.status == 422) {
-                    this.validationErrors = new Errors(error.response.data.errors)
-                    Nova.error(this.__('There was a problem submitting the form.'))
+                    this.validationErrors = new Errors(
+                        error.response.data.errors
+                    )
+                    Nova.error(
+                        this.__('There was a problem submitting the form.')
+                    )
                 }
             }
         },
@@ -310,8 +343,12 @@ export default {
                 this.submittedViaAttachAndAttachAnother = false
 
                 if (error.response.status == 422) {
-                    this.validationErrors = new Errors(error.response.data.errors)
-                    Nova.error(this.__('There was a problem submitting the form.'))
+                    this.validationErrors = new Errors(
+                        error.response.data.errors
+                    )
+                    Nova.error(
+                        this.__('There was a problem submitting the form.')
+                    )
                 }
             }
         },
@@ -320,12 +357,16 @@ export default {
          * Send an attach request for this resource
          */
         attachRequest() {
-            return Nova.request().post(this.attachmentEndpoint, this.attachmentFormData, {
-                params: {
-                    editing: true,
-                    editMode: 'attach',
-                },
-            })
+            return Nova.request().post(
+                this.attachmentEndpoint,
+                this.attachmentFormData,
+                {
+                    params: {
+                        editing: true,
+                        editMode: 'attach',
+                    },
+                }
+            )
         },
 
         /**
@@ -391,10 +432,16 @@ export default {
                 if (!this.selectedResource) {
                     formData.append(this.relatedResourceName, '')
                 } else {
-                    formData.append(this.relatedResourceName, this.selectedResource.value)
+                    formData.append(
+                        this.relatedResourceName,
+                        this.selectedResource.value
+                    )
                 }
 
-                formData.append(this.relatedResourceName + '_trashed', this.withTrashed)
+                formData.append(
+                    this.relatedResourceName + '_trashed',
+                    this.withTrashed
+                )
                 formData.append('viaRelationship', this.viaRelationship)
             })
         },
@@ -419,7 +466,10 @@ export default {
          * Determine if the form is being processed
          */
         isWorking() {
-            return this.submittedViaAttachResource || this.submittedViaAttachAndAttachAnother
+            return (
+                this.submittedViaAttachResource ||
+                this.submittedViaAttachAndAttachAnother
+            )
         },
     },
 }

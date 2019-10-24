@@ -1,110 +1,83 @@
-@extends('layouts.app')
-@section('nav')
-    @include('partials.docheader')
+@extends('layouts.form')
+
+@section('header')
+@include('partials.docheader')
 @endsection
+
 @section('content')
-    <div class="max-w-3xl mx-auto -mt-16">
-        <div class="mx-0 sm:mx-6">
-            <h1 class="text-center">
-                ใบเสนอราคา (Quotation)
-            </h1>
-            <div class=" bg-indigo-darker bg-transparent w-full p-4 md:p-4 t text-white leading-normal rounded-lg" style="opacity: .75;" >
-                <p class="text-2xl md:text-3xl text-center ">
-                    เลขที่ใบเสนอราคา : {{ $quotation->quotation_no }}
-
-                </p>
-                <p class="py-2 text-base text-white text-center mt-4">
-                    วันที่ใบเสนอราคา : {{ $quotation->quotation_date }}
-                </p>
-                <p>
-                    ลูกค้า : {{ $quotation->customer->name }}
-                </p>
-                <p>
-                    ที่อยู่ : {{ $quotation->customer->address.' ตำบล/แขวง
-                     '.$quotation->customer->sub_district .' อำเภอ/เขต
-                     '.$quotation->customer->district .' จังหวัด '.$quotation->customer->province .'
-                    '.$quotation->customer->postal_code .' โทร. :
-                    '.$quotation->customer->phoneno }}
-                </p>
-
-            </div>
-        </div>
-    </div>
-    <table class="border-grey-darker border-solid">
-        <thead>
-            <tr>
-                <th>ลำดับ</th>
-                <th>เส้นทางขนส่ง ต้นทาง-ปลายทาง</th>
-                <th>ประเภทรถ</th>
-                <th>ลักษณะรถ</th>
-                <th>ค่าขนส่ง</th>
-                <th>จำนวนจุดขึ้นลงสินค้า</th>
-            </tr>
-        </thead>
-        <tbody>
-
-            @foreach ($quotation->charter_prices as $item )
-                <tr>
-
-                    <td>
-                        {{ $loop->iteration }}
-                    </td>
-                    <td>
-                        {{ $item->charter_route->branch_area->district .'/'.$item->charter_route->branch_area->province .' - '.$item->charter_route->to_district .'/'.$item->charter_route->to_province   }}
-                    </td>
-                    <td>
-                        {{ $item->cartype->name }}
-                    </td>
-                    <td>
-                        {{ $item->carstyle->name }}
-                    </td>
-                    <td>
-                        {{ $item->price }}
-                    </td>
-                    <td>
-                        {{ $item->pickuppoint }}
-                    </td>
-
-                </tr>
-             @endforeach
-
-        </tbody>
-    </table>
+<table style="width:100%;">
+    <tr>
+        <h1 style="text-align: center;font-size: 2.5em;">
+            ใบเสนอราคา (Quotation)
+        </h1>
+    </tr>
+</table>
+<table style="width:100%">
+    <tr>
+        <td style="vertical-align: top;">
+            ลูกค้า/Customer: {{ $quotation->customer->name }}<br />
+            ที่อยู่/Address : {{ $quotation->customer->address.'
+                     '.$quotation->customer->sub_district .'
+                     '.$quotation->customer->district .' '.$quotation->customer->province .'
+                    '.$quotation->customer->postal_code }}<br />
+            โทร./Phone No.: {{ $quotation->customer->phoneno }} อีเมล์/Email: {{ $quotation->customer->email }}
+        </td>
+        <td style="vertical-align: top;">
+            เลขที่ใบเสนอราคา/Quotation No:{{ $quotation->quotation_no }}<br />
+            วันที่ออกใบเสนอราคา/Date Of Issue :{{ $quotation->quotation_date }}<br />
+            ใช้ได้ถึงวันที่/Expireation Date :{{ $quotation->expiration_date }}
 
 
+        </td>
+    </tr>
 
-@endsection
+</table>
+<br />
+<br />
+<table style="width:100%;border: .5px solid black; border-collapse: collapse;">
+    <thead>
+        <tr style="vertical-align: middle;height: 50px;border: 1px solid black;text-align: center;">
+            <th style="border: 1px solid black;">ลำดับ<br />
+                No.</th>
+            <th style="border: 1px solid black;">เส้นทางขนส่ง ต้นทาง-ปลายทาง<br />Route</th>
+            <th style="border: 1px solid black;">ประเภทรถ<br />Vehicle Type</th>
+            <th style="border: 1px solid black;">ลักษณะรถ<br />Vehicle Category</th>
+            <th style="border: 1px solid black;">ค่าขนส่ง<br />Price/Vehicle(Baht)</th>
+            <th style="border: 1px solid black;">จำนวนจุดขึ้นลงสินค้า<br />Maximum Point</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach ($quotation->charter_prices as $item )
+        <tr>
+
+            <td style="border: 1px solid black;text-align: center;">
+                {{ $loop->iteration }}
+            </td>
+            <td style="border: 1px solid black;">
+                {{ $item->charter_route->branch_area->district .'/'.$item->charter_route->branch_area->province .' - '.$item->charter_route->to_district .'/'.$item->charter_route->to_province   }}
+            </td>
+            <td style="border: 1px solid black;">
+                {{ $item->cartype->name }}
+            </td>
+            <td style="border: 1px solid black;">
+                {{ $item->carstyle->name }}
+            </td>
+            <td style="border: 1px solid black;text-align: right;">
+                {{ number_format($item->price,2) }}
+            </td>
+            <td style="border: 1px solid black;text-align: center;">
+                {{ $item->pickuppoint }}
+            </td>
+
+        </tr>
+        @endforeach
+
+    </tbody>
+</table>
 @section('footer')
-    @include('partials.docfooter')
-
+@include('partials.docfooter')
 @endsection
 
-<style>
-@font-face{
- font-family:  'THSarabunNew';
- font-style: normal;
- font-weight: normal;
- src: url("{{ asset('fonts/THSarabunNew.ttf') }}") format('truetype');
-}
-@font-face{
- font-family:  'THSarabunNew';
- font-style: normal;
- font-weight: bold;
- src: url("{{ asset('fonts/THSarabunNew Bold.ttf') }}") format('truetype');
-}
-@font-face{
- font-family:  'THSarabunNew';
- font-style: italic;
- font-weight: normal;
- src: url("{{ asset('fonts/THSarabunNew Italic.ttf') }}") format('truetype');
-}
-@font-face{
- font-family:  'THSarabunNew';
- font-style: italic;
- font-weight: bold;
- src: url("{{ asset('fonts/THSarabunNew BoldItalic.ttf') }}") format('truetype');
-}
-body{
- font-family: "THSarabunNew";
-}
-</style>
+
+@endsection

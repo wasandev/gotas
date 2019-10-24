@@ -69,7 +69,8 @@ export default [
     },
     {
         name: 'attach',
-        path: '/resources/:resourceName/:resourceId/attach/:relatedResourceName',
+        path:
+            '/resources/:resourceName/:resourceId/attach/:relatedResourceName',
         component: AttachResource,
         props: route => {
             return {

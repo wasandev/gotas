@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 abstract class Dashboard extends Element
 {
     use AuthorizedToSee,
+        Metable,
         ProxiesCanSeeToGate;
 
     /**

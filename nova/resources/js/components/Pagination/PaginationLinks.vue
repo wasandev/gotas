@@ -8,7 +8,8 @@
                     class="font-mono btn btn-link h-9 min-w-9 px-2 border-r border-50"
                     :class="{
                         'text-primary dim': hasPreviousPages,
-                        'text-80 opacity-50': !hasPreviousPages || linksDisabled,
+                        'text-80 opacity-50':
+                            !hasPreviousPages || linksDisabled,
                     }"
                     rel="first"
                     @click.prevent="selectPage(1)"
@@ -23,7 +24,8 @@
                     class="font-mono btn btn-link h-9 min-w-9 px-2 border-r border-50"
                     :class="{
                         'text-primary dim': hasPreviousPages,
-                        'text-80 opacity-50': !hasPreviousPages || linksDisabled,
+                        'text-80 opacity-50':
+                            !hasPreviousPages || linksDisabled,
                     }"
                     rel="prev"
                     @click.prevent="selectPreviousPage()"

@@ -15,17 +15,31 @@
                 searchBy="display"
                 class="mb-3"
             >
-                <div slot="default" v-if="selectedResource" class="flex items-center">
+                <div
+                    slot="default"
+                    v-if="selectedResource"
+                    class="flex items-center"
+                >
                     <div v-if="selectedResource.avatar" class="mr-3">
-                        <img :src="selectedResource.avatar" class="w-8 h-8 rounded-full block" />
+                        <img
+                            :src="selectedResource.avatar"
+                            class="w-8 h-8 rounded-full block"
+                        />
                     </div>
 
                     {{ selectedResource.display }}
                 </div>
 
-                <div slot="option" slot-scope="{ option, selected }" class="flex items-center">
+                <div
+                    slot="option"
+                    slot-scope="{ option, selected }"
+                    class="flex items-center"
+                >
                     <div v-if="option.avatar" class="mr-3">
-                        <img :src="option.avatar" class="w-8 h-8 rounded-full block" />
+                        <img
+                            :src="option.avatar"
+                            class="w-8 h-8 rounded-full block"
+                        />
                     </div>
 
                     {{ option.display }}
@@ -45,7 +59,9 @@
                 :selected="selectedResourceId"
                 label="display"
             >
-                <option value="" selected :disabled="!field.nullable">&mdash;</option>
+                <option value="" selected :disabled="!field.nullable"
+                    >&mdash;</option
+                >
             </select-control>
 
             <!-- Trashed State -->
@@ -65,7 +81,11 @@
 <script>
 import _ from 'lodash'
 import storage from '@/storage/BelongsToFieldStorage'
-import { TogglesTrashed, PerformsSearches, HandlesValidationErrors } from 'laravel-nova'
+import {
+    TogglesTrashed,
+    PerformsSearches,
+    HandlesValidationErrors,
+} from 'laravel-nova'
 
 export default {
     mixins: [TogglesTrashed, PerformsSearches, HandlesValidationErrors],
@@ -120,13 +140,20 @@ export default {
                 // searchable we should load all of the available resources into the
                 // field first and select the initial option
                 this.initializingWithExistingResource = false
-                this.getAvailableResources().then(() => this.selectInitialResource())
+                this.getAvailableResources().then(() =>
+                    this.selectInitialResource()
+                )
             } else if (this.shouldSelectInitialResource && this.isSearchable) {
                 // If we should select the initial resource and the field is
                 // searchable, we won't load all the resources but we will select
                 // the initial option
-                this.getAvailableResources().then(() => this.selectInitialResource())
-            } else if (!this.shouldSelectInitialResource && !this.isSearchable) {
+                this.getAvailableResources().then(() =>
+                    this.selectInitialResource()
+                )
+            } else if (
+                !this.shouldSelectInitialResource &&
+                !this.isSearchable
+            ) {
                 // If we don't need to select an initial resource because the user
                 // came to create a resource directly and there's no parent resource,
                 // and the field is searchable we'll just load all of the resources
@@ -163,9 +190,16 @@ export default {
          */
         getAvailableResources() {
             return storage
-                .fetchAvailableResources(this.resourceName, this.field.attribute, this.queryParams)
+                .fetchAvailableResources(
+                    this.resourceName,
+                    this.field.attribute,
+                    this.queryParams
+                )
                 .then(({ data: { resources, softDeletes, withTrashed } }) => {
-                    if (this.initializingWithExistingResource || !this.isSearchable) {
+                    if (
+                        this.initializingWithExistingResource ||
+                        !this.isSearchable
+                    ) {
                         this.withTrashed = withTrashed
                     }
 
@@ -180,9 +214,11 @@ export default {
          * Determine if the relatd resource is soft deleting.
          */
         determineIfSoftDeletes() {
-            return storage.determineIfSoftDeletes(this.field.resourceName).then(response => {
-                this.softDeletes = response.data.softDeletes
-            })
+            return storage
+                .determineIfSoftDeletes(this.field.resourceName)
+                .then(response => {
+                    this.softDeletes = response.data.softDeletes
+                })
         },
 
         /**
@@ -238,7 +274,9 @@ export default {
          * Determine if we should select an initial resource when mounting this field
          */
         shouldSelectInitialResource() {
-            return Boolean(this.editingExistingResource || this.creatingViaRelatedResource)
+            return Boolean(
+                this.editingExistingResource || this.creatingViaRelatedResource
+            )
         },
 
         /**
@@ -259,16 +297,25 @@ export default {
                     search: this.search,
                     withTrashed: this.withTrashed,
                     resourceId: this.resourceId,
+                    viaResource: this.viaResource,
+                    viaResourceId: this.viaResourceId,
+                    viaRelationship: this.viaRelationship,
                 },
             }
         },
 
         isLocked() {
-            return this.viaResource == this.field.resourceName && this.field.reverse
+            return (
+                this.viaResource == this.field.resourceName &&
+                this.field.reverse
+            )
         },
 
         isReadonly() {
-            return this.field.readonly || _.get(this.field, 'extraAttributes.readonly')
+            return (
+                this.field.readonly ||
+                _.get(this.field, 'extraAttributes.readonly')
+            )
         },
     },
 }

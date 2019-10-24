@@ -47,8 +47,21 @@ module.exports = {
     },
 
     fonts: {
-        sans: ['Nunito', 'system-ui', 'BlinkMacSystemFont', '-apple-system', 'sans-serif'],
-        mono: ['Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', 'monospace'],
+        sans: [
+            'Nunito',
+            'system-ui',
+            'BlinkMacSystemFont',
+            '-apple-system',
+            'sans-serif',
+        ],
+        mono: [
+            'Menlo',
+            'Monaco',
+            'Consolas',
+            'Liberation Mono',
+            'Courier New',
+            'monospace',
+        ],
     },
 
     textSizes: {

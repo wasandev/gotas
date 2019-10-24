@@ -7,8 +7,13 @@
         </div>
         <div class="w-3/4 py-4 break-words">
             <slot name="value">
-                <p v-if="fieldValue && !shouldDisplayAsHtml" class="text-90">{{ fieldValue }}</p>
-                <div v-else-if="fieldValue && shouldDisplayAsHtml" v-html="field.value"></div>
+                <p v-if="fieldValue && !shouldDisplayAsHtml" class="text-90">
+                    {{ fieldValue }}
+                </p>
+                <div
+                    v-else-if="fieldValue && shouldDisplayAsHtml"
+                    v-html="field.value"
+                ></div>
                 <p v-else>&mdash;</p>
             </slot>
         </div>

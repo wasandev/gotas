@@ -10,7 +10,9 @@
                 :options="field.options"
                 :disabled="isReadonly"
             >
-                <option value="" selected :disabled="!field.nullable">{{ placeholder }}</option>
+                <option value="" selected :disabled="!field.nullable">{{
+                    placeholder
+                }}</option>
             </select-control>
         </template>
     </default-field>

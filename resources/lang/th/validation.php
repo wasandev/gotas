@@ -166,7 +166,8 @@ return [
         'branches' => 'สาขา',
         'branch' => 'สาขา',
         'department' => 'ฝ่ายงาน',
-        'position' => 'ตำแหน่งงาน'
-
+        'position' => 'ตำแหน่งงาน',
+        'total weight' => 'น้ำหนักสินค้ารวม',
+        'address' => 'ที่อยู่',
     ],
 ];

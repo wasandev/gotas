@@ -3,7 +3,8 @@
         <!-- Validation Errors -->
         <div class="row" v-if="errors.length > 0">
             <div class="col-6 alert alert-danger">
-                <strong>{{ __('Whoops!') }}</strong> {{ __('Something went wrong.') }}
+                <strong>{{ __('Whoops!') }}</strong>
+                {{ __('Something went wrong.') }}
 
                 <br /><br />
 

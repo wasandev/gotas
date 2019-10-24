@@ -1,6 +1,10 @@
 <template>
     <div>
-        <default-field :field="field" :show-errors="false" :field-name="fieldName">
+        <default-field
+            :field="field"
+            :show-errors="false"
+            :field-name="fieldName"
+        >
             <select
                 v-if="hasMorphToTypes"
                 :disabled="isLocked || isReadonly"
@@ -25,7 +29,11 @@
                 </option>
             </select>
 
-            <label v-else slot="field" class="flex items-center select-none mt-3">
+            <label
+                v-else
+                slot="field"
+                class="flex items-center select-none mt-3"
+            >
                 {{ __('There are no available options for this resource.') }}
             </label>
         </default-field>
@@ -52,7 +60,11 @@
                     searchBy="display"
                     class="mb-3"
                 >
-                    <div slot="default" v-if="selectedResource" class="flex items-center">
+                    <div
+                        slot="default"
+                        v-if="selectedResource"
+                        class="flex items-center"
+                    >
                         <div v-if="selectedResource.avatar" class="mr-3">
                             <img
                                 :src="selectedResource.avatar"
@@ -63,9 +75,16 @@
                         {{ selectedResource.display }}
                     </div>
 
-                    <div slot="option" slot-scope="{ option, selected }" class="flex items-center">
+                    <div
+                        slot="option"
+                        slot-scope="{ option, selected }"
+                        class="flex items-center"
+                    >
                         <div v-if="option.avatar" class="mr-3">
-                            <img :src="option.avatar" class="w-8 h-8 rounded-full block" />
+                            <img
+                                :src="option.avatar"
+                                class="w-8 h-8 rounded-full block"
+                            />
                         </div>
 
                         {{ option.display }}
@@ -110,11 +129,21 @@
 <script>
 import _ from 'lodash'
 import storage from '@/storage/MorphToFieldStorage'
-import { PerformsSearches, TogglesTrashed, HandlesValidationErrors } from 'laravel-nova'
+import {
+    PerformsSearches,
+    TogglesTrashed,
+    HandlesValidationErrors,
+} from 'laravel-nova'
 
 export default {
     mixins: [PerformsSearches, TogglesTrashed, HandlesValidationErrors],
-    props: ['resourceName', 'field', 'viaResource', 'viaResourceId', 'viaRelationship'],
+    props: [
+        'resourceName',
+        'field',
+        'viaResource',
+        'viaResourceId',
+        'viaRelationship',
+    ],
 
     data: () => ({
         resourceType: '',
@@ -142,9 +171,13 @@ export default {
         }
 
         if (this.shouldSelectInitialResource && !this.isSearchable) {
-            this.getAvailableResources().then(() => this.selectInitialResource())
+            this.getAvailableResources().then(() =>
+                this.selectInitialResource()
+            )
         } else if (this.shouldSelectInitialResource && this.isSearchable) {
-            this.getAvailableResources().then(() => this.selectInitialResource())
+            this.getAvailableResources().then(() =>
+                this.selectInitialResource()
+            )
         }
 
         if (this.resourceType) {
@@ -168,8 +201,14 @@ export default {
          */
         fill(formData) {
             if (this.selectedResource && this.resourceType) {
-                formData.append(this.field.attribute, this.selectedResource.value)
-                formData.append(this.field.attribute + '_type', this.resourceType)
+                formData.append(
+                    this.field.attribute,
+                    this.selectedResource.value
+                )
+                formData.append(
+                    this.field.attribute + '_type',
+                    this.resourceType
+                )
             } else {
                 formData.append(this.field.attribute, '')
                 formData.append(this.field.attribute + '_type', '')
@@ -183,9 +222,16 @@ export default {
          */
         getAvailableResources(search = '') {
             return storage
-                .fetchAvailableResources(this.resourceName, this.field.attribute, this.queryParams)
+                .fetchAvailableResources(
+                    this.resourceName,
+                    this.field.attribute,
+                    this.queryParams
+                )
                 .then(({ data: { resources, softDeletes, withTrashed } }) => {
-                    if (this.initializingWithExistingResource || !this.isSearchable) {
+                    if (
+                        this.initializingWithExistingResource ||
+                        !this.isSearchable
+                    ) {
                         this.withTrashed = withTrashed
                     }
 
@@ -211,7 +257,10 @@ export default {
         determineIfSoftDeletes() {
             return storage
                 .determineIfSoftDeletes(this.resourceType)
-                .then(({ data: { softDeletes } }) => (this.softDeletes = softDeletes))
+                .then(
+                    ({ data: { softDeletes } }) =>
+                        (this.softDeletes = softDeletes)
+                )
         },
 
         /**
@@ -267,7 +316,9 @@ export default {
          * Determine if we should select an initial resource when mounting this field
          */
         shouldSelectInitialResource() {
-            return Boolean(this.editingExistingResource || this.creatingViaRelatedResource)
+            return Boolean(
+                this.editingExistingResource || this.creatingViaRelatedResource
+            )
         },
 
         /**
@@ -296,6 +347,9 @@ export default {
                     first: this.shouldLoadFirstResource,
                     search: this.search,
                     withTrashed: this.withTrashed,
+                    viaResource: this.viaResource,
+                    viaResourceId: this.viaResourceId,
+                    viaRelationship: this.viaRelationship,
                 },
             }
         },
@@ -331,7 +385,10 @@ export default {
          * Determine if the field is set to readonly.
          */
         isReadonly() {
-            return this.field.readonly || _.get(this.field, 'extraAttributes.readonly')
+            return (
+                this.field.readonly ||
+                _.get(this.field, 'extraAttributes.readonly')
+            )
         },
 
         /**

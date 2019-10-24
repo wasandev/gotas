@@ -44,7 +44,9 @@
                 :panel="panel"
             >
                 <div v-if="panel.showToolbar" class="flex items-center mb-3">
-                    <heading :level="1" class="flex-no-shrink">{{ panel.name }}</heading>
+                    <heading :level="1" class="flex-no-shrink">{{
+                        panel.name
+                    }}</heading>
 
                     <div class="ml-3 w-full flex items-center">
                         <custom-detail-toolbar
@@ -73,7 +75,10 @@
                         />
 
                         <button
-                            v-if="resource.authorizedToDelete && !resource.softDeleted"
+                            v-if="
+                                resource.authorizedToDelete &&
+                                    !resource.softDeleted
+                            "
                             data-testid="open-delete-modal"
                             dusk="open-delete-modal-button"
                             @click="openDeleteModal"
@@ -84,7 +89,10 @@
                         </button>
 
                         <button
-                            v-if="resource.authorizedToRestore && resource.softDeleted"
+                            v-if="
+                                resource.authorizedToRestore &&
+                                    resource.softDeleted
+                            "
                             data-testid="open-restore-modal"
                             dusk="open-restore-modal-button"
                             @click="openRestoreModal"
@@ -107,7 +115,11 @@
 
                         <portal
                             to="modals"
-                            v-if="deleteModalOpen || restoreModalOpen || forceDeleteModalOpen"
+                            v-if="
+                                deleteModalOpen ||
+                                    restoreModalOpen ||
+                                    forceDeleteModalOpen
+                            "
                         >
                             <delete-resource-modal
                                 v-if="deleteModalOpen"
@@ -190,7 +202,8 @@ export default {
      * Bind the keydown even listener when the component is created
      */
     created() {
-        if (Nova.missingResource(this.resourceName)) return this.$router.push({ name: '404' })
+        if (Nova.missingResource(this.resourceName))
+            return this.$router.push({ name: '404' })
 
         document.addEventListener('keydown', this.handleKeydown)
     },
@@ -224,7 +237,10 @@ export default {
                 e.target.tagName != 'INPUT' &&
                 e.target.tagName != 'TEXTAREA'
             ) {
-                this.$router.push({ name: 'edit', params: { id: this.resource.id } })
+                this.$router.push({
+                    name: 'edit',
+                    params: { id: this.resource.id },
+                })
             }
         },
 
@@ -245,7 +261,9 @@ export default {
             this.resource = null
 
             return Minimum(
-                Nova.request().get('/nova-api/' + this.resourceName + '/' + this.resourceId)
+                Nova.request().get(
+                    '/nova-api/' + this.resourceName + '/' + this.resourceId
+                )
             )
                 .then(({ data: { panels, resource } }) => {
                     this.panels = panels
@@ -290,7 +308,10 @@ export default {
                     },
                 })
                 .then(response => {
-                    this.actions = _.filter(response.data.actions, a => a.showOnDetail)
+                    this.actions = _.filter(
+                        response.data.actions,
+                        a => a.showOnDetail
+                    )
                 })
         },
 
@@ -306,9 +327,12 @@ export default {
          * Create a new panel for the given field.
          */
         createPanelForField(field) {
-            return _.tap(_.find(this.panels, panel => panel.name == field.panel), panel => {
-                panel.fields = [field]
-            })
+            return _.tap(
+                _.find(this.panels, panel => panel.name == field.panel),
+                panel => {
+                    panel.fields = [field]
+                }
+            )
         },
 
         /**
@@ -402,7 +426,10 @@ export default {
                     })
                 )
 
-                this.$router.push({ name: 'index', params: { resourceName: this.resourceName } })
+                this.$router.push({
+                    name: 'index',
+                    params: { resourceName: this.resourceName },
+                })
             })
         },
 
@@ -429,11 +456,15 @@ export default {
             if (this.resource) {
                 var panels = {}
 
-                var fields = _.toArray(JSON.parse(JSON.stringify(this.resource.fields)))
+                var fields = _.toArray(
+                    JSON.parse(JSON.stringify(this.resource.fields))
+                )
 
                 fields.forEach(field => {
                     if (field.listable) {
-                        return (panels[field.name] = this.createPanelForRelationship(field))
+                        return (panels[
+                            field.name
+                        ] = this.createPanelForRelationship(field))
                     } else if (panels[field.panel]) {
                         return panels[field.panel].fields.push(field)
                     }

@@ -10,7 +10,7 @@ trait SearchControllerTests
     public function test_can_retrieve_search_results_for_all_searchable_resources()
     {
         $user = factory(User::class)->create();
-        $post = factory(Post::class)->create();
+        $post = factory(Post::class)->create(['user_id' => $user->id]);
 
         $response = $this->withExceptionHandling()
                         ->getJson('/nova-api/search?search=1');

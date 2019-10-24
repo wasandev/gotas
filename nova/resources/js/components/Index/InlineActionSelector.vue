@@ -4,7 +4,7 @@
             v-if="actions.length > 0"
             class="text-left inline-block bg-30 hover:bg-40 rounded"
         >
-            <dropdown-trigger class="text-sm px-3 py-1 h-!8">
+            <dropdown-trigger class="text-sm text-90 px-3 py-1 h-!8">
                 {{ __('Actions') }}
             </dropdown-trigger>
 

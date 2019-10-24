@@ -56,9 +56,15 @@ export default {
                 state.filters,
                 (result, f) => {
                     const originalFilter = getters.getOriginalFilter(f.class)
-                    const originalFilterCloneValue = JSON.stringify(originalFilter.currentValue)
-                    const currentFilterCloneValue = JSON.stringify(f.currentValue)
-                    return currentFilterCloneValue == originalFilterCloneValue ? result : result + 1
+                    const originalFilterCloneValue = JSON.stringify(
+                        originalFilter.currentValue
+                    )
+                    const currentFilterCloneValue = JSON.stringify(
+                        f.currentValue
+                    )
+                    return currentFilterCloneValue == originalFilterCloneValue
+                        ? result
+                        : result + 1
                 },
                 0
             )
@@ -107,7 +113,9 @@ export default {
                 ? await Nova.request().get(
                       '/nova-api/' + resourceName + '/lens/' + lens + '/filters'
                   )
-                : await Nova.request().get('/nova-api/' + resourceName + '/filters')
+                : await Nova.request().get(
+                      '/nova-api/' + resourceName + '/filters'
+                  )
 
             commit('storeFilters', data)
         },
@@ -127,11 +135,17 @@ export default {
         /**
          * Initialize the current filter values from the decoded query string.
          */
-        async initializeCurrentFilterValuesFromQueryString({ commit, getters }, encodedFilters) {
+        async initializeCurrentFilterValuesFromQueryString(
+            { commit, getters },
+            encodedFilters
+        ) {
             if (encodedFilters) {
                 const initialFilters = JSON.parse(atob(encodedFilters))
                 _.each(initialFilters, f => {
-                    commit('updateFilterState', { filterClass: f.class, value: f.value })
+                    commit('updateFilterState', {
+                        filterClass: f.class,
+                        value: f.value,
+                    })
                 })
             }
         },

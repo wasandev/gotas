@@ -50,7 +50,7 @@
                     </a>
 
                     @if (count(\Laravel\Nova\Nova::globallySearchableResources(request())) > 0)
-                        <global-search></global-search>
+                        <global-search dusk="global-search-component"></global-search>
                     @endif
 
                     <dropdown class="ml-auto h-9 flex items-center dropdown-right">

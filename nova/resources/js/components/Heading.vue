@@ -14,7 +14,11 @@ export default {
     },
 
     render(h) {
-        return h('h' + this.level, { class: classes[this.level] }, this.$slots.default)
+        return h(
+            'h' + this.level,
+            { class: classes[this.level] },
+            this.$slots.default
+        )
     },
 }
 </script>

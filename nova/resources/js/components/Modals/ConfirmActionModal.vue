@@ -4,6 +4,14 @@
         tabindex="-1"
         role="dialog"
         @modal-close="handleClose"
+        :classWhitelist="[
+            'flatpickr-current-month',
+            'flatpickr-next-month',
+            'flatpickr-prev-month',
+            'flatpickr-weekday',
+            'flatpickr-weekdays',
+            'flatpickr-calendar',
+        ]"
     >
         <form
             autocomplete="off"
@@ -16,10 +24,12 @@
             }"
         >
             <div>
-                <heading :level="2" class="border-b border-40 py-8 px-8">{{ action.name }}</heading>
+                <heading :level="2" class="border-b border-40 py-8 px-8">{{
+                    action.name
+                }}</heading>
 
                 <p v-if="action.fields.length == 0" class="text-80 px-8 my-8">
-                    {{ __('Are you sure you want to run this action?') }}
+                    {{ action.confirmText }}
                 </p>
 
                 <div v-else>
@@ -27,7 +37,11 @@
                     <validation-errors :errors="errors" />
 
                     <!-- Action Fields -->
-                    <div class="action" v-for="field in action.fields" :key="field.attribute">
+                    <div
+                        class="action"
+                        v-for="field in action.fields"
+                        :key="field.attribute"
+                    >
                         <component
                             :is="'form-' + field.component"
                             :errors="errors"
@@ -46,7 +60,7 @@
                         @click.prevent="handleClose"
                         class="btn btn-link dim cursor-pointer text-80 ml-auto mr-6"
                     >
-                        {{ __('Cancel') }}
+                        {{ action.cancelButtonText }}
                     </button>
 
                     <button
@@ -61,7 +75,7 @@
                         }"
                     >
                         <loader v-if="working" width="30"></loader>
-                        <span v-else>{{ __('Run Action') }}</span>
+                        <span v-else>{{ action.confirmButtonText }}</span>
                     </button>
                 </div>
             </div>

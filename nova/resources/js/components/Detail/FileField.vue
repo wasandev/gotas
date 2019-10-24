@@ -68,7 +68,10 @@ export default {
 
     computed: {
         hasValue() {
-            return Boolean(this.field.value || this.imageUrl) && !Boolean(this.missing)
+            return (
+                Boolean(this.field.value || this.imageUrl) &&
+                !Boolean(this.missing)
+            )
         },
 
         shouldShowLoader() {

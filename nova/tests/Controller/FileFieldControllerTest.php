@@ -2,6 +2,7 @@
 
 namespace Laravel\Nova\Tests\Controller;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
@@ -386,5 +387,30 @@ class FileFieldControllerTest extends IntegrationTest
         unset($_SERVER['nova.fileResource.imageField']);
 
         $response->assertStatus(201);
+    }
+
+    public function test_callable_result_on_store_callback()
+    {
+        Storage::fake();
+
+        $_SERVER['nova.fileResource.imageField'] = function ($request) {
+            return Image::make('Avatar', 'avatar', 'public')
+                        ->store(function (Request $request, $model) {
+                            return function () use ($request, $model) {
+                                $model->avatar = $request->file('avatar')->store('avatars', 'public');
+                            };
+                        });
+        };
+
+        $response = $this->withExceptionHandling()
+             ->postJson('/nova-api/files', [
+                 'avatar' => UploadedFile::fake()->image('avatar.png'),
+             ]);
+
+        unset($_SERVER['nova.fileResource.imageField']);
+
+        $response->assertStatus(201);
+        $this->assertNotEmpty($response->original['resource']['avatar']);
+        $this->assertEmpty(File::query()->first()->avatar);
     }
 }

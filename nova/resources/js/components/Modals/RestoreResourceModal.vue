@@ -8,9 +8,15 @@
         >
             <slot>
                 <div class="p-8">
-                    <heading :level="2" class="mb-6">{{ __('Restore Resource') }}</heading>
+                    <heading :level="2" class="mb-6">{{
+                        __('Restore Resource')
+                    }}</heading>
                     <p class="text-80 leading-normal">
-                        {{ __('Are you sure you want to restore the selected resources?') }}
+                        {{
+                            __(
+                                'Are you sure you want to restore the selected resources?'
+                            )
+                        }}
                     </p>
                 </div>
             </slot>

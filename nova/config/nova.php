@@ -6,7 +6,6 @@ use Laravel\Nova\Http\Middleware\BootTools;
 use Laravel\Nova\Http\Middleware\DispatchServingNovaEvent;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Nova App Name
@@ -61,6 +60,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Nova Password Reset Broker
+    |--------------------------------------------------------------------------
+    |
+    | This configuration option defines the password broker that will be
+    | used when passwords are reset. This option should mirror one of
+    | the password reset options defined in the "auth" config file.
+    |
+    */
+
+    'passwords' => env('NOVA_PASSWORDS', null),
+
+    /*
+    |--------------------------------------------------------------------------
     | Nova Route Middleware
     |--------------------------------------------------------------------------
     |
@@ -90,5 +102,4 @@ return [
     */
 
     'pagination' => 'simple',
-
 ];

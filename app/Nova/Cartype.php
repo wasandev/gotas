@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Currency;
 
 class Cartype extends Resource
 {
@@ -34,7 +35,7 @@ class Cartype extends Resource
      * @var array
      */
     public static $search = [
-        'name',
+        'name', 'payload'
     ];
     public static function label()
     {
@@ -51,6 +52,9 @@ class Cartype extends Resource
         return [
             ID::make()->sortable(),
             Text::make('ชื่อประเภทรถ', 'name')->sortable(),
+            Currency::make('น้ำหนักบรรทุก(กก.)', 'payload')
+                ->sortable()
+                ->format('%i'),
             BelongsTo::make('ผู้ทำรายการ', 'user', 'App\Nova\User')
                 ->onlyOnDetail(),
         ];

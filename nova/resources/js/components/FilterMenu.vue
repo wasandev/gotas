@@ -1,13 +1,22 @@
 <template>
-    <dropdown v-if="filters.length > 0 || softDeletes || !viaResource" dusk="filter-selector">
+    <dropdown
+        v-if="filters.length > 0 || softDeletes || !viaResource"
+        dusk="filter-selector"
+    >
         <dropdown-trigger
             class="bg-30 px-3 border-2 border-30 rounded"
             :class="{ 'bg-primary border-primary': filtersAreApplied }"
             :active="filtersAreApplied"
         >
-            <icon type="filter" :class="filtersAreApplied ? 'text-white' : 'text-80'" />
+            <icon
+                type="filter"
+                :class="filtersAreApplied ? 'text-white' : 'text-80'"
+            />
 
-            <span v-if="filtersAreApplied" class="ml-2 font-bold text-white text-80">
+            <span
+                v-if="filtersAreApplied"
+                class="ml-2 font-bold text-white text-80"
+            >
                 {{ activeFilterCount }}
             </span>
         </dropdown-trigger>
@@ -37,7 +46,10 @@
 
                 <!-- Soft Deletes -->
                 <div v-if="softDeletes && showTrashedOption">
-                    <h3 slot="default" class="text-sm uppercase tracking-wide text-80 bg-30 p-3">
+                    <h3
+                        slot="default"
+                        class="text-sm uppercase tracking-wide text-80 bg-30 p-3"
+                    >
                         {{ __('Trashed') }}
                     </h3>
 
@@ -50,15 +62,22 @@
                             @change="trashedChanged"
                         >
                             <option value="" selected>&mdash;</option>
-                            <option value="with">{{ __('With Trashed') }}</option>
-                            <option value="only">{{ __('Only Trashed') }}</option>
+                            <option value="with">{{
+                                __('With Trashed')
+                            }}</option>
+                            <option value="only">{{
+                                __('Only Trashed')
+                            }}</option>
                         </select>
                     </div>
                 </div>
 
                 <!-- Per Page -->
                 <div v-if="!viaResource">
-                    <h3 slot="default" class="text-sm uppercase tracking-wide text-80 bg-30 p-3">
+                    <h3
+                        slot="default"
+                        class="text-sm uppercase tracking-wide text-80 bg-30 p-3"
+                    >
                         {{ __('Per Page') }}
                     </h3>
 
@@ -70,7 +89,10 @@
                             :value="perPage"
                             @change="perPageChanged"
                         >
-                            <option v-for="option in perPageOptions" :key="option">
+                            <option
+                                v-for="option in perPageOptions"
+                                :key="option"
+                            >
                                 {{ option }}
                             </option>
                         </select>

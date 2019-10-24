@@ -1,5 +1,7 @@
 <template>
-    <div class="fixed pin bg-40 z-50 flex items-center justify-center min-w-site p-6">
+    <div
+        class="fixed pin bg-40 z-50 flex items-center justify-center min-w-site p-6"
+    >
         <div class="flex items-center w-error">
             <div class="flex-no-shrink illustration">
                 <svg
@@ -8,12 +10,19 @@
                     height="541"
                     viewBox="0 0 530 560"
                 >
-                    <g fill="none" fill-rule="evenodd" transform="translate(4 10)">
+                    <g
+                        fill="none"
+                        fill-rule="evenodd"
+                        transform="translate(4 10)"
+                    >
                         <path
                             fill="#DDE4EB"
                             d="M0 185a19.4 19.4 0 0 1 19.4-19.4h37.33a19.4 19.4 0 0 0 0-38.8H45.08a19.4 19.4 0 1 1 0-38.8h170.84a19.4 19.4 0 0 1 0 38.8h-6.87a19.4 19.4 0 0 0 0 38.8h42.55a19.4 19.4 0 0 1 0 38.8H19.4A19.4 19.4 0 0 1 0 185z"
                         />
-                        <g stroke-width="2" transform="rotate(-30 383.9199884 -24.79114317)">
+                        <g
+                            stroke-width="2"
+                            transform="rotate(-30 383.9199884 -24.79114317)"
+                        >
                             <rect
                                 width="32.4"
                                 height="9.19"
@@ -64,7 +73,13 @@
                             stroke-width="2"
                             d="M117 176a14 14 0 0 0-14-14m10 15a10 10 0 0 0-10-10"
                         />
-                        <ellipse cx="258" cy="441" fill="#FFF" rx="250" ry="90" />
+                        <ellipse
+                            cx="258"
+                            cy="441"
+                            fill="#FFF"
+                            rx="250"
+                            ry="90"
+                        />
                         <path
                             fill="#FFF"
                             fill-rule="nonzero"
@@ -78,7 +93,9 @@
                                 fill-rule="nonzero"
                                 d="M228.66635404 453.35751889l3.48444585 6.7411525a11.71 11.71 0 0 0-3.36066168 18.19840799l3.157266 3.1573203-8.52104352 8.55618006-.29468882-6.6673277a19.31 19.31 0 0 1 5.53468217-29.98573315z"
                             />
-                            <path d="M221.75370493 481.33823157l5.9097851-4.56727928" />
+                            <path
+                                d="M221.75370493 481.33823157l5.9097851-4.56727928"
+                            />
                         </g>
                         <g stroke="#0D2B3E" stroke-width="2">
                             <path
@@ -86,7 +103,9 @@
                                 fill-rule="nonzero"
                                 d="M217.43675157 454.38903415l-.38056208 7.58726384a10.25 10.25 0 0 0-10.62036709 8.5642456l.04580558 4.00318647-11.36366293-.10613565 3.84834642-5.16425501a17.82 17.82 0 0 1 18.46098491-14.88104957z"
                             />
-                            <path d="M199.40986905 468.0735658l7.07551171 1.72015522" />
+                            <path
+                                d="M199.40986905 468.0735658l7.07551171 1.72015522"
+                            />
                         </g>
                         <path
                             fill="#E5F7FF"
@@ -166,7 +185,10 @@
                             stroke-width="2"
                             d="M176 332.86l70.93-71.84a10 10 0 0 1 14.19-.05L345 344.86"
                         />
-                        <g stroke-width="2" transform="rotate(-87 355.051 43.529)">
+                        <g
+                            stroke-width="2"
+                            transform="rotate(-87 355.051 43.529)"
+                        >
                             <ellipse
                                 cx="10.28"
                                 cy="27.49"
@@ -185,7 +207,13 @@
                                 stroke="#4A90E2"
                                 d="M98.09 54.22c-7.52 0-13.62-12.1-13.62-27.02s6.1-27 13.62-27"
                             />
-                            <ellipse cx="59.59" cy="27.27" stroke="#4A90E2" rx="16.34" ry="16.21" />
+                            <ellipse
+                                cx="59.59"
+                                cy="27.27"
+                                stroke="#4A90E2"
+                                rx="16.34"
+                                ry="16.21"
+                            />
                             <ellipse
                                 cx="59.59"
                                 cy="27.27"
@@ -195,29 +223,69 @@
                                 ry="12.16"
                             />
                         </g>
-                        <g stroke="#233242" stroke-width="2" transform="translate(456 396)">
+                        <g
+                            stroke="#233242"
+                            stroke-width="2"
+                            transform="translate(456 396)"
+                        >
                             <ellipse cx="30" cy="10" rx="20" ry="10" />
                             <path
                                 d="M0 15c0 8.28 13.43 15 30 15m12.39-1.33C52.77 26.3 60 21.07 60 15"
                             />
                         </g>
-                        <g stroke="#233242" stroke-width="2" transform="translate(276 520)">
+                        <g
+                            stroke="#233242"
+                            stroke-width="2"
+                            transform="translate(276 520)"
+                        >
                             <ellipse cx="20" cy="6.67" rx="13.33" ry="6.67" />
                             <path
                                 d="M0 10c0 5.52 8.95 10 20 10m8.26-.89C35.18 17.54 40 14.05 40 10"
                             />
                         </g>
-                        <g stroke="#233242" stroke-width="2" transform="translate(186 370)">
+                        <g
+                            stroke="#233242"
+                            stroke-width="2"
+                            transform="translate(186 370)"
+                        >
                             <ellipse cx="15" cy="5" rx="10" ry="5" />
                             <path
                                 d="M0 7.5C0 11.64 6.72 15 15 15m6.2-.67c5.19-1.18 8.8-3.8 8.8-6.83"
                             />
                         </g>
-                        <ellipse cx="58" cy="492" fill="#202C3A" rx="3" ry="2" />
-                        <ellipse cx="468" cy="492" fill="#202C3A" rx="3" ry="2" />
-                        <ellipse cx="388" cy="392" fill="#202C3A" rx="3" ry="2" />
-                        <ellipse cx="338" cy="452" fill="#202C3A" rx="3" ry="2" />
-                        <g stroke="#233242" stroke-width="2" transform="translate(46 406)">
+                        <ellipse
+                            cx="58"
+                            cy="492"
+                            fill="#202C3A"
+                            rx="3"
+                            ry="2"
+                        />
+                        <ellipse
+                            cx="468"
+                            cy="492"
+                            fill="#202C3A"
+                            rx="3"
+                            ry="2"
+                        />
+                        <ellipse
+                            cx="388"
+                            cy="392"
+                            fill="#202C3A"
+                            rx="3"
+                            ry="2"
+                        />
+                        <ellipse
+                            cx="338"
+                            cy="452"
+                            fill="#202C3A"
+                            rx="3"
+                            ry="2"
+                        />
+                        <g
+                            stroke="#233242"
+                            stroke-width="2"
+                            transform="translate(46 406)"
+                        >
                             <ellipse cx="40" cy="13.33" rx="26.67" ry="13.33" />
                             <path
                                 d="M0 20c0 11.05 17.9 20 40 20m16.51-1.78C70.37 35.08 80 28.1 80 20"
@@ -228,7 +296,13 @@
                                 d="M299 378l-21 42m35-36l-21 42m4-42l14 6m-17 0l14 6m-17 0l14 6m-17 0l14 6m-17 0l14 6m-17 0l14 6"
                             />
                         </g>
-                        <circle cx="341" cy="155" r="25" stroke="#233242" stroke-width="2" />
+                        <circle
+                            cx="341"
+                            cy="155"
+                            r="25"
+                            stroke="#233242"
+                            stroke-width="2"
+                        />
                         <circle cx="342" cy="156" r="20" fill="#FFF" />
                         <path
                             stroke="#233242"
@@ -243,7 +317,9 @@
                 <p class="text-error-subtitle mb-6">{{ __('Hold Up!') }}</p>
                 <p class="text-error-message mb-8 leading-normal">
                     {{
-                        __("The government won't let us show you what's behind these doors")
+                        __(
+                            "The government won't let us show you what's behind these doors"
+                        )
                     }}&hellip;
                 </p>
                 <router-link

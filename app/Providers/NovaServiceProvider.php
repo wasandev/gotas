@@ -58,9 +58,11 @@ use App\Nova\Charter_price;
 use App\Nova\Branch_route_cost;
 use App\Nova\Routeto_branch_cost;
 use App\Nova\Quotation;
-//use App\Nova\Charter_job;
-//use App\Nova\Charter_job_item;
-
+use App\Nova\Service_charge;
+use App\Nova\Charter_job;
+use App\Nova\Charter_job_item;
+use App\Nova\Charter_job_status;
+use App\Nova\Charter_job_insurance;
 //System resource
 
 use App\Nova\Systemuser;
@@ -189,6 +191,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             Customer_product_price::class,
             Serviceprice::class,
             Serviceprice_item::class,
+            Service_charge::class,
 
             Routeto_branch::class,
             Branch_route::class,
@@ -200,8 +203,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             Charter_route_cost::class,
             Charter_price::class,
             Quotation::class,
-            //Charter_job::class,
-            //Charter_job_item::class,
+            Charter_job::class,
+            Charter_job_item::class,
+            Charter_job_status::class,
+            Charter_job_insurance::class,
             Cartype::class,
             Carstyle::class,
             Tiretype::class,
@@ -214,6 +219,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
             Car_expense::class,
             Company_expense::class,
+
 
 
         ]);

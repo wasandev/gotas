@@ -39,6 +39,7 @@
         <tbody>
             <tr
                 v-for="(resource, index) in resources"
+                @actionExecuted="$emit('actionExecuted')"
                 :testId="`${resourceName}-items-${index}`"
                 :key="resource.id.value"
                 :delete-resource="deleteResource"
@@ -154,7 +155,8 @@ export default {
          */
         viaManyToMany() {
             return (
-                this.relationshipType == 'belongsToMany' || this.relationshipType == 'morphToMany'
+                this.relationshipType == 'belongsToMany' ||
+                this.relationshipType == 'morphToMany'
             )
         },
 
@@ -162,7 +164,10 @@ export default {
          * Determine if the current resource listing is via a has-one relationship.
          */
         viaHasOne() {
-            return this.relationshipType == 'hasOne' || this.relationshipType == 'morphOne'
+            return (
+                this.relationshipType == 'hasOne' ||
+                this.relationshipType == 'morphOne'
+            )
         },
     },
 }

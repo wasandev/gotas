@@ -25,7 +25,4 @@ Nova.booting((Vue, router) => {
 
 
 
-    Vue.component('index-map-address', require('./components/MapAddress/IndexField'));
-    Vue.component('detail-map-address', require('./components/MapAddress/DetailField'));
-    Vue.component('form-map-address', require('./components/MapAddress/FormField'));
 })

@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Middleware\EnforceTenancy;
+use Laravel\Nova\Http\Middleware\Authenticate;
 use Laravel\Nova\Http\Middleware\Authorize;
 use Laravel\Nova\Http\Middleware\BootTools;
-use Laravel\Nova\Http\Middleware\Authenticate;
 use Laravel\Nova\Http\Middleware\DispatchServingNovaEvent;
 
 return [
@@ -85,9 +85,9 @@ return [
     | Nova Pagination Type
     |--------------------------------------------------------------------------
     |
-    | This option defines the pagination visual style used by Resources. You
-    | may choose between two types: "simple" and "links". Feel free to set
-    | this option to the visual style you like for your application.
+    | This option defines the visual style used in Nova's resource pagination.
+    | You may choose between 3 types: "simple", "load-more" and "links".
+    | Feel free to set this option to the visual style you like.
     |
     */
 

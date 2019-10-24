@@ -10,7 +10,7 @@ class Cartype extends Model
     use UsesTenantConnection;
 
     protected $fillable = [
-        'name', 'user_id'
+        'name', 'user_id', 'payload'
     ];
 
     public function car()

@@ -18,13 +18,11 @@ class CreateTenancyCharterJobItemsTable extends Migration
             $table->bigInteger('charter_job_id')->unsigned();
             $table->bigInteger('from_address_id')->unsigned();
             $table->bigInteger('to_address_id')->unsigned();
-            $table->integer('cartype_id')->unsigned();
-            $table->integer('carstyle_id')->unsigned();
             $table->bigInteger('product_id')->unsigned();
-            $table->decimal('number', 8, 2)->default(0.00);
+            $table->decimal('amount', 8, 2)->default(0.00);
             $table->integer('unit_id')->unsigned();
             $table->decimal('total_weight', 8, 2)->nullable()->default(0.00);
-            $table->double('amount', 8, 2)->nullable()->default(0.00);
+            $table->double('productvalue', 8, 2)->nullable()->default(0.00);
             $table->dateTime('pickup_date')->nullable();
             $table->dateTime('delivery_date')->nullable();
             $table->timestamps();
@@ -34,8 +32,8 @@ class CreateTenancyCharterJobItemsTable extends Migration
             $table->unique([
                 'from_address_id',
                 'to_address_id',
-                'cartype_id',
-                'carstyle_id'
+                'product_id',
+                'unit_id'
             ], 'PrimaryCharterJobItems');
             $table->foreign('charter_job_id')
                 ->references('id')

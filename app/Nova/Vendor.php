@@ -15,9 +15,10 @@ use Wasandev\InputThaiAddress\InputSubDistrict;
 use Wasandev\InputThaiAddress\InputDistrict;
 use Wasandev\InputThaiAddress\InputProvince;
 use Wasandev\InputThaiAddress\InputPostalCode;
-use Wasandev\InputThaiAddress\MapAddress;
+use Jfeid\NovaGoogleMaps\NovaGoogleMaps;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Fields\Number;
 
 class Vendor extends Resource
 {
@@ -81,7 +82,9 @@ class Vendor extends Resource
                 ->size('w-1/2')
                 ->withMeta(['value' => 'เงินสด']),
             Number::make('ระยะเวลาเครดิต', 'creditterm')
-                ->withMeta(['value' => 0]),
+                ->withMeta(['value' => 0])
+                ->size('w-1/2')
+                ->hideFromIndex(),
             BelongsTo::make('ประเภทธุรกิจ', 'businesstype', 'App\Nova\Businesstype')
                 ->hideFromIndex()->size('w-1/2'),
 
@@ -136,7 +139,8 @@ class Vendor extends Resource
                 ->withValues(['district', 'amphoe', 'province', 'zipcode'])
                 ->fromValue('zipcode'),
 
-            MapAddress::make('ตำแหน่งที่ตั้งบน Google Map', 'Location')->hideFromIndex()
+            NovaGoogleMaps::make('ตำแหน่งที่ตั้งบน Google Map', 'location')->setValue($this->location_lat, $this->location_lng)
+                ->hideFromIndex(),
 
         ];
     }

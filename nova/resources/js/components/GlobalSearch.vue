@@ -3,7 +3,10 @@
         <div class="relative">
             <!-- Search -->
             <div class="relative">
-                <icon type="search" class="absolute search-icon-center ml-3 text-80" />
+                <icon
+                    type="search"
+                    class="absolute search-icon-center ml-3 text-80"
+                />
 
                 <input
                     dusk="global-search"
@@ -35,7 +38,9 @@
                 v-if="shouldShowNoResults"
                 class="bg-white overflow-hidden absolute rounded-lg shadow-lg w-full mt-2 max-h-search overflow-y-auto"
             >
-                <h3 class="text-xs uppercase tracking-wide text-80 bg-40 py-4 px-3">
+                <h3
+                    class="text-xs uppercase tracking-wide text-80 bg-40 py-4 px-3"
+                >
                     {{ __('No Results Found.') }}
                 </h3>
             </div>
@@ -47,7 +52,9 @@
                 ref="container"
             >
                 <div v-for="group in formattedResults">
-                    <h3 class="text-xs uppercase tracking-wide text-80 bg-40 py-2 px-3">
+                    <h3
+                        class="text-xs uppercase tracking-wide text-80 bg-40 py-2 px-3"
+                    >
                         {{ group.resourceTitle }}
                     </h3>
 
@@ -55,15 +62,21 @@
                         <li
                             v-for="item in group.items"
                             :key="item.resourceName + ' ' + item.index"
-                            :ref="item.index === highlightedResultIndex ? 'selected' : null"
+                            :ref="
+                                item.index === highlightedResultIndex
+                                    ? 'selected'
+                                    : null
+                            "
                         >
                             <a
                                 :dusk="item.resourceName + ' ' + item.index"
                                 @click.prevent="navigate(item.index)"
                                 class="cursor-pointer flex items-center hover:bg-20 block py-2 px-3 no-underline font-normal"
                                 :class="{
-                                    'bg-white': highlightedResultIndex != item.index,
-                                    'bg-20': highlightedResultIndex == item.index,
+                                    'bg-white':
+                                        highlightedResultIndex != item.index,
+                                    'bg-20':
+                                        highlightedResultIndex == item.index,
                                 }"
                             >
                                 <img
@@ -78,7 +91,10 @@
 
                                 <div>
                                     <p class="text-90">{{ item.title }}</p>
-                                    <p v-if="item.subTitle" class="text-xs mt-1 text-80">
+                                    <p
+                                        v-if="item.subTitle"
+                                        class="text-xs mt-1 text-80"
+                                    >
                                         {{ item.subTitle }}
                                     </p>
                                 </div>
@@ -226,7 +242,9 @@ export default {
                 if (selection) {
                     if (
                         selection[0].offsetTop >
-                        container.scrollTop + container.clientHeight - selection[0].clientHeight
+                        container.scrollTop +
+                            container.clientHeight -
+                            selection[0].clientHeight
                     ) {
                         container.scrollTop =
                             selection[0].offsetTop +
@@ -274,7 +292,10 @@ export default {
 
         shouldShowNoResults() {
             return (
-                this.currentlySearching && !this.loading && !this.hasResults && this.hasSearchTerm
+                this.currentlySearching &&
+                !this.loading &&
+                !this.hasResults &&
+                this.hasSearchTerm
             )
         },
 

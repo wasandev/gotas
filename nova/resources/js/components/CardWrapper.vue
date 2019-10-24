@@ -1,5 +1,9 @@
 <template>
-    <div class="px-3 mb-6" :class="widthClass" :key="`${card.component}.${card.name}`">
+    <div
+        class="px-3 mb-6"
+        :class="widthClass"
+        :key="`${card.component}.${card.name}`"
+    >
         <component
             :class="cardSizeClass"
             :is="card.component"
@@ -54,7 +58,9 @@ export default {
             // If we're passing in 'large' as the value we want to force the
             // cards to be given the `w-full` class, otherwise we're letting
             // the card decide for itself based on its configuration
-            return this.size == 'large' ? 'w-full' : calculateCardWidth(this.card)
+            return this.size == 'large'
+                ? 'w-full'
+                : calculateCardWidth(this.card)
         },
 
         /**

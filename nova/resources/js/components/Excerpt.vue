@@ -57,7 +57,9 @@ export default {
         },
 
         showHideLabel() {
-            return !this.expanded ? this.__('Show Content') : this.__('Hide Content')
+            return !this.expanded
+                ? this.__('Show Content')
+                : this.__('Hide Content')
         },
     },
 }

@@ -55,7 +55,9 @@
                                         <checkbox-with-label
                                             :checked="selectAllChecked"
                                             @change="toggleSelectAll"
-                                            >{{ __('Select All') }}</checkbox-with-label
+                                            >{{
+                                                __('Select All')
+                                            }}</checkbox-with-label
                                         >
                                     </li>
 
@@ -70,7 +72,12 @@
                                         >
                                             <template>
                                                 <span class="mr-1">
-                                                    {{ __('Select All Matching') }} ({{
+                                                    {{
+                                                        __(
+                                                            'Select All Matching'
+                                                        )
+                                                    }}
+                                                    ({{
                                                         allMatchingResourceCount
                                                     }})
                                                 </span>
@@ -134,18 +141,24 @@
                         :authorized-to-force-delete-selected-resources="
                             authorizedToForceDeleteSelectedResources
                         "
-                        :authorized-to-delete-any-resources="authorizedToDeleteAnyResources"
+                        :authorized-to-delete-any-resources="
+                            authorizedToDeleteAnyResources
+                        "
                         :authorized-to-force-delete-any-resources="
                             authorizedToForceDeleteAnyResources
                         "
                         :authorized-to-restore-selected-resources="
                             authorizedToRestoreSelectedResources
                         "
-                        :authorized-to-restore-any-resources="authorizedToRestoreAnyResources"
+                        :authorized-to-restore-any-resources="
+                            authorizedToRestoreAnyResources
+                        "
                         @deleteSelected="deleteSelectedResources"
                         @deleteAllMatching="deleteAllMatchingResources"
                         @forceDeleteSelected="forceDeleteSelectedResources"
-                        @forceDeleteAllMatching="forceDeleteAllMatchingResources"
+                        @forceDeleteAllMatching="
+                            forceDeleteAllMatchingResources
+                        "
                         @restoreSelected="restoreSelectedResources"
                         @restoreAllMatching="restoreAllMatchingResources"
                         @close="deleteModalOpen = false"
@@ -154,7 +167,10 @@
             </div>
 
             <loading-view :loading="loading">
-                <div v-if="!resources.length" class="flex justify-center items-center px-6 py-8">
+                <div
+                    v-if="!resources.length"
+                    class="flex justify-center items-center px-6 py-8"
+                >
                     <div class="text-center">
                         <svg
                             class="mb-3"
@@ -185,7 +201,9 @@
                             :via-resource-id="viaResourceId"
                             :via-relationship="viaRelationship"
                             :relationship-type="relationshipType"
-                            :authorized-to-create="authorizedToCreate && !resourceIsFull"
+                            :authorized-to-create="
+                                authorizedToCreate && !resourceIsFull
+                            "
                             :authorized-to-relate="authorizedToRelate"
                         />
                     </div>
@@ -232,7 +250,10 @@
                     <span
                         v-if="resourceCountLabel"
                         class="text-sm text-80 px-4"
-                        :class="{ 'ml-auto': paginationComponent == 'pagination-links' }"
+                        :class="{
+                            'ml-auto':
+                                paginationComponent == 'pagination-links',
+                        }"
                     >
                         {{ resourceCountLabel }}
                     </span>
@@ -322,7 +343,8 @@ export default {
      * Mount the component and retrieve its initial data.
      */
     async created() {
-        if (Nova.missingResource(this.resourceName)) return this.$router.push({ name: '404' })
+        if (Nova.missingResource(this.resourceName))
+            return this.$router.push({ name: '404' })
 
         this.initializeSearchFromQueryString()
         this.initializePerPageFromQueryString()
@@ -404,9 +426,12 @@ export default {
                 this.clearResourceSelections()
 
                 return Minimum(
-                    Nova.request().get('/nova-api/' + this.resourceName + '/lens/' + this.lens, {
-                        params: this.resourceRequestQueryString,
-                    }),
+                    Nova.request().get(
+                        '/nova-api/' + this.resourceName + '/lens/' + this.lens,
+                        {
+                            params: this.resourceRequestQueryString,
+                        }
+                    ),
                     300
                 ).then(({ data }) => {
                     this.resources = []
@@ -438,16 +463,22 @@ export default {
             this.actions = []
             this.pivotActions = null
             Nova.request()
-                .get(`/nova-api/${this.resourceName}/lens/${this.lens}/actions`, {
-                    params: {
-                        viaResource: this.viaResource,
-                        viaResourceId: this.viaResourceId,
-                        viaRelationship: this.viaRelationship,
-                        relationshipType: this.relationshipType,
-                    },
-                })
+                .get(
+                    `/nova-api/${this.resourceName}/lens/${this.lens}/actions`,
+                    {
+                        params: {
+                            viaResource: this.viaResource,
+                            viaResourceId: this.viaResourceId,
+                            viaRelationship: this.viaRelationship,
+                            relationshipType: this.relationshipType,
+                        },
+                    }
+                )
                 .then(response => {
-                    this.actions = _.filter(response.data.actions, a => a.showOnIndex)
+                    this.actions = _.filter(
+                        response.data.actions,
+                        a => a.showOnIndex
+                    )
                     this.pivotActions = response.data.pivotActions
                 })
         },
@@ -465,9 +496,16 @@ export default {
          */
         getAllMatchingResourceCount() {
             Nova.request()
-                .get('/nova-api/' + this.resourceName + '/lens/' + this.lens + '/count', {
-                    params: this.resourceRequestQueryString,
-                })
+                .get(
+                    '/nova-api/' +
+                        this.resourceName +
+                        '/lens/' +
+                        this.lens +
+                        '/count',
+                    {
+                        params: this.resourceRequestQueryString,
+                    }
+                )
                 .then(response => {
                     this.allMatchingResourceCount = response.data.count
                 })
@@ -477,7 +515,8 @@ export default {
          * Sort the resources by the given field.
          */
         orderByField(field) {
-            var direction = this.currentOrderByDirection == 'asc' ? 'desc' : 'asc'
+            var direction =
+                this.currentOrderByDirection == 'asc' ? 'desc' : 'asc'
             if (this.currentOrderBy != field.attribute) {
                 direction = 'asc'
             }
@@ -536,12 +575,15 @@ export default {
             this.currentPageLoadMore = this.currentPageLoadMore + 1
 
             return Minimum(
-                Nova.request().get('/nova-api/' + this.resourceName + '/lens/' + this.lens, {
-                    params: {
-                        ...this.resourceRequestQueryString,
-                        page: this.currentPageLoadMore, // We do this to override whatever page number is in the URL
-                    },
-                }),
+                Nova.request().get(
+                    '/nova-api/' + this.resourceName + '/lens/' + this.lens,
+                    {
+                        params: {
+                            ...this.resourceRequestQueryString,
+                            page: this.currentPageLoadMore, // We do this to override whatever page number is in the URL
+                        },
+                    }
+                ),
                 300
             ).then(({ data }) => {
                 this.resourceResponse = data
@@ -564,7 +606,9 @@ export default {
          * Sync the per page values from the query string.
          */
         initializePerPageFromQueryString() {
-            this.perPage = this.$route.query[this.perPageParameter] || _.first(this.perPageOptions)
+            this.perPage =
+                this.$route.query[this.perPageParameter] ||
+                _.first(this.perPageOptions)
         },
     },
 
@@ -724,7 +768,8 @@ export default {
          */
         viaManyToMany() {
             return (
-                this.relationshipType == 'belongsToMany' || this.relationshipType == 'morphToMany'
+                this.relationshipType == 'belongsToMany' ||
+                this.relationshipType == 'morphToMany'
             )
         },
 
@@ -739,7 +784,10 @@ export default {
          * Determine if the current resource listing is via a has-one relationship.
          */
         viaHasOne() {
-            return this.relationshipType == 'hasOne' || this.relationshipType == 'morphOne'
+            return (
+                this.relationshipType == 'hasOne' ||
+                this.relationshipType == 'morphOne'
+            )
         },
 
         /**
@@ -753,7 +801,9 @@ export default {
          * Get the selected resources for the action selector.
          */
         selectedResourcesForActionSelector() {
-            return this.selectAllMatchingChecked ? 'all' : this.selectedResourceIds
+            return this.selectAllMatchingChecked
+                ? 'all'
+                : this.selectedResourceIds
         },
 
         /**
@@ -795,14 +845,22 @@ export default {
          * Determinw whether the delete menu should be shown to the user
          */
         shouldShowDeleteMenu() {
-            return Boolean(this.selectedResources.length > 0) && this.canShowDeleteMenu
+            return (
+                Boolean(this.selectedResources.length > 0) &&
+                this.canShowDeleteMenu
+            )
         },
 
         /**
          * Determine if any selected resources may be deleted.
          */
         authorizedToDeleteSelectedResources() {
-            return Boolean(_.find(this.selectedResources, resource => resource.authorizedToDelete))
+            return Boolean(
+                _.find(
+                    this.selectedResources,
+                    resource => resource.authorizedToDelete
+                )
+            )
         },
 
         /**
@@ -810,7 +868,10 @@ export default {
          */
         authorizedToForceDeleteSelectedResources() {
             return Boolean(
-                _.find(this.selectedResources, resource => resource.authorizedToForceDelete)
+                _.find(
+                    this.selectedResources,
+                    resource => resource.authorizedToForceDelete
+                )
             )
         },
 
@@ -820,7 +881,12 @@ export default {
         authorizedToDeleteAnyResources() {
             return (
                 this.resources.length > 0 &&
-                Boolean(_.find(this.resources, resource => resource.authorizedToDelete))
+                Boolean(
+                    _.find(
+                        this.resources,
+                        resource => resource.authorizedToDelete
+                    )
+                )
             )
         },
 
@@ -830,7 +896,12 @@ export default {
         authorizedToForceDeleteAnyResources() {
             return (
                 this.resources.length > 0 &&
-                Boolean(_.find(this.resources, resource => resource.authorizedToForceDelete))
+                Boolean(
+                    _.find(
+                        this.resources,
+                        resource => resource.authorizedToForceDelete
+                    )
+                )
             )
         },
 
@@ -838,7 +909,12 @@ export default {
          * Determine if any selected resources may be restored.
          */
         authorizedToRestoreSelectedResources() {
-            return Boolean(_.find(this.selectedResources, resource => resource.authorizedToRestore))
+            return Boolean(
+                _.find(
+                    this.selectedResources,
+                    resource => resource.authorizedToRestore
+                )
+            )
         },
 
         /**
@@ -847,7 +923,12 @@ export default {
         authorizedToRestoreAnyResources() {
             return (
                 this.resources.length > 0 &&
-                Boolean(_.find(this.resources, resource => resource.authorizedToRestore))
+                Boolean(
+                    _.find(
+                        this.resources,
+                        resource => resource.authorizedToRestore
+                    )
+                )
             )
         },
 
@@ -872,7 +953,9 @@ export default {
          * Return the currently encoded filter string from the store
          */
         encodedFilters() {
-            return this.$store.getters[`${this.resourceName}/currentEncodedFilters`]
+            return this.$store.getters[
+                `${this.resourceName}/currentEncodedFilters`
+            ]
         },
 
         /**
@@ -887,15 +970,21 @@ export default {
         },
 
         hasNextPage() {
-            return Boolean(this.resourceResponse && this.resourceResponse.next_page_url)
+            return Boolean(
+                this.resourceResponse && this.resourceResponse.next_page_url
+            )
         },
 
         hasPreviousPage() {
-            return Boolean(this.resourceResponse && this.resourceResponse.prev_page_url)
+            return Boolean(
+                this.resourceResponse && this.resourceResponse.prev_page_url
+            )
         },
 
         totalPages() {
-            return Math.ceil(this.allMatchingResourceCount / this.currentPerPage)
+            return Math.ceil(
+                this.allMatchingResourceCount / this.currentPerPage
+            )
         },
 
         /**
@@ -906,9 +995,9 @@ export default {
 
             return (
                 this.resources.length &&
-                `${first + 1}-${first + this.resources.length} ${this.__('of')} ${
-                    this.allMatchingResourceCount
-                }`
+                `${first + 1}-${first + this.resources.length} ${this.__(
+                    'of'
+                )} ${this.allMatchingResourceCount}`
             )
         },
 

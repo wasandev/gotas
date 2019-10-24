@@ -10,7 +10,12 @@
             @click="toggle"
             :class="{ 'opacity-75': disabled }"
         >
-            <input class="hidden" type="checkbox" :checked="checked" :disabled="disabled" />
+            <input
+                class="hidden"
+                type="checkbox"
+                :checked="checked"
+                :disabled="disabled"
+            />
 
             <div class="check">
                 <svg

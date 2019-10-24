@@ -2,6 +2,8 @@
     <BaseValueMetric
         @selected="handleRangeSelected"
         :title="card.name"
+        :help-text="card.helpText"
+        :help-width="card.helpWidth"
         :previous="previous"
         :value="value"
         :ranges="card.ranges"
@@ -15,11 +17,13 @@
 </template>
 
 <script>
-import { Minimum } from 'laravel-nova'
+import { InteractsWithDates, Minimum } from 'laravel-nova'
 import BaseValueMetric from './Base/ValueMetric'
 
 export default {
     name: 'ValueMetric',
+
+    mixins: [InteractsWithDates],
 
     components: {
         BaseValueMetric,
@@ -68,6 +72,10 @@ export default {
         if (this.hasRanges) {
             this.selectedRangeKey = this.card.ranges[0].value
         }
+
+        if (this.card.refreshWhenActionRuns) {
+            Nova.$on('action-executed', () => this.fetch())
+        }
     },
 
     mounted() {
@@ -83,10 +91,19 @@ export default {
         fetch() {
             this.loading = true
 
-            Minimum(Nova.request().get(this.metricEndpoint, this.rangePayload)).then(
+            Minimum(
+                Nova.request().get(this.metricEndpoint, this.metricPayload)
+            ).then(
                 ({
                     data: {
-                        value: { value, previous, prefix, suffix, suffixInflection, format },
+                        value: {
+                            value,
+                            previous,
+                            prefix,
+                            suffix,
+                            suffixInflection,
+                            format,
+                        },
                     },
                 }) => {
                     this.value = value
@@ -106,8 +123,18 @@ export default {
             return this.card.ranges.length > 0
         },
 
-        rangePayload() {
-            return this.hasRanges ? { params: { range: this.selectedRangeKey } } : {}
+        metricPayload() {
+            const payload = {
+                params: {
+                    timezone: this.userTimezone,
+                },
+            }
+
+            if (this.hasRanges) {
+                payload.params.range = this.selectedRangeKey
+            }
+
+            return payload
         },
 
         metricEndpoint() {

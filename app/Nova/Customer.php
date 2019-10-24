@@ -20,7 +20,7 @@ use Wasandev\InputThaiAddress\InputProvince;
 use Wasandev\InputThaiAddress\InputPostalCode;
 use Wasandev\InputThaiAddress\MapAddress;
 use Laravel\Nova\Fields\Select;
-use Yassi\NestedForm\NestedForm;
+use Jfeid\NovaGoogleMaps\NovaGoogleMaps;
 
 class Customer extends Resource
 {
@@ -79,8 +79,10 @@ class Customer extends Resource
             Select::make('ประเภท', 'type')->options([
                 'company' => 'นิติบุคคล',
                 'person' => 'บุคคลธรรมดา'
-            ])->displayUsingLabels()
-                ->hideFromIndex()->size('w-1/2'),
+            ])
+                ->displayUsingLabels()
+                ->hideFromIndex()
+                ->size('w-1/2'),
 
             Select::make('การชำระเงิน', 'paymenttype')->options([
                 'เงินสด' => 'เงินสด',
@@ -90,9 +92,12 @@ class Customer extends Resource
                 ->size('w-1/2')
                 ->withMeta(['value' => 'เงินสด']),
             Number::make('ระยะเวลาเครดิต', 'creditterm')
-                ->withMeta(['value' => 0]),
+                ->withMeta(['value' => 0])
+                ->hideFromIndex()
+                ->size('w-1/2'),
             BelongsTo::make('ประเภทธุรกิจ', 'businesstype', 'App\Nova\Businesstype')
-                ->hideFromIndex()->size('w-1/2'),
+                ->hideFromIndex()
+                ->size('w-1/2'),
 
 
 
@@ -161,7 +166,8 @@ class Customer extends Resource
                 ->withValues(['district', 'amphoe', 'province', 'zipcode'])
                 ->fromValue('zipcode')
                 ->hideFromIndex(),
-            MapAddress::make('ตำแหน่งที่ตั้งบน Google Map', 'Location')->hideFromIndex()
+            NovaGoogleMaps::make('ตำแหน่งที่ตั้งบน Google Map', 'location')->setValue($this->location_lat, $this->location_lng)
+                ->hideFromIndex(),
 
         ];
     }
@@ -173,10 +179,12 @@ class Customer extends Resource
     protected function otherFields()
     {
         return [
-            Image::make('โลโก้', 'logofile'),
+            Image::make('โลโก้', 'logofile')
+                ->hideFromIndex(),
             Image::make('ภาพหน้าร้าน', 'imagefile')
                 ->hideFromIndex(),
-            Textarea::make('รายละเอียดอื่นๆ', 'description')->hideFromIndex(),
+            Textarea::make('รายละเอียดอื่นๆ', 'description')
+                ->hideFromIndex(),
             BelongsTo::make('ผู้ทำรายการ', 'user', 'App\Nova\User')
                 ->onlyOnDetail(),
         ];

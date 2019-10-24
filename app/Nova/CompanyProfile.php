@@ -13,8 +13,8 @@ use Wasandev\InputThaiAddress\InputSubDistrict;
 use Wasandev\InputThaiAddress\InputDistrict;
 use Wasandev\InputThaiAddress\InputProvince;
 use Wasandev\InputThaiAddress\InputPostalCode;
-use Wasandev\InputThaiAddress\MapAddress;
 use Laravel\Nova\Fields\Textarea;
+use Jfeid\NovaGoogleMaps\NovaGoogleMaps;
 use Illuminate\Support\Facades\Storage;
 
 class CompanyProfile extends Resource
@@ -90,7 +90,11 @@ class CompanyProfile extends Resource
             Text::make('Facebook', 'facebook')
                 ->size('w-1/2')
                 ->hideFromIndex(),
-            Text::make('Line', 'line')->size('w-1/2')
+            Text::make('Line', 'line')
+                ->size('w-1/2')
+                ->hideFromIndex(),
+            Text::make('อีเมล์', 'email')
+                ->size('w-full')
                 ->hideFromIndex(),
 
         ];
@@ -125,8 +129,11 @@ class CompanyProfile extends Resource
                 ->fromValue('zipcode')
                 ->hideFromIndex(),
 
+            NovaGoogleMaps::make('ตำแหน่งที่ตั้งบน Google Map', 'location')->setValue($this->location_lat, $this->location_lng)
+                ->hideFromIndex(),
 
-            MapAddress::make('ตำแหน่งที่ตั้งบน Google Map', 'Location')->hideFromIndex()
+
+
 
         ];
     }

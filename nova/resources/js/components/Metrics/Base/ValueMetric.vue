@@ -1,7 +1,25 @@
 <template>
-    <loading-card :loading="loading" class="metric px-6 py-4 relative">
+    <loading-card :loading="loading" class="px-6 py-4">
         <div class="flex mb-4">
             <h3 class="mr-3 text-base text-80 font-bold">{{ title }}</h3>
+
+            <div v-if="helpText" class="absolute pin-r pin-b p-2 z-50">
+                <tooltip trigger="click">
+                    <icon
+                        type="help"
+                        viewBox="0 0 17 17"
+                        height="16"
+                        width="16"
+                        class="cursor-pointer text-60 -mb-1"
+                    />
+
+                    <tooltip-content
+                        slot="content"
+                        v-html="helpText"
+                        :max-width="helpWidth"
+                    />
+                </tooltip>
+            </div>
 
             <select
                 v-if="ranges.length > 0"
@@ -21,7 +39,9 @@
 
         <p class="flex items-center text-4xl mb-4">
             {{ formattedValue }}
-            <span v-if="suffix" class="ml-2 text-sm font-bold text-80">{{ formattedSuffix }}</span>
+            <span v-if="suffix" class="ml-2 text-sm font-bold text-80">{{
+                formattedSuffix
+            }}</span>
         </p>
 
         <div class="flex items-center">
@@ -49,20 +69,25 @@
 
                 <span v-if="increaseOrDecrease != 0">
                     <span v-if="growthPercentage !== 0">
-                        {{ growthPercentage }}% {{ __(increaseOrDecreaseLabel) }}
+                        {{ growthPercentage }}%
+                        {{ __(increaseOrDecreaseLabel) }}
                     </span>
 
                     <span v-else> {{ __('No Increase') }} </span>
                 </span>
 
                 <span v-else>
-                    <span v-if="previous == '0' && value != '0'"> {{ __('No Prior Data') }} </span>
+                    <span v-if="previous == '0' && value != '0'">
+                        {{ __('No Prior Data') }}
+                    </span>
 
                     <span v-if="value == '0' && previous != '0'">
                         {{ __('No Current Data') }}
                     </span>
 
-                    <span v-if="value == '0' && previous == '0'"> {{ __('No Data') }} </span>
+                    <span v-if="value == '0' && previous == '0'">
+                        {{ __('No Data') }}
+                    </span>
                 </span>
             </p>
         </div>
@@ -80,6 +105,9 @@ export default {
     props: {
         loading: { default: true },
         title: {},
+        helpText: {},
+        helpWidth: {},
+        maxWidth: {},
         previous: {},
         value: {},
         prefix: '',
@@ -113,9 +141,13 @@ export default {
         },
 
         increaseOrDecrease() {
-            if (this.previous == 0 || this.previous == null || this.value == 0) return 0
+            if (this.previous == 0 || this.previous == null || this.value == 0)
+                return 0
 
-            return (((this.value - this.previous) / this.previous) * 100).toFixed(2)
+            return (
+                ((this.value - this.previous) / this.previous) *
+                100
+            ).toFixed(2)
         },
 
         increaseOrDecreaseLabel() {
@@ -146,7 +178,10 @@ export default {
 
         formattedValue() {
             if (!this.isNullValue) {
-                return this.prefix + numbro(new String(this.value)).format(this.format)
+                return (
+                    this.prefix +
+                    numbro(new String(this.value)).format(this.format)
+                )
             }
 
             return ''

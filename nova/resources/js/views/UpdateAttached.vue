@@ -4,7 +4,11 @@
             __('Update :resource', { resource: relatedResourceLabel })
         }}</heading>
 
-        <form v-if="field" @submit.prevent="updateAttachedResource" autocomplete="off">
+        <form
+            v-if="field"
+            @submit.prevent="updateAttachedResource"
+            autocomplete="off"
+        >
             <card class="overflow-hidden mb-8">
                 <!-- Related Resource -->
                 <default-field :field="field" :errors="validationErrors">
@@ -12,7 +16,11 @@
                         <select-control
                             class="form-control form-select mb-3 w-full"
                             dusk="attachable-select"
-                            :class="{ 'border-danger': validationErrors.has(field.attribute) }"
+                            :class="{
+                                'border-danger': validationErrors.has(
+                                    field.attribute
+                                ),
+                            }"
                             :data-testid="`${field.resourceName}-select`"
                             @change="selectResourceFromSelectControl"
                             disabled
@@ -63,7 +71,11 @@
                     :disabled="isWorking"
                     :processing="submittedViaUpdateAttachedResource"
                 >
-                    {{ __('Update :resource', { resource: relatedResourceLabel }) }}
+                    {{
+                        __('Update :resource', {
+                            resource: relatedResourceLabel,
+                        })
+                    }}
                 </progress-button>
             </div>
         </form>
@@ -120,7 +132,8 @@ export default {
     }),
 
     created() {
-        if (Nova.missingResource(this.resourceName)) return this.$router.push({ name: '404' })
+        if (Nova.missingResource(this.resourceName))
+            return this.$router.push({ name: '404' })
     },
 
     /**
@@ -157,7 +170,12 @@ export default {
             this.field = null
 
             Nova.request()
-                .get('/nova-api/' + this.resourceName + '/field/' + this.viaRelationship)
+                .get(
+                    '/nova-api/' +
+                        this.resourceName +
+                        '/field/' +
+                        this.viaRelationship
+                )
                 .then(({ data }) => {
                     this.field = data
 
@@ -260,8 +278,12 @@ export default {
                 this.submittedViaUpdateAttachedResource = false
 
                 if (error.response.status == 422) {
-                    this.validationErrors = new Errors(error.response.data.errors)
-                    Nova.error(this.__('There was a problem submitting the form.'))
+                    this.validationErrors = new Errors(
+                        error.response.data.errors
+                    )
+                    Nova.error(
+                        this.__('There was a problem submitting the form.')
+                    )
                 }
 
                 if (error.response.status == 409) {
@@ -293,8 +315,12 @@ export default {
                 this.submittedViaUpdateAndContinueEditing = false
 
                 if (error.response.status == 422) {
-                    this.validationErrors = new Errors(error.response.data.errors)
-                    Nova.error(this.__('There was a problem submitting the form.'))
+                    this.validationErrors = new Errors(
+                        error.response.data.errors
+                    )
+                    Nova.error(
+                        this.__('There was a problem submitting the form.')
+                    )
                 }
 
                 if (error.response.status == 409) {
@@ -396,10 +422,16 @@ export default {
                 if (!this.selectedResource) {
                     formData.append(this.relatedResourceName, '')
                 } else {
-                    formData.append(this.relatedResourceName, this.selectedResource.value)
+                    formData.append(
+                        this.relatedResourceName,
+                        this.selectedResource.value
+                    )
                 }
 
-                formData.append(this.relatedResourceName + '_trashed', this.withTrashed)
+                formData.append(
+                    this.relatedResourceName + '_trashed',
+                    this.withTrashed
+                )
                 formData.append('_retrieved_at', this.lastRetrievedAt)
             })
         },
@@ -425,7 +457,8 @@ export default {
          */
         isWorking() {
             return (
-                this.submittedViaUpdateAttachedResource || this.submittedViaUpdateAndContinueEditing
+                this.submittedViaUpdateAttachedResource ||
+                this.submittedViaUpdateAndContinueEditing
             )
         },
     },

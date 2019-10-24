@@ -36,6 +36,7 @@
                 :resource="resource"
                 :resource-name="resourceName"
                 :actions="availableActions"
+                @actionExecuted="$emit('actionExecuted')"
             />
 
             <!-- View Resource Link -->
@@ -53,14 +54,22 @@
                     }"
                     :title="__('View')"
                 >
-                    <icon type="view" width="22" height="18" view-box="0 0 22 16" />
+                    <icon
+                        type="view"
+                        width="22"
+                        height="18"
+                        view-box="0 0 22 16"
+                    />
                 </router-link>
             </span>
 
             <span v-if="resource.authorizedToUpdate">
                 <!-- Edit Pivot Button -->
                 <router-link
-                    v-if="relationshipType == 'belongsToMany' || relationshipType == 'morphToMany'"
+                    v-if="
+                        relationshipType == 'belongsToMany' ||
+                            relationshipType == 'morphToMany'
+                    "
                     class="cursor-pointer text-70 hover:text-primary mr-3"
                     :dusk="`${resource['id'].value}-edit-attached-button`"
                     :to="{
@@ -108,7 +117,10 @@
                 :data-testid="`${testId}-delete-button`"
                 :dusk="`${resource['id'].value}-delete-button`"
                 class="appearance-none cursor-pointer text-70 hover:text-primary mr-3"
-                v-if="resource.authorizedToDelete && (!resource.softDeleted || viaManyToMany)"
+                v-if="
+                    resource.authorizedToDelete &&
+                        (!resource.softDeleted || viaManyToMany)
+                "
                 @click.prevent="openDeleteModal"
                 :title="__(viaManyToMany ? 'Detach' : 'Delete')"
             >
@@ -119,7 +131,11 @@
             <button
                 :dusk="`${resource['id'].value}-restore-button`"
                 class="appearance-none cursor-pointer text-70 hover:text-primary mr-3"
-                v-if="resource.authorizedToRestore && resource.softDeleted && !viaManyToMany"
+                v-if="
+                    resource.authorizedToRestore &&
+                        resource.softDeleted &&
+                        !viaManyToMany
+                "
                 @click.prevent="openRestoreModal"
                 :title="__('Restore')"
             >
@@ -142,7 +158,13 @@
                             __(uppercaseMode + ' Resource')
                         }}</heading>
                         <p class="text-80 leading-normal">
-                            {{ __('Are you sure you want to ' + mode + ' this resource?') }}
+                            {{
+                                __(
+                                    'Are you sure you want to ' +
+                                        mode +
+                                        ' this resource?'
+                                )
+                            }}
                         </p>
                     </div>
                 </delete-resource-modal>
@@ -153,9 +175,15 @@
                     @close="closeRestoreModal"
                 >
                     <div class="p-8">
-                        <heading :level="2" class="mb-6">{{ __('Restore Resource') }}</heading>
+                        <heading :level="2" class="mb-6">{{
+                            __('Restore Resource')
+                        }}</heading>
                         <p class="text-80 leading-normal">
-                            {{ __('Are you sure you want to restore this resource?') }}
+                            {{
+                                __(
+                                    'Are you sure you want to restore this resource?'
+                                )
+                            }}
                         </p>
                     </div>
                 </restore-resource-modal>

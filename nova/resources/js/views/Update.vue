@@ -1,9 +1,16 @@
 <template>
     <loading-view :loading="loading">
-        <form v-if="panels" @submit.prevent="updateResource" autocomplete="off" ref="form">
+        <form
+            v-if="panels"
+            @submit="submitViaUpdateResource"
+            autocomplete="off"
+            ref="form"
+        >
             <form-panel
                 v-for="panel in panelsWithFields"
-                @update-last-retrieved-at-timestamp="updateLastRetrievedAtTimestamp"
+                @update-last-retrieved-at-timestamp="
+                    updateLastRetrievedAtTimestamp
+                "
                 :panel="panel"
                 :name="panel.name"
                 :key="panel.name"
@@ -11,7 +18,7 @@
                 :resource-name="resourceName"
                 :fields="panel.fields"
                 mode="form"
-                class="mb-6"
+                class="mb-8"
                 :validation-errors="validationErrors"
                 :via-resource="viaResource"
                 :via-resource-id="viaResourceId"
@@ -23,12 +30,13 @@
                 <cancel-button />
 
                 <progress-button
-                    type="submit"
                     class="mr-3"
                     dusk="update-and-continue-editing-button"
-                    @click.native="updateAndContinueEditing"
+                    @click.native="submitViaUpdateResourceAndContinueEditing"
                     :disabled="isWorking"
-                    :processing="submittedViaUpdateAndContinueEditing"
+                    :processing="
+                        wasSubmittedViaUpdateResourceAndContinueEditing
+                    "
                 >
                     {{ __('Update & Continue Editing') }}
                 </progress-button>
@@ -36,9 +44,8 @@
                 <progress-button
                     dusk="update-button"
                     type="submit"
-                    @click.native="submitViaUpdateResource"
                     :disabled="isWorking"
-                    :processing="submittedViaUpdateResource"
+                    :processing="wasSubmittedViaUpdateResource"
                 >
                     {{ __('Update :resource', { resource: singularName }) }}
                 </progress-button>
@@ -75,16 +82,18 @@ export default {
     data: () => ({
         relationResponse: null,
         loading: true,
-        submittedViaUpdateAndContinueEditing: false,
+        submittedViaUpdateResourceAndContinueEditing: false,
         submittedViaUpdateResource: false,
         fields: [],
         panels: [],
         validationErrors: new Errors(),
         lastRetrievedAt: null,
+        isWorking: false,
     }),
 
     async created() {
-        if (Nova.missingResource(this.resourceName)) return this.$router.push({ name: '404' })
+        if (Nova.missingResource(this.resourceName))
+            return this.$router.push({ name: '404' })
 
         // If this update is via a relation index, then let's grab the field
         // and use the label for that as the one we use for the title and buttons
@@ -112,15 +121,18 @@ export default {
             const {
                 data: { panels, fields },
             } = await Nova.request()
-                .get(`/nova-api/${this.resourceName}/${this.resourceId}/update-fields`, {
-                    params: {
-                        editing: true,
-                        editMode: 'update',
-                        viaResource: this.viaResource,
-                        viaResourceId: this.viaResourceId,
-                        viaRelationship: this.viaRelationship,
-                    },
-                })
+                .get(
+                    `/nova-api/${this.resourceName}/${this.resourceId}/update-fields`,
+                    {
+                        params: {
+                            editing: true,
+                            editMode: 'update',
+                            viaResource: this.viaResource,
+                            viaResourceId: this.viaResourceId,
+                            viaRelationship: this.viaRelationship,
+                        },
+                    }
+                )
                 .catch(error => {
                     if (error.response.status == 404) {
                         this.$router.push({ name: '404' })
@@ -131,15 +143,20 @@ export default {
             this.panels = panels
             this.fields = fields
             this.loading = false
+
+            Nova.$emit('resource-loaded')
         },
 
-        async updateAndContinueEditing() {
-            this.submittedViaUpdateAndContinueEditing = true
+        async submitViaUpdateResource(e) {
+            e.preventDefault()
+            this.submittedViaUpdateResource = true
+            this.submittedViaUpdateResourceAndContinueEditing = false
             await this.updateResource()
         },
 
-        async submitViaUpdateResource() {
-            this.submittedViaUpdateResource = true
+        async submitViaUpdateResourceAndContinueEditing() {
+            this.submittedViaUpdateResourceAndContinueEditing = true
+            this.submittedViaUpdateResource = false
             await this.updateResource()
         },
 
@@ -147,56 +164,60 @@ export default {
          * Update the resource using the provided data.
          */
         async updateResource() {
-            // Check if checkValidity method exists and fails
-            if (this.$refs.form.checkValidity && !this.$refs.form.checkValidity()) {
-                // Check if reportValidity method exists
-                if (this.$refs.form.reportValidity) {
-                    this.$refs.form.reportValidity()
-                    this.submittedViaUpdateResource = false
-                    this.submittedViaUpdateAndContinueEditing = false
-                    return
-                }
-            }
+            this.isWorking = true
 
-            try {
-                const {
-                    data: { redirect },
-                } = await this.updateRequest()
+            if (this.$refs.form.reportValidity()) {
+                try {
+                    const {
+                        data: { redirect },
+                    } = await this.updateRequest()
 
-                Nova.success(
-                    this.__('The :resource was updated!', {
-                        resource: this.resourceInformation.singularLabel.toLowerCase(),
-                    })
-                )
-
-                await this.updateLastRetrievedAtTimestamp()
-
-                if (this.submittedViaUpdateResource) {
-                    this.$router.push({ path: redirect })
-                    this.submittedViaUpdateResource = false
-                } else {
-                    // Reset the form by refetching the fields
-                    this.getFields()
-                    this.validationErrors = new Errors()
-                    this.submittedViaUpdateAndContinueEditing = false
-                }
-            } catch (error) {
-                this.submittedViaUpdateResource = false
-                this.submittedViaUpdateAndContinueEditing = false
-
-                if (error.response.status == 422) {
-                    this.validationErrors = new Errors(error.response.data.errors)
-                    Nova.error(this.__('There was a problem submitting the form.'))
-                }
-
-                if (error.response.status == 409) {
-                    Nova.error(
-                        this.__(
-                            'Another user has updated this resource since this page was loaded. Please refresh the page and try again.'
-                        )
+                    Nova.success(
+                        this.__('The :resource was updated!', {
+                            resource: this.resourceInformation.singularLabel.toLowerCase(),
+                        })
                     )
+
+                    await this.updateLastRetrievedAtTimestamp()
+
+                    if (this.submittedViaUpdateResource) {
+                        this.$router.push({ path: redirect })
+                    } else {
+                        // Reset the form by refetching the fields
+                        this.getFields()
+                        this.validationErrors = new Errors()
+                        this.submittedViaUpdateResource = false
+                        this.submittedViaUpdateResourceAndContinueEditing = false
+                        this.isWorking = false
+
+                        return
+                    }
+                } catch (error) {
+                    this.submittedViaUpdateResource = false
+                    this.submittedViaUpdateResourceAndContinueEditing = false
+
+                    if (error.response.status == 422) {
+                        this.validationErrors = new Errors(
+                            error.response.data.errors
+                        )
+                        Nova.error(
+                            this.__('There was a problem submitting the form.')
+                        )
+                    }
+
+                    if (error.response.status == 409) {
+                        Nova.error(
+                            this.__(
+                                'Another user has updated this resource since this page was loaded. Please refresh the page and try again.'
+                            )
+                        )
+                    }
                 }
             }
+
+            this.submittedViaUpdateResource = false
+            this.submittedViaUpdateResourceAndContinueEditing = false
+            this.isWorking = false
         },
 
         /**
@@ -227,6 +248,17 @@ export default {
     },
 
     computed: {
+        wasSubmittedViaUpdateResourceAndContinueEditing() {
+            return (
+                this.isWorking &&
+                this.submittedViaUpdateResourceAndContinueEditing
+            )
+        },
+
+        wasSubmittedViaUpdateResource() {
+            return this.isWorking && this.submittedViaUpdateResource
+        },
+
         /**
          * Create the form data for creating the resource.
          */
@@ -253,18 +285,14 @@ export default {
             return Boolean(this.viaResourceId && this.viaRelationship)
         },
 
-        /**
-         * Determine if the form is being processed
-         */
-        isWorking() {
-            return this.submittedViaUpdateResource || this.submittedViaUpdateAndContinueEditing
-        },
-
         panelsWithFields() {
             return _.map(this.panels, panel => {
                 return {
                     name: panel.name,
-                    fields: _.filter(this.fields, field => field.panel == panel.name),
+                    fields: _.filter(
+                        this.fields,
+                        field => field.panel == panel.name
+                    ),
                 }
             })
         },

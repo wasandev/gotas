@@ -6,7 +6,11 @@
             {{ __('All resources loaded.') }}
         </p>
 
-        <button v-else @click="loadMore" class="btn btn btn-link px-4 text-primary dim">
+        <button
+            v-else
+            @click="loadMore"
+            class="btn btn btn-link px-4 text-primary dim"
+        >
             {{ buttonLabel }}
         </button>
 

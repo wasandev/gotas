@@ -113,6 +113,27 @@ class Action implements JsonSerializable
     public static $chunkCount = 200;
 
     /**
+     * The text to be used for the action's confirm button.
+     *
+     * @var string
+     */
+    public $confirmButtonText = 'Run Action';
+
+    /**
+     * The text to be used for the action's cancel button.
+     *
+     * @var string
+     */
+    public $cancelButtonText = 'Cancel';
+
+    /**
+     * The text to be used for the action's confirmation text.
+     *
+     * @var string
+     */
+    public $confirmText = 'Are you sure you want to run this action?';
+
+    /**
      * Determine if the action is executable for the given request.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -558,6 +579,45 @@ class Action implements JsonSerializable
     }
 
     /**
+     * Set the text for the action's confirmation button.
+     *
+     * @param $text
+     * @return $this
+     */
+    public function confirmButtonText($text)
+    {
+        $this->confirmButtonText = $text;
+
+        return $this;
+    }
+
+    /**
+     * Set the text for the action's cancel button.
+     *
+     * @param $text
+     * @return $this
+     */
+    public function cancelButtonText($text)
+    {
+        $this->cancelButtonText = $text;
+
+        return $this;
+    }
+
+    /**
+     * Set the text for the action's confirmation message.
+     *
+     * @param $text
+     * @return $this
+     */
+    public function confirmText($text)
+    {
+        $this->confirmText = $text;
+
+        return $this;
+    }
+
+    /**
      * Prepare the action for JSON serialization.
      *
      * @return array
@@ -565,7 +625,10 @@ class Action implements JsonSerializable
     public function jsonSerialize()
     {
         return array_merge([
+            'cancelButtonText' => __($this->cancelButtonText),
             'component' => $this->component(),
+            'confirmButtonText' => __($this->confirmButtonText),
+            'confirmText' => __($this->confirmText),
             'destructive' => $this instanceof DestructiveAction,
             'name' => $this->name(),
             'uriKey' => $this->uriKey(),

@@ -1,6 +1,13 @@
 <template>
-    <loading-view :loading="initialLoading" :dusk="resourceName + '-index-component'">
-        <custom-index-header v-if="!viaResource" class="mb-3" :resource-name="resourceName" />
+    <loading-view
+        :loading="initialLoading"
+        :dusk="resourceName + '-index-component'"
+    >
+        <custom-index-header
+            v-if="!viaResource"
+            class="mb-3"
+            :resource-name="resourceName"
+        />
 
         <div v-if="shouldShowCards">
             <cards
@@ -25,9 +32,14 @@
             <div
                 v-if="resourceInformation.searchable && !viaHasOne"
                 class="relative h-9 flex-no-shrink"
-                :class="{ 'mb-6': resourceInformation.searchable && !viaHasOne }"
+                :class="{
+                    'mb-6': resourceInformation.searchable && !viaHasOne,
+                }"
             >
-                <icon type="search" class="absolute search-icon-center ml-3 text-70" />
+                <icon
+                    type="search"
+                    class="absolute search-icon-center ml-3 text-70"
+                />
 
                 <input
                     data-testid="search-input"
@@ -41,8 +53,14 @@
                 />
             </div>
 
-            <div class="w-full flex items-center" :class="{ 'mb-6': !viaResource }">
-                <custom-index-toolbar v-if="!viaResource" :resource-name="resourceName" />
+            <div
+                class="w-full flex items-center"
+                :class="{ 'mb-6': !viaResource }"
+            >
+                <custom-index-toolbar
+                    v-if="!viaResource"
+                    :resource-name="resourceName"
+                />
 
                 <!-- Create / Attach Button -->
                 <create-resource-button
@@ -52,7 +70,9 @@
                     :via-resource-id="viaResourceId"
                     :via-relationship="viaRelationship"
                     :relationship-type="relationshipType"
-                    :authorized-to-create="authorizedToCreate && !resourceIsFull"
+                    :authorized-to-create="
+                        authorizedToCreate && !resourceIsFull
+                    "
                     :authorized-to-relate="authorizedToRelate"
                     class="flex-no-shrink ml-auto"
                     :class="{ 'mb-6': viaResource }"
@@ -65,18 +85,29 @@
                 class="flex items-center"
                 :class="{
                     'py-3 border-b border-50':
-                        shouldShowCheckBoxes || shouldShowDeleteMenu || softDeletes || !viaResource,
+                        shouldShowCheckBoxes ||
+                        shouldShowDeleteMenu ||
+                        softDeletes ||
+                        !viaResource ||
+                        hasFilters,
                 }"
             >
                 <div class="flex items-center">
                     <div class="px-3" v-if="shouldShowCheckBoxes">
                         <!-- Select All -->
-                        <dropdown dusk="select-all-dropdown" placement="bottom-start">
+                        <dropdown
+                            dusk="select-all-dropdown"
+                            placement="bottom-start"
+                        >
                             <dropdown-trigger>
                                 <fake-checkbox :checked="selectAllChecked" />
                             </dropdown-trigger>
 
-                            <dropdown-menu slot="menu" direction="ltr" width="250">
+                            <dropdown-menu
+                                slot="menu"
+                                direction="ltr"
+                                width="250"
+                            >
                                 <div class="p-4">
                                     <ul class="list-reset">
                                         <li class="flex items-center mb-4">
@@ -90,12 +121,21 @@
                                         <li class="flex items-center">
                                             <checkbox-with-label
                                                 dusk="select-all-matching-button"
-                                                :checked="selectAllMatchingChecked"
-                                                @change="toggleSelectAllMatching"
+                                                :checked="
+                                                    selectAllMatchingChecked
+                                                "
+                                                @change="
+                                                    toggleSelectAllMatching
+                                                "
                                             >
                                                 <template>
                                                     <span class="mr-1">
-                                                        {{ __('Select All Matching') }} ({{
+                                                        {{
+                                                            __(
+                                                                'Select All Matching'
+                                                            )
+                                                        }}
+                                                        ({{
                                                             allMatchingResourceCount
                                                         }})
                                                     </span>
@@ -130,7 +170,10 @@
                     />
 
                     <!-- Lenses -->
-                    <dropdown class="bg-30 hover:bg-40 mr-3 rounded" v-if="lenses.length > 0">
+                    <dropdown
+                        class="bg-30 hover:bg-40 mr-3 rounded"
+                        v-if="lenses.length > 0"
+                    >
                         <dropdown-trigger class="px-3">
                             <h3
                                 slot="default"
@@ -141,7 +184,10 @@
                         </dropdown-trigger>
 
                         <dropdown-menu slot="menu" width="240" direction="rtl">
-                            <lens-selector :resource-name="resourceName" :lenses="lenses" />
+                            <lens-selector
+                                :resource-name="resourceName"
+                                :lenses="lenses"
+                            />
                         </dropdown-menu>
                     </dropdown>
 
@@ -175,18 +221,24 @@
                         :authorized-to-force-delete-selected-resources="
                             authorizedToForceDeleteSelectedResources
                         "
-                        :authorized-to-delete-any-resources="authorizedToDeleteAnyResources"
+                        :authorized-to-delete-any-resources="
+                            authorizedToDeleteAnyResources
+                        "
                         :authorized-to-force-delete-any-resources="
                             authorizedToForceDeleteAnyResources
                         "
                         :authorized-to-restore-selected-resources="
                             authorizedToRestoreSelectedResources
                         "
-                        :authorized-to-restore-any-resources="authorizedToRestoreAnyResources"
+                        :authorized-to-restore-any-resources="
+                            authorizedToRestoreAnyResources
+                        "
                         @deleteSelected="deleteSelectedResources"
                         @deleteAllMatching="deleteAllMatchingResources"
                         @forceDeleteSelected="forceDeleteSelectedResources"
-                        @forceDeleteAllMatching="forceDeleteAllMatchingResources"
+                        @forceDeleteAllMatching="
+                            forceDeleteAllMatchingResources
+                        "
                         @restoreSelected="restoreSelectedResources"
                         @restoreAllMatching="restoreAllMatchingResources"
                         @close="deleteModalOpen = false"
@@ -195,7 +247,10 @@
             </div>
 
             <loading-view :loading="loading">
-                <div v-if="!resources.length" class="flex justify-center items-center px-6 py-8">
+                <div
+                    v-if="!resources.length"
+                    class="flex justify-center items-center px-6 py-8"
+                >
                     <div class="text-center">
                         <svg
                             class="mb-3"
@@ -226,7 +281,9 @@
                             :via-resource-id="viaResourceId"
                             :via-relationship="viaRelationship"
                             :relationship-type="relationshipType"
-                            :authorized-to-create="authorizedToCreate && !resourceIsFull"
+                            :authorized-to-create="
+                                authorizedToCreate && !resourceIsFull
+                            "
                             :authorized-to-relate="authorizedToRelate"
                         >
                         </create-resource-button>
@@ -252,6 +309,7 @@
                         @order="orderByField"
                         @delete="deleteResources"
                         @restore="restoreResources"
+                        @actionExecuted="getResources"
                         ref="resourceTable"
                     />
                 </div>
@@ -274,7 +332,10 @@
                     <span
                         v-if="resourceCountLabel"
                         class="text-sm text-80 px-4"
-                        :class="{ 'ml-auto': paginationComponent == 'pagination-links' }"
+                        :class="{
+                            'ml-auto':
+                                paginationComponent == 'pagination-links',
+                        }"
                     >
                         {{ resourceCountLabel }}
                     </span>
@@ -366,7 +427,8 @@ export default {
      * Mount the component and retrieve its initial data.
      */
     async created() {
-        if (Nova.missingResource(this.resourceName)) return this.$router.push({ name: '404' })
+        if (Nova.missingResource(this.resourceName))
+            return this.$router.push({ name: '404' })
 
         // Bind the keydown even listener when the router is visited if this
         // component is not a relation on a Detail page
@@ -454,7 +516,10 @@ export default {
                 e.target.tagName != 'INPUT' &&
                 e.target.tagName != 'TEXTAREA'
             ) {
-                this.$router.push({ name: 'create', params: { resourceName: this.resourceName } })
+                this.$router.push({
+                    name: 'create',
+                    params: { resourceName: this.resourceName },
+                })
             }
         },
 
@@ -534,7 +599,8 @@ export default {
         getAuthorizationToRelate() {
             if (
                 !this.authorizedToCreate &&
-                (this.relationshipType != 'belongsToMany' && this.relationshipType != 'morphToMany')
+                (this.relationshipType != 'belongsToMany' &&
+                    this.relationshipType != 'morphToMany')
             ) {
                 return
             }
@@ -595,7 +661,10 @@ export default {
                     },
                 })
                 .then(response => {
-                    this.actions = _.filter(response.data.actions, a => a.showOnIndex)
+                    this.actions = _.filter(
+                        response.data.actions,
+                        a => a.showOnIndex
+                    )
                     this.pivotActions = response.data.pivotActions
                 })
         },
@@ -642,7 +711,8 @@ export default {
          * Sort the resources by the given field.
          */
         orderByField(field) {
-            let direction = this.currentOrderByDirection == 'asc' ? 'desc' : 'asc'
+            let direction =
+                this.currentOrderByDirection == 'asc' ? 'desc' : 'asc'
 
             if (this.currentOrderBy != field.sortableUriKey) {
                 direction = 'asc'
@@ -731,7 +801,9 @@ export default {
          * Sync the per page values from the query string.
          */
         initializePerPageFromQueryString() {
-            this.perPage = this.$route.query[this.perPageParameter] || _.first(this.perPageOptions)
+            this.perPage =
+                this.$route.query[this.perPageParameter] ||
+                _.first(this.perPageOptions)
         },
     },
 
@@ -748,7 +820,10 @@ export default {
          */
         shouldShowCards() {
             // Don't show cards if this resource is beings shown via a relations
-            return this.cards.length > 0 && this.resourceName == this.$route.params.resourceName
+            return (
+                this.cards.length > 0 &&
+                this.resourceName == this.$route.params.resourceName
+            )
         },
 
         /**
@@ -917,7 +992,8 @@ export default {
          */
         viaManyToMany() {
             return (
-                this.relationshipType == 'belongsToMany' || this.relationshipType == 'morphToMany'
+                this.relationshipType == 'belongsToMany' ||
+                this.relationshipType == 'morphToMany'
             )
         },
 
@@ -932,7 +1008,10 @@ export default {
          * Determine if the current resource listing is via a has-one relationship.
          */
         viaHasOne() {
-            return this.relationshipType == 'hasOne' || this.relationshipType == 'morphOne'
+            return (
+                this.relationshipType == 'hasOne' ||
+                this.relationshipType == 'morphOne'
+            )
         },
 
         /**
@@ -950,7 +1029,9 @@ export default {
          * Get the selected resources for the action selector.
          */
         selectedResourcesForActionSelector() {
-            return this.selectAllMatchingChecked ? 'all' : this.selectedResourceIds
+            return this.selectAllMatchingChecked
+                ? 'all'
+                : this.selectedResourceIds
         },
 
         /**
@@ -985,7 +1066,12 @@ export default {
          * Determine if any selected resources may be deleted.
          */
         authorizedToDeleteSelectedResources() {
-            return Boolean(_.find(this.selectedResources, resource => resource.authorizedToDelete))
+            return Boolean(
+                _.find(
+                    this.selectedResources,
+                    resource => resource.authorizedToDelete
+                )
+            )
         },
 
         /**
@@ -993,7 +1079,10 @@ export default {
          */
         authorizedToForceDeleteSelectedResources() {
             return Boolean(
-                _.find(this.selectedResources, resource => resource.authorizedToForceDelete)
+                _.find(
+                    this.selectedResources,
+                    resource => resource.authorizedToForceDelete
+                )
             )
         },
 
@@ -1003,7 +1092,12 @@ export default {
         authorizedToDeleteAnyResources() {
             return (
                 this.resources.length > 0 &&
-                Boolean(_.find(this.resources, resource => resource.authorizedToDelete))
+                Boolean(
+                    _.find(
+                        this.resources,
+                        resource => resource.authorizedToDelete
+                    )
+                )
             )
         },
 
@@ -1013,7 +1107,12 @@ export default {
         authorizedToForceDeleteAnyResources() {
             return (
                 this.resources.length > 0 &&
-                Boolean(_.find(this.resources, resource => resource.authorizedToForceDelete))
+                Boolean(
+                    _.find(
+                        this.resources,
+                        resource => resource.authorizedToForceDelete
+                    )
+                )
             )
         },
 
@@ -1021,7 +1120,12 @@ export default {
          * Determine if any selected resources may be restored.
          */
         authorizedToRestoreSelectedResources() {
-            return Boolean(_.find(this.selectedResources, resource => resource.authorizedToRestore))
+            return Boolean(
+                _.find(
+                    this.selectedResources,
+                    resource => resource.authorizedToRestore
+                )
+            )
         },
 
         /**
@@ -1030,7 +1134,12 @@ export default {
         authorizedToRestoreAnyResources() {
             return (
                 this.resources.length > 0 &&
-                Boolean(_.find(this.resources, resource => resource.authorizedToRestore))
+                Boolean(
+                    _.find(
+                        this.resources,
+                        resource => resource.authorizedToRestore
+                    )
+                )
             )
         },
 
@@ -1038,7 +1147,10 @@ export default {
          * Determinw whether the delete menu should be shown to the user
          */
         shouldShowDeleteMenu() {
-            return Boolean(this.selectedResources.length > 0) && this.canShowDeleteMenu
+            return (
+                Boolean(this.selectedResources.length > 0) &&
+                this.canShowDeleteMenu
+            )
         },
 
         /**
@@ -1079,9 +1191,9 @@ export default {
 
             return (
                 this.resources.length &&
-                `${first + 1}-${first + this.resources.length} ${this.__('of')} ${
-                    this.allMatchingResourceCount
-                }`
+                `${first + 1}-${first + this.resources.length} ${this.__(
+                    'of'
+                )} ${this.allMatchingResourceCount}`
             )
         },
 
@@ -1089,7 +1201,9 @@ export default {
          * Return the currently encoded filter string from the store
          */
         encodedFilters() {
-            return this.$store.getters[`${this.resourceName}/currentEncodedFilters`]
+            return this.$store.getters[
+                `${this.resourceName}/currentEncodedFilters`
+            ]
         },
 
         /**
@@ -1104,15 +1218,21 @@ export default {
         },
 
         hasNextPage() {
-            return Boolean(this.resourceResponse && this.resourceResponse.next_page_url)
+            return Boolean(
+                this.resourceResponse && this.resourceResponse.next_page_url
+            )
         },
 
         hasPreviousPage() {
-            return Boolean(this.resourceResponse && this.resourceResponse.prev_page_url)
+            return Boolean(
+                this.resourceResponse && this.resourceResponse.prev_page_url
+            )
         },
 
         totalPages() {
-            return Math.ceil(this.allMatchingResourceCount / this.currentPerPage)
+            return Math.ceil(
+                this.allMatchingResourceCount / this.currentPerPage
+            )
         },
 
         /**

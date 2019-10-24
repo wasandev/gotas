@@ -4,7 +4,9 @@
 
         <card>
             <component
-                :class="{ 'remove-bottom-border': index == panel.fields.length - 1 }"
+                :class="{
+                    'remove-bottom-border': index == panel.fields.length - 1,
+                }"
                 v-for="(field, index) in panel.fields"
                 :key="index"
                 :is="`${mode}-${field.component}`"

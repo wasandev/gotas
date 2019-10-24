@@ -8,7 +8,7 @@ php:
 css:
     tab-width: 2
     use-tabs: false
-    print-width: 100
+    print-width: 80
     double-quotes: false
     finder:
         exclude:
@@ -25,7 +25,7 @@ css:
 vue:
     tab-width: 4
     use-tabs: false
-    print-width: 100
+    print-width: 80
     double-quotes: false
     trailing-commas: es5
     semicolons: false
@@ -33,6 +33,12 @@ vue:
     bracket-spacing: true
     finder:
         exclude:
+            - src/Console/asset-stubs/resources/js
+            - src/Console/card-stubs/resources/js
+            - src/Console/field-stubs/resources/js
+            - src/Console/filter-stubs/resources/js
+            - src/Console/resource-tool-stubs/resources/js
+            - src/Console/tool-stubs/resources/js
             - modules
             - node_modules
             - storage
@@ -42,7 +48,7 @@ vue:
 js:
     tab-width: 4
     use-tabs: false
-    print-width: 100
+    print-width: 80
     double-quotes: false
     trailing-commas: es5
     semicolons: false

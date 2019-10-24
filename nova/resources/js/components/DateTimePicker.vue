@@ -73,6 +73,10 @@ export default {
             this.$emit('change', this.$refs.datePicker.value)
         },
     },
+
+    beforeDestroy() {
+        this.flatpickr.destroy()
+    },
 }
 </script>
 

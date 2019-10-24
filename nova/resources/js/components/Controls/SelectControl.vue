@@ -48,7 +48,9 @@ export default {
     },
     methods: {
         labelFor(option) {
-            return this.label instanceof Function ? this.label(option) : option[this.label]
+            return this.label instanceof Function
+                ? this.label(option)
+                : option[this.label]
         },
 
         attrsFor(option) {
@@ -56,7 +58,9 @@ export default {
                 {},
                 option.attrs || {},
                 { value: option.value },
-                this.selected !== void 0 ? { selected: this.selected == option.value } : {}
+                this.selected !== void 0
+                    ? { selected: this.selected == option.value }
+                    : {}
             )
         },
     },

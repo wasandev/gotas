@@ -35,7 +35,9 @@ function createRouter({ base }) {
  */
 async function beforeEach(to, from, next) {
     // Get the matched components and resolve them.
-    const components = await resolveComponents(router.getMatchedComponents({ ...to }))
+    const components = await resolveComponents(
+        router.getMatchedComponents({ ...to })
+    )
 
     if (components.length === 0) {
         return next()

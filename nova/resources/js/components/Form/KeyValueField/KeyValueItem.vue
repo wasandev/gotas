@@ -18,7 +18,10 @@
                 />
             </div>
 
-            <div @click="handleValueFieldFocus" class="flex-grow border-l border-50">
+            <div
+                @click="handleValueFieldFocus"
+                class="flex-grow border-l border-50"
+            >
                 <textarea
                     :dusk="`key-value-value-${index}`"
                     v-model="item.value"
@@ -35,7 +38,11 @@
             </div>
         </div>
 
-        <div v-if="!disabled" class="flex justify-center h-11 w-11 absolute" style="right: -50px">
+        <div
+            v-if="!disabled"
+            class="flex justify-center h-11 w-11 absolute"
+            style="right: -50px"
+        >
             <button
                 @click="$emit('remove-row', item.id)"
                 type="button"

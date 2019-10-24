@@ -31,7 +31,9 @@
                         v-if="shouldShowRemoveButton"
                         @click="confirmRemoval"
                     >
-                        <span class="class ml-2 mt-1"> {{ __('Delete') }} </span>
+                        <span class="class ml-2 mt-1">
+                            {{ __('Delete') }}
+                        </span>
                     </DeleteButton>
                 </p>
 
@@ -65,7 +67,9 @@
 
             <span class="text-gray-50 select-none"> {{ currentLabel }} </span>
 
-            <p v-if="hasError" class="text-xs mt-2 text-danger">{{ firstError }}</p>
+            <p v-if="hasError" class="text-xs mt-2 text-danger">
+                {{ firstError }}
+            </p>
         </template>
     </default-field>
 </template>
@@ -76,7 +80,12 @@ import DeleteButton from '@/components/DeleteButton'
 import { FormField, HandlesValidationErrors, Errors } from 'laravel-nova'
 
 export default {
-    props: ['resourceId', 'relatedResourceName', 'relatedResourceId', 'viaRelationship'],
+    props: [
+        'resourceId',
+        'relatedResourceName',
+        'relatedResourceId',
+        'viaRelationship',
+    ],
 
     mixins: [HandlesValidationErrors, FormField],
 

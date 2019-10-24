@@ -4,7 +4,7 @@
         @click="toggle"
         class="rounded active:outline-none active:shadow-outline focus:outline-none focus:shadow-outline"
     >
-        <slot :toggle="toggle" />
+        <slot />
 
         <portal v-if="visible" to="dropdowns">
             <div>
@@ -13,7 +13,11 @@
                     @click="toggle"
                 />
 
-                <div ref="menu" style="position: absolute; z-index: 99999" @click.stop>
+                <div
+                    ref="menu"
+                    style="position: absolute; z-index: 99999"
+                    @click.stop
+                >
                     <slot name="menu" />
                 </div>
             </div>
@@ -23,7 +27,6 @@
 
 <script>
 import Popper from 'popper.js'
-import composedPath from '@/polyfills/composedPath'
 
 export default {
     props: {
@@ -44,16 +47,20 @@ export default {
         visible(showing) {
             if (showing) {
                 this.$nextTick(() => {
+                    if (this.popper) {
+                        this.popper.destroy()
+                    }
+
                     this.popper = new Popper(this.$el, this.$refs.menu, {
                         placement: this.placement,
                         modifiers: {
-                            preventOverflow: { boundariesElement: this.boundary },
+                            preventOverflow: {
+                                boundariesElement: this.boundary,
+                            },
                             offset: '10',
                         },
                     })
                 })
-            } else if (this.popper) {
-                setTimeout(() => this.popper.destroy(), 200)
             }
         },
     },

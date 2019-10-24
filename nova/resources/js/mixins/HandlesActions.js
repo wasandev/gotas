@@ -3,14 +3,18 @@ import { Errors } from 'laravel-nova'
 export default {
     props: {
         resourceName: String,
+
         actions: {},
+
         pivotActions: {
             default: () => [],
         },
+
         endpoint: {
             type: String,
             default: null,
         },
+
         queryString: {
             type: Object,
             default: () => ({
@@ -76,7 +80,11 @@ export default {
             this.working = true
 
             if (this.selectedResources.length == 0) {
-                alert(this.__('Please select a resource to perform this action on.'))
+                alert(
+                    this.__(
+                        'Please select a resource to perform this action on.'
+                    )
+                )
                 return
             }
 
@@ -96,7 +104,9 @@ export default {
 
                     if (error.response.status == 422) {
                         this.errors = new Errors(error.response.data.errors)
-                        Nova.error(this.__('There was a problem executing the action.'))
+                        Nova.error(
+                            this.__('There was a problem executing the action.')
+                        )
                     }
                 })
         },
@@ -120,11 +130,14 @@ export default {
         handleActionResponse(data) {
             if (data.message) {
                 this.$emit('actionExecuted')
+                Nova.$emit('action-executed')
                 Nova.success(data.message)
             } else if (data.deleted) {
                 this.$emit('actionExecuted')
+                Nova.$emit('action-executed')
             } else if (data.danger) {
                 this.$emit('actionExecuted')
+                Nova.$emit('action-executed')
                 Nova.error(data.danger)
             } else if (data.download) {
                 let link = document.createElement('a')
@@ -141,6 +154,7 @@ export default {
                 window.open(data.openInNewTab, '_blank')
             } else {
                 this.$emit('actionExecuted')
+                Nova.$emit('action-executed')
                 Nova.success(this.__('The action ran successfully!'))
             }
         },
@@ -175,7 +189,10 @@ export default {
          */
         selectedAction() {
             if (this.selectedActionKey) {
-                return _.find(this.allActions, a => a.uriKey == this.selectedActionKey)
+                return _.find(
+                    this.allActions,
+                    a => a.uriKey == this.selectedActionKey
+                )
             }
         },
 
@@ -185,7 +202,12 @@ export default {
         selectedActionIsPivotAction() {
             return (
                 this.hasPivotActions &&
-                Boolean(_.find(this.pivotActions.actions, a => a === this.selectedAction))
+                Boolean(
+                    _.find(
+                        this.pivotActions.actions,
+                        a => a === this.selectedAction
+                    )
+                )
             )
         },
 

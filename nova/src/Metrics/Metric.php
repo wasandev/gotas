@@ -11,12 +11,21 @@ use Laravel\Nova\Nova;
 
 abstract class Metric extends Card
 {
+    use HasHelpText;
+
     /**
      * The displayable name of the metric.
      *
      * @var string
      */
     public $name;
+
+    /**
+     * Indicated whether the metric should be refreshed when actions run.
+     *
+     * @var bool
+     */
+    public $refreshWhenActionRuns = false;
 
     /**
      * Calculate the metric's value.
@@ -94,6 +103,18 @@ abstract class Metric extends Card
     }
 
     /**
+     * Set whether the metric should refresh when actions are run.
+     *
+     * @param  bool  $value
+     */
+    public function refreshWhenActionRuns($value = true)
+    {
+        $this->refreshWhenActionRuns = $value;
+
+        return $this;
+    }
+
+    /**
      * Prepare the metric for JSON serialization.
      *
      * @return array
@@ -104,6 +125,9 @@ abstract class Metric extends Card
             'class' => get_class($this),
             'name' => $this->name(),
             'uriKey' => $this->uriKey(),
+            'helpWidth' => $this->getHelpWidth(),
+            'helpText' => $this->getHelpText(),
+            'refreshWhenActionRuns' => $this->refreshWhenActionRuns,
         ]);
     }
 }

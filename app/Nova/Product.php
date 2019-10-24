@@ -63,25 +63,34 @@ class Product extends Resource
 
         return [
             ID::make()->sortable(),
-            Boolean::make('ใช้งาน', 'status')->size('w-full')
+            Boolean::make('ใช้งาน', 'status')
+                ->size('w-full')
                 ->hideWhenCreating(),
 
             BelongsTo::make('ประเภทสินค้า', 'category', 'App\Nova\Category')
-                ->sortable(),
+                ->sortable()
+                ->size('w-1/2'),
             BelongsTo::make('ลักษณะสินค้า', 'product_style', 'App\Nova\Product_style')
-                ->sortable(),
+                ->sortable()
+                ->size('w-1/2'),
             Text::make('ชื่อสินค้า', 'name')
                 ->sortable()
-                ->rules('required'),
+                ->rules('required')
+                ->size('w-1/2'),
             Currency::make('กว้าง(ซม.)', 'width')
-                ->hideFromIndex(),
+                ->hideFromIndex()
+                ->size('w-1/2'),
             Currency::make('ยาว(ซม.)', 'length')
-                ->hideFromIndex(),
+                ->hideFromIndex()
+                ->size('w-1/2'),
             Currency::make('สูง(ซม.)', 'height')
+                ->size('w-1/2')
                 ->hideFromIndex(),
             Currency::make('น้ำหนัก(กก.)', 'weight')
-                ->hideFromIndex(),
-            BelongsTo::make('หน่วยนับ', 'unit', 'App\Nova\Unit'),
+                ->hideFromIndex()
+                ->size('w-1/2'),
+            BelongsTo::make('หน่วยนับ', 'unit', 'App\Nova\Unit')
+                ->size('w-1/2'),
             BelongsTo::make('ผู้ทำรายการ', 'user', 'App\Nova\User')
                 ->onlyOnDetail(),
             HasMany::make('ค่าขนส่งตามสินค้า', 'productservice_price', 'App\Nova\Productservice_price'),

@@ -170,15 +170,14 @@ class BelongsTo extends Field implements RelatableField
     }
 
     /**
-     * Resolve the field's value for display.
+     * Define the callback that should be used to resolve the field's value.
      *
-     * @param  mixed  $resource
-     * @param  string|null  $attribute
-     * @return void
+     * @param  callable  $displayCallback
+     * @return $this
      */
-    public function resolveForDisplay($resource, $attribute = null)
+    public function displayUsing($callback)
     {
-        //
+        return $this->display($callback);
     }
 
     /**

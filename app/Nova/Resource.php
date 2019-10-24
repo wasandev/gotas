@@ -15,7 +15,7 @@ abstract class Resource extends NovaResource
      * @var array
      */
     public static $indexDefaultOrder = [
-        'id' => 'asc'
+        'id' => 'desc'
     ];
     public static $perPageViaRelationship = 10;
     /**

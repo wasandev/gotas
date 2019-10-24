@@ -2,6 +2,7 @@
 
 namespace Laravel\Nova\Fields;
 
+use Closure;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Contracts\Deletable as DeletableContract;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -143,9 +144,9 @@ class File extends Field implements DeletableContract
      */
     protected function prepareStorageCallback($storageCallback)
     {
-        $this->storageCallback = $storageCallback ?? function ($request, $model) {
+        $this->storageCallback = $storageCallback ?? function ($request, $model, $attribute, $requestAttribute) {
             return $this->mergeExtraStorageColumns($request, [
-                $this->attribute => $this->storeFile($request),
+                $this->attribute => $this->storeFile($request, $requestAttribute),
             ]);
         };
     }
@@ -154,15 +155,16 @@ class File extends Field implements DeletableContract
      * Store the file on disk.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  string  $requestAttribute
      * @return string
      */
-    protected function storeFile($request)
+    protected function storeFile($request, $requestAttribute)
     {
         if (! $this->storeAsCallback) {
-            return $request->file($this->attribute)->store($this->storagePath, $this->disk);
+            return $request->file($requestAttribute)->store($this->storagePath, $this->disk);
         }
 
-        return $request->file($this->attribute)->storeAs(
+        return $request->file($requestAttribute)->storeAs(
             $this->storagePath, call_user_func($this->storeAsCallback, $request), $this->disk
         );
     }
@@ -375,10 +377,22 @@ class File extends Field implements DeletableContract
             return;
         }
 
-        $result = call_user_func($this->storageCallback, $request, $model);
+        $result = call_user_func(
+            $this->storageCallback,
+            $request,
+            $model,
+            $attribute,
+            $requestAttribute,
+            $this->disk,
+            $this->storagePath
+        );
 
         if ($result === true) {
             return;
+        }
+
+        if ($result instanceof Closure) {
+            return $result;
         }
 
         if (! is_array($result)) {

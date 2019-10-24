@@ -20,7 +20,12 @@
 </template>
 
 <script>
-import { Errors, FormField, HandlesValidationErrors, InteractsWithDates } from 'laravel-nova'
+import {
+    Errors,
+    FormField,
+    HandlesValidationErrors,
+    InteractsWithDates,
+} from 'laravel-nova'
 
 export default {
     mixins: [HandlesValidationErrors, FormField, InteractsWithDates],

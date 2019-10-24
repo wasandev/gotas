@@ -1,12 +1,15 @@
 <template>
     <div>
-        <h3 class="text-sm uppercase tracking-wide text-80 bg-30 p-3">{{ filter.name }}</h3>
+        <h3 class="text-sm uppercase tracking-wide text-80 bg-30 p-3">
+            {{ filter.name }}
+        </h3>
 
         <div class="p-2">
             <date-time-picker
                 class="w-full form-control form-input form-input-bordered"
                 dusk="date-filter"
                 name="date-filter"
+                autocomplete="off"
                 :value="value"
                 dateFormat="Y-m-d"
                 :placeholder="placeholder"
@@ -54,11 +57,15 @@ export default {
         },
 
         filter() {
-            return this.$store.getters[`${this.resourceName}/getFilter`](this.filterKey)
+            return this.$store.getters[`${this.resourceName}/getFilter`](
+                this.filterKey
+            )
         },
 
         options() {
-            return this.$store.getters[`${this.resourceName}/getOptionsForFilter`](this.filterKey)
+            return this.$store.getters[
+                `${this.resourceName}/getOptionsForFilter`
+            ](this.filterKey)
         },
 
         firstDayOfWeek() {

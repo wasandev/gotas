@@ -23,7 +23,15 @@
             viewBox="0 0 20 20"
         >
             <rect width="20" height="20" fill="#FFF" rx="4" />
-            <rect width="19" height="19" fill="none" x=".5" y=".5" stroke="#CCD4DB" rx="4" />
+            <rect
+                width="19"
+                height="19"
+                fill="none"
+                x=".5"
+                y=".5"
+                stroke="#CCD4DB"
+                rx="4"
+            />
         </svg>
     </div>
 </template>

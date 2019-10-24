@@ -906,6 +906,12 @@ trix-editor.disabled {
   border-bottom: none;
 }
 
+/* Tooltip
+---------------------------------------------------------------------------- */
+.tooltip {
+  z-index: 99999;
+}
+
 /* Tailwind Utilities
 ---------------------------------------------------------------------------- */
 @tailwind utilities;

@@ -93,7 +93,11 @@
                         'bg-primary text-white': index === selected,
                     }"
                 >
-                    <slot name="option" :option="option" :selected="index === selected"></slot>
+                    <slot
+                        name="option"
+                        :option="option"
+                        :selected="index === selected"
+                    ></slot>
                 </div>
             </div>
         </div>
@@ -156,19 +160,26 @@ export default {
                 Vue.nextTick(() => {
                     const vm = this
 
-                    this.popper = new Popper(this.$refs.input, this.$refs.dropdown, {
-                        placement: 'bottom-start',
-                        onCreate() {
-                            vm.$refs.container.scrollTop = vm.$refs.container.scrollHeight
-                            vm.updateScrollPosition()
-                            vm.$refs.search.focus()
-                        },
-                        modifiers: {
-                            preventOverflow: {
-                                boundariesElement: this.boundary ? this.boundary : 'scrollParent',
+                    this.popper = new Popper(
+                        this.$refs.input,
+                        this.$refs.dropdown,
+                        {
+                            placement: 'bottom-start',
+                            onCreate() {
+                                vm.$refs.container.scrollTop =
+                                    vm.$refs.container.scrollHeight
+                                vm.updateScrollPosition()
+                                vm.$refs.search.focus()
                             },
-                        },
-                    })
+                            modifiers: {
+                                preventOverflow: {
+                                    boundariesElement: this.boundary
+                                        ? this.boundary
+                                        : 'scrollParent',
+                                },
+                            },
+                        }
+                    )
                 })
             } else {
                 if (this.popper) this.popper.destroy()
@@ -230,7 +241,10 @@ export default {
                             this.$refs.container.clientHeight
                     }
 
-                    if (this.$refs.selected[0].offsetTop < this.$refs.container.scrollTop) {
+                    if (
+                        this.$refs.selected[0].offsetTop <
+                        this.$refs.container.scrollTop
+                    ) {
                         this.$refs.container.scrollTop = this.$refs.selected[0].offsetTop
                     }
                 }
@@ -246,7 +260,10 @@ export default {
         },
 
         choose(option) {
-            this.selected = _.findIndex(this.data, [this.trackBy, _.get(option, this.trackBy)])
+            this.selected = _.findIndex(this.data, [
+                this.trackBy,
+                _.get(option, this.trackBy),
+            ])
             this.$emit('selected', option)
             this.$refs.input.focus()
             Vue.nextTick(() => this.close())

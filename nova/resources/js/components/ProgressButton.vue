@@ -1,5 +1,8 @@
 <template>
-    <button class="btn btn-default btn-primary inline-flex items-center relative" type="button">
+    <button
+        class="btn btn-default btn-primary inline-flex items-center relative"
+        type="button"
+    >
         <span :class="{ invisible: processing }"> <slot /> </span>
 
         <span

@@ -72,19 +72,34 @@ export default {
 
                     Nova.$emit(
                         this.field.state + '-value',
-                        this.parseState(e.suggestion.administrative, e.suggestion.countryCode)
+                        this.parseState(
+                            e.suggestion.administrative,
+                            e.suggestion.countryCode
+                        )
                     )
 
-                    Nova.$emit(this.field.postalCode + '-value', e.suggestion.postcode)
-                    Nova.$emit(this.field.suburb + '-value', e.suggestion.suburb)
+                    Nova.$emit(
+                        this.field.postalCode + '-value',
+                        e.suggestion.postcode
+                    )
+                    Nova.$emit(
+                        this.field.suburb + '-value',
+                        e.suggestion.suburb
+                    )
 
                     Nova.$emit(
                         this.field.country + '-value',
                         e.suggestion.countryCode.toUpperCase()
                     )
 
-                    Nova.$emit(this.field.latitude + '-value', e.suggestion.latlng.lat)
-                    Nova.$emit(this.field.longitude + '-value', e.suggestion.latlng.lng)
+                    Nova.$emit(
+                        this.field.latitude + '-value',
+                        e.suggestion.latlng.lat
+                    )
+                    Nova.$emit(
+                        this.field.longitude + '-value',
+                        e.suggestion.latlng.lng
+                    )
                 })
             })
 

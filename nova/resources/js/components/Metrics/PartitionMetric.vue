@@ -1,5 +1,11 @@
 <template>
-    <BasePartitionMetric :title="card.name" :chart-data="chartData" :loading="loading" />
+    <BasePartitionMetric
+        :title="card.name"
+        :help-text="card.helpText"
+        :help-width="card.helpWidth"
+        :chart-data="chartData"
+        :loading="loading"
+    />
 </template>
 
 <script>
@@ -46,16 +52,26 @@ export default {
 
     created() {
         this.fetch()
+
+        if (this.card.refreshWhenActionRuns) {
+            Nova.$on('action-executed', () => this.fetch())
+        }
     },
 
     methods: {
         fetch() {
             this.loading = true
 
-            Minimum(Nova.request(this.metricEndpoint)).then(({ data: { value: { value } } }) => {
-                this.chartData = value
-                this.loading = false
-            })
+            Minimum(Nova.request(this.metricEndpoint)).then(
+                ({
+                    data: {
+                        value: { value },
+                    },
+                }) => {
+                    this.chartData = value
+                    this.loading = false
+                }
+            )
         },
     },
     computed: {
