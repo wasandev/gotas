@@ -54,7 +54,7 @@ class Cartype extends Resource
             Text::make('ชื่อประเภทรถ', 'name')->sortable(),
             Currency::make('น้ำหนักบรรทุก(กก.)', 'payload')
                 ->sortable()
-                ->format('%i'),
+                ->format('%.2n'),
             BelongsTo::make('ผู้ทำรายการ', 'user', 'App\Nova\User')
                 ->onlyOnDetail(),
         ];
