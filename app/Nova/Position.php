@@ -34,7 +34,7 @@ class Position extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'id', 'name'
     ];
     public static function label()
     {

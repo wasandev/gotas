@@ -14,7 +14,7 @@ use Laravel\Nova\Fields\HasMany;
 
 class Post extends Resource
 {
-    //public static $displayInNavigation = false;
+    public static $displayInNavigation = false;
     public static $group = "4.งานด้านการขาย";
     //public static $subGroup = "Online Marketing";
     /**

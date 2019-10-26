@@ -10,85 +10,27 @@ class CustomerPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can view any customers.
-     *
-     * @param  \App\Models\Tenant\User  $user
-     * @return mixed
-     */
-    public function viewAny(User $user)
-    {
-        return $user->role == 'admin' || $user->role == 'employee';
-    }
-
-    /**
-     * Determine whether the user can view the customer.
-     *
-     * @param  \App\Models\Tenant\User  $user
-     * @param  \App\Models\Tenant\Customer  $customer
-     * @return mixed
-     */
     public function view(User $user, Customer $customer)
     {
-        return true;
+        return $user->hasPermissionTo('view customers');
     }
 
-    /**
-     * Determine whether the user can create customers.
-     *
-     * @param  \App\Models\Tenant\User  $user
-     * @return mixed
-     */
+
     public function create(User $user)
     {
-        return $user->role == 'admin' || $user->role == 'employee';
+        return $user->hasPermissionTo('create customers');
     }
 
-    /**
-     * Determine whether the user can update the customer.
-     *
-     * @param  \App\Models\Tenant\User  $user
-     * @param  \App\Models\Tenant\Customer  $customer
-     * @return mixed
-     */
+
     public function update(User $user, Customer $customer)
     {
-        return $user->role == 'admin' || $user->role == 'employee';
+
+        return $user->hasPermissionTo('edit customers');
     }
 
-    /**
-     * Determine whether the user can delete the customer.
-     *
-     * @param  \App\Models\Tenant\User  $user
-     * @param  \App\Models\Tenant\Customer  $customer
-     * @return mixed
-     */
+
     public function delete(User $user, Customer $customer)
     {
-        return $user->role == 'admin' || $user->role == 'employee';
-    }
-
-    /**
-     * Determine whether the user can restore the customer.
-     *
-     * @param  \App\Models\Tenant\User  $user
-     * @param  \App\Models\Tenant\Customer  $customer
-     * @return mixed
-     */
-    public function restore(User $user, Customer $customer)
-    {
-        return $user->role == 'admin' || $user->role == 'employee';
-    }
-
-    /**
-     * Determine whether the user can permanently delete the customer.
-     *
-     * @param  \App\Models\Tenant\User  $user
-     * @param  \App\Models\Tenant\Customer  $customer
-     * @return mixed
-     */
-    public function forceDelete(User $user, Customer $customer)
-    {
-        return $user->role == 'admin' || $user->role == 'employee';
+        return $user->hasPermissionTo('delete customers');
     }
 }

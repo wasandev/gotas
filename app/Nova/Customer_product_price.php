@@ -109,7 +109,7 @@ class Customer_product_price extends Resource
         return [
             new Filters\FromBranch,
             new Filters\Province,
-            new filters\Product,
+            new Filters\Product,
         ];
     }
 
