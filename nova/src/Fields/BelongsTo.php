@@ -175,9 +175,9 @@ class BelongsTo extends Field implements RelatableField
      * @param  callable  $displayCallback
      * @return $this
      */
-    public function displayUsing($callback)
+    public function displayUsing(callable $displayCallback)
     {
-        return $this->display($callback);
+        return $this->display($displayCallback);
     }
 
     /**

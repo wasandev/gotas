@@ -6,22 +6,22 @@ Vue.component('field-wrapper', require('./components/Form/FieldWrapper.vue'))
 // Panels...
 Vue.component('panel', require('./components/Detail/Panel.vue'))
 Vue.component(
-    'relationship-panel',
-    require('./components/Detail/RelationshipPanel.vue')
+  'relationship-panel',
+  require('./components/Detail/RelationshipPanel.vue')
 )
 
 // Info Field...
 Vue.component(
-    'index-heading-field',
-    require('./components/Index/HeadingField.vue')
+  'index-heading-field',
+  require('./components/Index/HeadingField.vue')
 )
 Vue.component(
-    'detail-heading-field',
-    require('./components/Detail/HeadingField.vue')
+  'detail-heading-field',
+  require('./components/Detail/HeadingField.vue')
 )
 Vue.component(
-    'form-heading-field',
-    require('./components/Form/HeadingField.vue')
+  'form-heading-field',
+  require('./components/Form/HeadingField.vue')
 )
 
 // Text Field...
@@ -31,30 +31,30 @@ Vue.component('form-text-field', require('./components/Form/TextField.vue'))
 
 // Password Field...
 Vue.component(
-    'index-password-field',
-    require('./components/Index/PasswordField.vue')
+  'index-password-field',
+  require('./components/Index/PasswordField.vue')
 )
 Vue.component(
-    'detail-password-field',
-    require('./components/Detail/PasswordField.vue')
+  'detail-password-field',
+  require('./components/Detail/PasswordField.vue')
 )
 Vue.component(
-    'form-password-field',
-    require('./components/Form/PasswordField.vue')
+  'form-password-field',
+  require('./components/Form/PasswordField.vue')
 )
 
 // Textarea Field...
 Vue.component(
-    'index-textarea-field',
-    require('./components/Index/TextField.vue')
+  'index-textarea-field',
+  require('./components/Index/TextField.vue')
 )
 Vue.component(
-    'detail-textarea-field',
-    require('./components/Detail/TextareaField.vue')
+  'detail-textarea-field',
+  require('./components/Detail/TextareaField.vue')
 )
 Vue.component(
-    'form-textarea-field',
-    require('./components/Form/TextareaField.vue')
+  'form-textarea-field',
+  require('./components/Form/TextareaField.vue')
 )
 
 // Code Field...
@@ -64,12 +64,12 @@ Vue.component('form-code-field', require('./components/Form/CodeField.vue'))
 
 // KeyValue Field...
 Vue.component(
-    'detail-key-value-field',
-    require('./components/Detail/KeyValueField.vue')
+  'detail-key-value-field',
+  require('./components/Detail/KeyValueField.vue')
 )
 Vue.component(
-    'form-key-value-field',
-    require('./components/Form/KeyValueField/KeyValueField.vue')
+  'form-key-value-field',
+  require('./components/Form/KeyValueField/KeyValueField.vue')
 )
 
 // Date Field
@@ -79,27 +79,41 @@ Vue.component('detail-date', require('./components/Detail/DateField.vue'))
 
 // DateTime Field...
 Vue.component(
-    'index-date-time',
-    require('./components/Index/DateTimeField.vue')
+  'index-date-time',
+  require('./components/Index/DateTimeField.vue')
 )
 Vue.component('form-date-time', require('./components/Form/DateTimeField.vue'))
 Vue.component(
-    'detail-date-time',
-    require('./components/Detail/DateTimeField.vue')
+  'detail-date-time',
+  require('./components/Detail/DateTimeField.vue')
 )
 
 // Boolean Field
 Vue.component(
-    'index-boolean-field',
-    require('./components/Index/BooleanField.vue')
+  'index-boolean-field',
+  require('./components/Index/BooleanField.vue')
 )
 Vue.component(
-    'detail-boolean-field',
-    require('./components/Detail/BooleanField.vue')
+  'detail-boolean-field',
+  require('./components/Detail/BooleanField.vue')
 )
 Vue.component(
-    'form-boolean-field',
-    require('./components/Form/BooleanField.vue')
+  'form-boolean-field',
+  require('./components/Form/BooleanField.vue')
+)
+
+// Boolean Group Field
+Vue.component(
+  'index-boolean-group-field',
+  require('./components/Index/BooleanGroupField.vue')
+)
+Vue.component(
+  'detail-boolean-group-field',
+  require('./components/Detail/BooleanGroupField.vue')
+)
+Vue.component(
+  'form-boolean-group-field',
+  require('./components/Form/BooleanGroupField.vue')
 )
 
 // Select Box Field
@@ -114,34 +128,34 @@ Vue.component('form-file-field', require('./components/Form/FileField.vue'))
 
 // Status Field...
 Vue.component(
-    'index-status-field',
-    require('./components/Index/StatusField.vue')
+  'index-status-field',
+  require('./components/Index/StatusField.vue')
 )
 Vue.component(
-    'detail-status-field',
-    require('./components/Detail/StatusField.vue')
+  'detail-status-field',
+  require('./components/Detail/StatusField.vue')
 )
 Vue.component('form-status-field', require('./components/Form/StatusField.vue'))
 
 // Markdown Field
 Vue.component(
-    'index-markdown-field',
-    require('./components/Detail/TextField.vue')
+  'index-markdown-field',
+  require('./components/Detail/TextField.vue')
 )
 Vue.component(
-    'detail-markdown-field',
-    require('./components/Detail/MarkdownField.vue')
+  'detail-markdown-field',
+  require('./components/Detail/MarkdownField.vue')
 )
 Vue.component(
-    'form-markdown-field',
-    require('./components/Form/MarkdownField.vue')
+  'form-markdown-field',
+  require('./components/Form/MarkdownField.vue')
 )
 
 // Badge Field...
 Vue.component('index-badge-field', require('./components/Index/BadgeField.vue'))
 Vue.component(
-    'detail-badge-field',
-    require('./components/Detail/BadgeField.vue')
+  'detail-badge-field',
+  require('./components/Detail/BadgeField.vue')
 )
 
 // Trix Field
@@ -155,64 +169,64 @@ Vue.component('index-place-field', require('@/components/Index/TextField'))
 
 // Has One Field...
 Vue.component(
-    'detail-has-one-field',
-    require('./components/Detail/HasOneField.vue')
+  'detail-has-one-field',
+  require('./components/Detail/HasOneField.vue')
 )
 
 // Has Many Field...
 Vue.component(
-    'detail-has-many-field',
-    require('./components/Detail/HasManyField.vue')
+  'detail-has-many-field',
+  require('./components/Detail/HasManyField.vue')
 )
 
 // Belongs To Field...
 Vue.component(
-    'index-belongs-to-field',
-    require('./components/Index/BelongsToField.vue')
+  'index-belongs-to-field',
+  require('./components/Index/BelongsToField.vue')
 )
 Vue.component(
-    'detail-belongs-to-field',
-    require('./components/Detail/BelongsToField.vue')
+  'detail-belongs-to-field',
+  require('./components/Detail/BelongsToField.vue')
 )
 Vue.component(
-    'form-belongs-to-field',
-    require('./components/Form/BelongsToField.vue')
+  'form-belongs-to-field',
+  require('./components/Form/BelongsToField.vue')
 )
 
 // Belongs To Many Field...
 Vue.component(
-    'detail-belongs-to-many-field',
-    require('./components/Detail/BelongsToManyField.vue')
+  'detail-belongs-to-many-field',
+  require('./components/Detail/BelongsToManyField.vue')
 )
 
 // Morph To Many Field...
 Vue.component(
-    'detail-morph-to-many-field',
-    require('./components/Detail/MorphToManyField.vue')
+  'detail-morph-to-many-field',
+  require('./components/Detail/MorphToManyField.vue')
 )
 
 // Morph To Field...
 Vue.component(
-    'index-morph-to-field',
-    require('./components/Index/MorphToField.vue')
+  'index-morph-to-field',
+  require('./components/Index/MorphToField.vue')
 )
 
 Vue.component(
-    'index-morph-to-action-target-field',
-    require('./components/Index/MorphToActionTargetField.vue')
+  'index-morph-to-action-target-field',
+  require('./components/Index/MorphToActionTargetField.vue')
 )
 
 Vue.component(
-    'detail-morph-to-field',
-    require('./components/Detail/MorphToField.vue')
+  'detail-morph-to-field',
+  require('./components/Detail/MorphToField.vue')
 )
 
 Vue.component(
-    'detail-morph-to-action-target-field',
-    require('./components/Detail/MorphToActionTargetField.vue')
+  'detail-morph-to-action-target-field',
+  require('./components/Detail/MorphToActionTargetField.vue')
 )
 
 Vue.component(
-    'form-morph-to-field',
-    require('./components/Form/MorphToField.vue')
+  'form-morph-to-field',
+  require('./components/Form/MorphToField.vue')
 )

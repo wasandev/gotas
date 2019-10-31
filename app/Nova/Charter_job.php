@@ -13,7 +13,7 @@ use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
-
+use Laravel\Nova\Fields\Status;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Charter_job extends Resource
@@ -32,6 +32,7 @@ class Charter_job extends Resource
      * @var string
      */
     public static $title = 'job_no';
+
 
     /**
      * The columns that should be searched.
@@ -55,7 +56,9 @@ class Charter_job extends Resource
     {
         return [
             ID::make()->sortable(),
-            Boolean::make('ใช้งาน', 'active')
+            Status::make('Status')
+                ->loadingWhen(['new', 'confirm'])
+                ->failedWhen(['cancel'])
                 ->exceptOnForms(),
             BelongsTo::make('สาขาที่ทำรายการ', 'branch', 'App\Nova\Branch')
                 ->exceptOnForms(),
@@ -174,8 +177,17 @@ class Charter_job extends Resource
      */
     public function actions(Request $request)
     {
+
         return [
-            (new Actions\PrintCharterJob)->onlyOnDetail(),
+            (new Actions\CharterJobsActive),
+            (new Actions\PrintCharterJob())->onlyOnDetail()
+                ->canSee(function ($request) {
+                    return true;
+                })
+                ->canRun(function ($request, $user) {
+                    return $request->user()->can('view charter_jobs', $user);
+                }),
+
         ];
     }
 }

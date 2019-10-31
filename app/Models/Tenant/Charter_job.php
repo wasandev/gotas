@@ -10,7 +10,7 @@ class Charter_job extends Model
     use UsesTenantConnection;
 
     protected $fillable = [
-        'active', 'job_no', 'job_date', 'branch_id', 'customer_id', 'reference', 'quotation_id', 'paymenttype', 'paymentpoint', 'charter_price_id', 'terms', 'sub_total', 'discount', 'tax_amount', 'total', 'employee_id', 'user_id'
+        'status', 'job_no', 'job_date', 'branch_id', 'customer_id', 'reference', 'quotation_id', 'paymenttype', 'paymentpoint', 'charter_price_id', 'terms', 'sub_total', 'discount', 'tax_amount', 'total', 'employee_id', 'user_id'
 
     ];
 

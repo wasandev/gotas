@@ -11,7 +11,8 @@ use Wasandev\Tmsdashboard\Tmsdashboard;
 use Dniccum\NovaDocumentation\NovaDocumentation;
 //use Wasandev\GotasMenugroup\GotasMenugroup;
 use Jobcerto\NovaGrid\NovaGrid;
-//use Wasandev\TranjobEntry\TranjobEntry;
+use App\Nova\Metrics\CustomersPerDay;
+
 
 
 use App\Nova\CompanyProfile;
@@ -63,6 +64,7 @@ use App\Nova\Charter_job;
 use App\Nova\Charter_job_item;
 use App\Nova\Charter_job_status;
 use App\Nova\Charter_job_insurance;
+use App\Nova\Metrics\CharterJobsPerDay;
 //System resource
 
 use App\Nova\Systemuser;
@@ -129,6 +131,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         return [
             //(new Tmsdashboard)->companyName(),
+            (new CustomersPerDay)->width('1/3'),
+            (new CharterJobsPerDay)->width('1/3'),
+
         ];
     }
 

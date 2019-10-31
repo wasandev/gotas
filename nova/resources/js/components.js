@@ -7,6 +7,7 @@ import BasePartitionMetric from '@/components/Metrics/Base/PartitionMetric'
 import BaseTrendMetric from '@/components/Metrics/Base/TrendMetric'
 import BaseValueMetric from '@/components/Metrics/Base/ValueMetric'
 import Bold from '@/components/Icons/Editor/Bold'
+import BooleanIcon from '@/components/Icons/BooleanIcon'
 import CancelButton from '@/components/Form/CancelButton'
 import Card from '@/components/Card'
 import Cards from '@/components/Cards'
@@ -91,6 +92,7 @@ import SelectControl from '@/components/Controls/SelectControl'
 import DateTimePicker from '@/components/DateTimePicker'
 
 Vue.component('action-selector', ActionSelector)
+Vue.component('boolean-icon', BooleanIcon)
 Vue.component('base-partition-metric', BasePartitionMetric)
 Vue.component('base-trend-metric', BaseTrendMetric)
 Vue.component('base-value-metric', BaseValueMetric)

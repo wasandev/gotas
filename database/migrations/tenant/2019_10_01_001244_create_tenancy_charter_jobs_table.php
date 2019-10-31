@@ -15,7 +15,7 @@ class CreateTenancyCharterJobsTable extends Migration
     {
         Schema::create('charter_jobs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->boolean('active')->default(false);
+            $table->enum('status', ['new', 'active', 'cancel'])->default('new');
             $table->char('job_no', 20);
             $table->dateTime('job_date');
             $table->integer('branch_id')->unsigned();

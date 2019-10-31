@@ -234,11 +234,26 @@ textarea.form-input:read-only,
 /* Checkbox
 ---------------------------------------------------------------------------- */
 .checkbox {
-  @apply outline-none;
+  @apply appearance-none inline-block align-middle select-none flex-no-shrink h-5 w-5 text-primary bg-white border border-60 rounded;
+  -webkit-print-color-adjust: exact;
+  color-adjust: exact;
+  display: inline-block;
+  vertical-align: middle;
+  background-origin: border-box;
 }
 
-.checkbox:focus {
-  @apply shadow-outline;
+.checkbox:focus,
+.checkbox:active {
+  @apply outline-none shadow-outline;
+}
+
+.checkbox:checked {
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
+  border-color: transparent;
+  background-color: currentColor;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 /* File Upload
@@ -909,6 +924,31 @@ trix-editor.disabled {
 /* Tooltip
 ---------------------------------------------------------------------------- */
 .tooltip {
+  display: block !important;
+  z-index: 88888;
+}
+
+.tooltip .tooltip-inner {
+}
+
+.tooltip.popover .popover-inner {
+}
+
+.tooltip[aria-hidden='true'] {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.15s, visibility 0.15s;
+}
+
+.tooltip[aria-hidden='false'] {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.15s;
+}
+
+/* Flatpickr Calendar
+---------------------------------------------------------------------------- */
+.flatpickr-calendar {
   z-index: 99999;
 }
 

@@ -18,7 +18,7 @@ class CharterJobObserver
         $charter_job->sub_total = $charter_price->price;
         $charter_job->total = $charter_price->price - $charter_job->discount;
         $charter_job->user_id = auth()->user()->id;
-        $charter_job->active = 0;
+        $charter_job->status = 'new';
         $charter_job->branch_id = auth()->user()->branch_id;
         $charter_job->job_no = Charter_job::nextCharterJobNumber();
         $charter_job->job_date = Carbon::now()->toDateTimeString();
@@ -30,12 +30,6 @@ class CharterJobObserver
 
         $charter_job->sub_total = $charter_price->price;
         $charter_job->total = $charter_price->price - $charter_job->discount;
-
-        Charter_job_status::Create([
-            'charter_job_id' => $charter_job->id,
-            'status' => 'open',
-            'user_id' => auth()->user()->id,
-        ]);
     }
 
 
@@ -45,6 +39,14 @@ class CharterJobObserver
 
         $charter_job->sub_total = $charter_price->price;
         $charter_job->total = $charter_price->price - $charter_job->discount;
+
+        if ($charter_job->status == 'active') {
+            Charter_job_status::create([
+                'charter_job_id' => $charter_job->id,
+                'status' => 'open',
+                'user_id' => auth()->user()->id,
+            ]);
+        }
     }
     public function updated(Charter_job $charter_job)
     {
@@ -52,10 +54,12 @@ class CharterJobObserver
 
         $charter_job->sub_total = $charter_price->price;
         $charter_job->total = $charter_price->price - $charter_job->discount;
-        Charter_job_status::updateOrCreate([
-            'charter_job_id' => $charter_job->id,
-            'status' => 'open',
-            'user_id' => auth()->user()->id,
-        ]);
+        if ($charter_job->status == 'active') {
+            Charter_job_status::create([
+                'charter_job_id' => $charter_job->id,
+                'status' => 'open',
+                'user_id' => auth()->user()->id,
+            ]);
+        }
     }
 }

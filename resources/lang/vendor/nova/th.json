@@ -384,7 +384,9 @@
     "Add Customer Product Price": "สร้างตารางราคาค่าขนส่งสินค้าตามลูกค้า",
     "Update Product Service Unit": "แก้ไขหน่วยนับสินค้าที่เลือก",
     "Set Customer Product Price Active": "กำหนดใช้งาน/ไม่ใช้งาน",
-    "Print Quotation": "พิมพ์ใบเสนอราคา(PDF)"
-
+    "Print Quotation": "พิมพ์ใบเสนอราคา(PDF)",
+    "Customers Per Day": "จำนวนลูกค้า/วัน",
+    "Charter Jobs Per Day": "ใบงานค่าขนส่งเหมาคัน/วัน",
+    "Charter Jobs Active": "กำหนดสถานะใบรับงาน"
 
 }

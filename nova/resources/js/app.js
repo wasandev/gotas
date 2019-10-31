@@ -25,7 +25,7 @@ import './components'
  * and hand this router to the Vue instance. Then Nova is all ready!
  */
 ;(function() {
-    this.CreateNova = function(config) {
-        return new Nova(config)
-    }
+  this.CreateNova = function(config) {
+    return new Nova(config)
+  }
 }.call(window))

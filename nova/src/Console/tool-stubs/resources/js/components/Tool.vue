@@ -25,9 +25,8 @@
 
             <p class="text-white-50% text-lg">
                 You can edit this tool's component at:
-                <code class="ml-1 border border-80 text-sm font-mono text-white bg-black rounded px-2 py-1">/nova-components/{{ class }}/resources/js/components/Tool.vue</code>
-                    /nova-components/{{ class
-                    }}/resources/js/components/Tool.vue
+                <code class="ml-1 border border-80 text-sm font-mono text-white bg-black rounded px-2 py-1">
+                    /nova-components/{{ class }}/resources/js/components/Tool.vue
                 </code>
             </p>
         </card>

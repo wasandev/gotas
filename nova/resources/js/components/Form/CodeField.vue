@@ -1,11 +1,11 @@
 <template>
-    <default-field :field="field" :errors="errors" :full-width-content="true">
-        <template slot="field">
-            <div class="form-input form-input-bordered px-0 overflow-hidden">
-                <textarea ref="theTextarea" />
-            </div>
-        </template>
-    </default-field>
+  <default-field :field="field" :errors="errors" :full-width-content="true">
+    <template slot="field">
+      <div class="form-input form-input-bordered px-0 overflow-hidden">
+        <textarea ref="theTextarea" />
+      </div>
+    </template>
+  </default-field>
 </template>
 
 <style src="codemirror/lib/codemirror.css" />
@@ -88,75 +88,72 @@ import 'codemirror/mode/twig/twig'
 import 'codemirror/mode/htmlmixed/htmlmixed'
 
 CodeMirror.defineMode('htmltwig', function(config, parserConfig) {
-    return CodeMirror.overlayMode(
-        CodeMirror.getMode(config, parserConfig.backdrop || 'text/html'),
-        CodeMirror.getMode(config, 'twig')
-    )
+  return CodeMirror.overlayMode(
+    CodeMirror.getMode(config, parserConfig.backdrop || 'text/html'),
+    CodeMirror.getMode(config, 'twig')
+  )
 })
 
 import { FormField, HandlesValidationErrors } from 'laravel-nova'
 
 export default {
-    mixins: [HandlesValidationErrors, FormField],
+  mixins: [HandlesValidationErrors, FormField],
 
-    data: () => ({ codemirror: null }),
+  data: () => ({ codemirror: null }),
 
-    /**
-     * Mount the component.
-     */
-    mounted() {
-        const config = {
-            ...{
-                tabSize: 4,
-                indentWithTabs: true,
-                lineWrapping: true,
-                lineNumbers: true,
-                theme: 'dracula',
-                viewportMargin: Infinity,
-                ...{ readOnly: this.isReadonly },
-            },
-            ...this.field.options,
-        }
+  /**
+   * Mount the component.
+   */
+  mounted() {
+    const config = {
+      ...{
+        tabSize: 4,
+        indentWithTabs: true,
+        lineWrapping: true,
+        lineNumbers: true,
+        theme: 'dracula',
+        viewportMargin: Infinity,
+        ...{ readOnly: this.isReadonly },
+      },
+      ...this.field.options,
+    }
 
-        this.codemirror = CodeMirror.fromTextArea(
-            this.$refs.theTextarea,
-            config
-        )
+    this.codemirror = CodeMirror.fromTextArea(this.$refs.theTextarea, config)
 
-        this.doc.on('change', (cm, changeObj) => {
-            this.value = cm.getValue()
-        })
+    this.doc.on('change', (cm, changeObj) => {
+      this.value = cm.getValue()
+    })
 
-        this.doc.setValue(this.field.value)
+    this.doc.setValue(this.field.value)
+  },
+
+  computed: {
+    doc() {
+      return this.codemirror.getDoc()
     },
-
-    computed: {
-        doc() {
-            return this.codemirror.getDoc()
-        },
-    },
+  },
 }
 </script>
 
 <style>
 .CodeMirror {
-    min-height: 50px;
-    font: 14px/1.5 Menlo, Consolas, Monaco, 'Andale Mono', monospace;
-    box-sizing: border-box;
-    height: auto;
-    margin: auto;
-    position: relative;
-    z-index: 0;
-    width: 100%;
+  min-height: 50px;
+  font: 14px/1.5 Menlo, Consolas, Monaco, 'Andale Mono', monospace;
+  box-sizing: border-box;
+  height: auto;
+  margin: auto;
+  position: relative;
+  z-index: 0;
+  width: 100%;
 }
 
 .CodeMirror-wrap {
-    padding: 0.5rem;
+  padding: 0.5rem;
 }
 
 .CodeMirror-scroll {
-    height: auto;
-    overflow: visible;
-    box-sizing: border-box;
+  height: auto;
+  overflow: visible;
+  box-sizing: border-box;
 }
 </style>

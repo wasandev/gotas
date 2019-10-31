@@ -65,7 +65,8 @@ trait PerformsQueries
 
             $canSearchPrimaryKey = is_numeric($search) &&
                                    in_array($query->getModel()->getKeyType(), ['int', 'integer']) &&
-                                   ($connectionType != 'pgsql' || $search <= PHP_INT_MAX);
+                                   ($connectionType != 'pgsql' || $search <= PHP_INT_MAX) &&
+                                   in_array($query->getModel()->getKeyName(), static::$search);
 
             if ($canSearchPrimaryKey) {
                 $query->orWhere($query->getModel()->getQualifiedKeyName(), $search);
