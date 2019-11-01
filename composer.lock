@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ea2a63fb31f6824282bd1a790e4af91e",
+    "content-hash": "dce8d8686e620b982962d0e6a6ecd4f2",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -6509,6 +6509,40 @@
                 "environment"
             ],
             "time": "2019-09-10T21:37:39+00:00"
+        },
+        {
+            "name": "wasandev/gotas",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "./nova-components/Gotas",
+                "reference": "6af5b6bcdaf846008e640e00f8b556f453990e5c",
+                "shasum": null
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Wasandev\\Gotas\\ThemeServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Wasandev\\Gotas\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel Nova theme.",
+            "keywords": [
+                "laravel",
+                "nova"
+            ]
         },
         {
             "name": "wasandev/input-thai-address",

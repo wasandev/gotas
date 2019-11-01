@@ -397,5 +397,6 @@
     ":amount Total": ":amount Total",
     "Show All Fields": "Show All Fields",
     "There was a problem submitting the form.": "There was a problem submitting the form.",
-    "There was a problem executing the action.": "There was a problem executing the action."
+    "There was a problem executing the action.": "There was a problem executing the action.",
+    "*": "*"
 }

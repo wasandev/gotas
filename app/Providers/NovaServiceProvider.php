@@ -130,7 +130,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function cards()
     {
         return [
-            //(new Tmsdashboard)->companyName(),
+            (new Tmsdashboard)->companyName(),
             (new CustomersPerDay)->width('1/3'),
             (new CharterJobsPerDay)->width('1/3'),
 

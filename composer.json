@@ -39,6 +39,7 @@
         "wasandev/input-thai-address": "*",
         "wasandev/tmsdashboard": "*",
         "wasandev/tranjob-entry": "*",
+        "wasandev/gotas": "*",
         "wemersonrv/input-mask": "^0.1.2",
         "yassi/nova-nested-form": "^3.0"
     },

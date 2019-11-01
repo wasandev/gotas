@@ -281,13 +281,13 @@ var render = function() {
       [
         _c(
           "heading",
-          { staticClass: "flex mb-3" },
+          { staticClass: "flex mb-1" },
           [_c("Tbody", [_vm._v(_vm._s(_vm.companyName))])],
           1
         ),
         _vm._v(" "),
-        _c("p", { staticClass: "text-xl leading-tight mb-8" }, [
-          _vm._v("Welcome to GOTAS")
+        _c("p", { staticClass: " text-sm leading-tight mb-4" }, [
+          _vm._v("Powered by GOTAS v1.0.1")
         ])
       ],
       1
