@@ -40,12 +40,11 @@
     <div class="mx-0 sm:mx-6">
         <div class=" bg-blue-light bg-transparent w-full p-4 md:p-4 t leading-normal rounded-lg" style="opacity: .80;">
             <p class="text-2xl md:text-3xl text-center text-black">
-
-                Transportation Application Service
+                Transportation Application.
             </p>
 
-            <p class="py-2 text-base text-white text-center mt-4">
-                แอปพลิเคชันบนคลาวด์ สำหรับการจัดการการขนส่ง <br />
+            <p class="py-2 text-base sm:text-sm text-white text-center mt-4">
+                แอปพลิเคชันบนคลาวด์สำหรับการจัดการการขนส่ง <br />
                 Cloud applications for Transportation Management
             </p>
 
