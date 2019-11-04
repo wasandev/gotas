@@ -8,11 +8,11 @@
 
 <!--image-->
 <div class="max-w-full mx-auto bg-white bg-cover "
-    style="background-image:url('{{  Storage::url('gotashome.jpg') }}'); height: 75vh;">
+    style="background-image:url('{{  Storage::url('gotashome.jpg') }}'); height: 70vh;">
 
     <div class="w-full max-w-screen-xl relative mx-auto px-6 pt-16 pb-40 md:pb-24">
         <div class="xl:flex -mx-6">
-            <div class="max-w-2xl mx-auto p-4 md:p-4 t leading-normal">
+            <div class="max-w-2xl mx-auto p-4 md:p-2 t leading-normal">
 
                 <h1 class="text-3xl text-black sm:text-4xl md:text-5xl xl:text-4xl font-light leading-tight">
                     จัดการการขนส่ง ให้เป็นเรื่องง่าย<br />
