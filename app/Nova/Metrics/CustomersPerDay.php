@@ -27,9 +27,9 @@ class CustomersPerDay extends Trend
     public function ranges()
     {
         return [
-            30 => '30 Days',
-            60 => '60 Days',
-            90 => '90 Days',
+            30 => '30 วัน',
+            60 => '60 วัน',
+            365 => '365 วัน',
         ];
     }
 

@@ -2,11 +2,11 @@
 
 namespace App\Nova\Metrics;
 
+use App\Models\Tenant\Customer;
 use Illuminate\Http\Request;
-use Laravel\Nova\Metrics\Trend;
-use App\Models\Tenant\Charter_job;
+use Laravel\Nova\Metrics\Value;
 
-class CharterJobsPerDay extends Trend
+class NewCustomers extends Value
 {
     /**
      * Calculate the value of the metric.
@@ -16,7 +16,7 @@ class CharterJobsPerDay extends Trend
      */
     public function calculate(Request $request)
     {
-        return $this->countByDays($request, Charter_job::class);
+        return $this->count($request, Customer::class);
     }
 
     /**
@@ -30,6 +30,10 @@ class CharterJobsPerDay extends Trend
             30 => '30 วัน',
             60 => '60 วัน',
             365 => '365 วัน',
+            'TODAY' => 'วันนี้',
+            'MTD' => 'เดือนนี้',
+            'QTD' => 'ไตรมาสนี้',
+            'YTD' => 'ปีนี้',
         ];
     }
 
@@ -50,10 +54,10 @@ class CharterJobsPerDay extends Trend
      */
     public function uriKey()
     {
-        return 'charter-jobs-per-day';
+        return 'new-customers';
     }
     public function name()
     {
-        return __('Charter Jobs Per Day');
+        return 'จำนวนลูกค้าใหม่';
     }
 }

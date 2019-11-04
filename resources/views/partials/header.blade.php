@@ -1,7 +1,6 @@
-<div class="mx-auto py-4 text-center text-black text-2xl">
+<div class="mx-auto py-8  text-center text-black text-90">
 
-    <a class="text-gray-darkest text-base font-semibold no-underline hover:text-mstore hover:no-underline" href="/">
-      @include('partials.logoblack')
-    </a>
 
- </div>
+    @include('partials.logo')
+
+</div>

@@ -64,7 +64,9 @@ use App\Nova\Charter_job;
 use App\Nova\Charter_job_item;
 use App\Nova\Charter_job_status;
 use App\Nova\Charter_job_insurance;
+//metrics
 use App\Nova\Metrics\CharterJobsPerDay;
+use App\Nova\Metrics\NewCustomers;
 //System resource
 
 use App\Nova\Systemuser;
@@ -130,9 +132,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function cards()
     {
         return [
-            (new Tmsdashboard)->companyName(),
+            (new Tmsdashboard)->companyName()->width('full'),
             (new CustomersPerDay)->width('1/3'),
             (new CharterJobsPerDay)->width('1/3'),
+            (new NewCustomers)->width('1/3'),
 
         ];
     }

@@ -1,11 +1,10 @@
 <template>
-  <div class="flex justify-center items-centers">
+  <div class="flex">
     <div class="w-full max-w-xl">
       <heading class="flex mb-1">
         <Tbody>{{ companyName }}</Tbody>
       </heading>
-      <p class=" text-sm leading-tight mb-4">Powered by GOTAS v1.0.1</p>
-      
+      <p class="text-sm leading-tight mb-4">Powered by GOTAS v1.0.1</p>
     </div>
   </div>
 </template>
