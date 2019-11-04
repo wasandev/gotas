@@ -8,7 +8,7 @@
 
 <!--image-->
 <div class="max-w-full mx-auto bg-white bg-cover "
-    style="background-image:url('{{  Storage::url('gotashome.jpg') }}'); height: 90vh;">
+    style="background-image:url('{{  Storage::url('gotashome.jpg') }}'); height: 75vh;">
 
     <div class="w-full max-w-screen-xl relative mx-auto px-6 pt-16 pb-40 md:pb-24">
         <div class="xl:flex -mx-6">
