@@ -78,13 +78,13 @@
                 @else
 
                 <a href="{{ route('login') }}"
-                    class="no-underline inline-block text-base font-semibold px-4 py-2 leading-none text-grey-darker rounded hover:text-white hover:bg-mstore  mt-4 sm:mt-0">
+                    class="no-underline inline-block text-base font-semibold px-4 py-2 leading-none text-white rounded-lg bg-blue hover:text-white hover:bg-mstore  mt-4 sm:mt-0">
 
                     {{ __('auth.Login') }}
                 </a>
 
                 <a href="{{ route('register') }}"
-                    class="no-underline inline-block text-base font-semibold px-4 py-2 leading-none text-grey-darker rounded hover:text-white hover:bg-mstore mt-4 sm:mt-0">
+                    class="no-underline inline-block text-base font-semibold px-4 py-2 leading-none text-grey-darker rounded-lg bg-mstore hover:text-white hover:bg-blue mt-4 sm:mt-0">
 
                     {{ __('auth.register') }}
                 </a>
