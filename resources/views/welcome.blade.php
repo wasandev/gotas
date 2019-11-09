@@ -8,27 +8,28 @@
 
 <!--image-->
 <div class="max-w-full mx-auto bg-white bg-cover "
-    style="background-image:url('{{  Storage::url('gotashome.jpg') }}'); height: 75vh;">
+    style="background-image:url('{{  Storage::url('gotashome.jpg') }}'); height: 80vh;">
 
     <div class="w-full max-w-screen-xl relative mx-auto px-6 pt-16 pb-40 md:pb-24">
         <div class="xl:flex -mx-6">
             <div class="max-w-2xl mx-auto p-4 md:p-2 t leading-normal">
 
-                <h1 class="text-3xl text-black sm:text-4xl md:text-5xl xl:text-4xl font-light leading-tight">
-                    ให้การจัดการการขนส่ง..เป็นเรื่องง่าย<br />
-                    <span class="sm:block text-mstore-darker text-2xl font-normal">รู้รายได้ รู้ต้นทุน รู้กำไร
-                        ได้ทุกที่ทุกเวลาที่ต้องการ</span>
+                <h1 class="text-3xl text-black sm:text-4xl md:text-5xl xl:text-4xl font-light font-bold leading-tight">
+                    ให้การจัดการการขนส่ง..เป็นเรื่องง่าย
                 </h1>
-                <p class="mt-4 leading-relaxed sm:text-base md:text-xl xl:text-lg text-grey-darker font-base">
+                <span class="sm:block text-mstore-darker text-2xl font-normal">รู้รายได้ รู้ต้นทุน รู้กำไร
+                    ได้ทุกที่ทุกเวลาที่ต้องการ</span>
+                <p class="mt-4 leading-relaxed sm:text-base md:text-xl xl:text-lg text-grey-darkest font-base">
                     GOTAS แอปพลิเคชันบนคลาวด์ สำหรับการจัดการการขนส่งที่ครอบคลุมทุกขั้นตอนของงานขนส่ง
-                    รองรับงานขนส่งประเภทเหมาเที่ยวและประเภทศูนย์บริการรับ-ส่งสินค้า
-                    ใช้งานง่ายทำงานได้ทุกที่ทุกเวลา...
+                    รองรับงานขนส่งประเภทเหมาเที่ยวและประเภทศูนย์บริการรับ-ส่งสินค้า ที่มีหลายสาขา
+                    มีฟังก์ชั่นการทำงานทั้งด้านรายรับ และรายจ่าย
+                    ใช้งานง่ายทำงานได้ทุกที่ทุกเวลา ไม่ต้องลงทุนด้านระบบ...
                 </p>
-                <div class="flex mt-6 justify-start md:justify-center xl:justify-start">
+                <div class=" mx-auto flex mt-6 justify-start md:justify-center xl:justify-center">
                     <a href="/register"
-                        class="rounded-lg px-4 md:px-5 xl:px-4 py-3 md:py-4 xl:py-3 bg-mstore hover:bg-blue md:text-lg xl:text-base text-white font-semibold leading-tight shadow-md">ลงทะเบียนใช้งาน</a>
+                        class="rounded-lg px-4 md:px-5 xl:px-4 py-3 md:py-4 xl:py-3 bg-mstore hover:bg-blue md:text-lg xl:text-base text-white font-semibold leading-tight shadow-md">เริ่มใช้งาน</a>
                     <a href="/feature"
-                        class="ml-4 rounded-lg px-4 md:px-5 xl:px-4 py-3 md:py-4 xl:py-3 bg-white hover:bg-mstore md:text-lg xl:text-base text-gray-800 font-semibold leading-tight shadow-md">รายละเอียดเพิ่มเติม</a>
+                        class="ml-4 rounded-lg px-4 md:px-5 xl:px-4 py-3 md:py-4 xl:py-3 bg-white hover:bg-mstore md:text-lg xl:text-base text-gray-800 font-semibold leading-tight shadow-md">รายละเอียด</a>
                 </div>
             </div>
 
@@ -36,7 +37,8 @@
     </div>
 </div>
 
-<div class="max-w-2xl mx-auto">
+
+<div class="max-w-full mx-auto">
     <div class="mx-0 sm:mx-6">
         <div class="  w-full p-4 md:p-4 t leading-normal rounded-lg">
             <p class="text-3xl md:text-4xl font-semibold text-center text-black">
@@ -114,13 +116,7 @@
 
         </a>
     </div>
-
-
 </div>
-
-
-
-
 
 @endsection
 
